@@ -14,4 +14,4 @@ class KnexQueryBuilder implements IDatabase<knex> {
     }
 }
 
-export default new KnexQueryBuilder();
+export default KnexQueryBuilder;

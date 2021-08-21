@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import container from './ioc-container';
+import container from './ioc/ioc-container';
 import { InversifyExpressServer } from 'inversify-express-utils';
 
 // Controllers

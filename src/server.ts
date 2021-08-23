@@ -2,11 +2,16 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import container from './ioc/ioc-container';
 import { InversifyExpressServer } from 'inversify-express-utils';
+import express from 'express';
 
 // Controllers
 import './controller/home.controller';
 
 const server = new InversifyExpressServer(container);
+
+server.setConfig(app => {
+    app.use(express.json());
+});
 
 const app = server.build();
 

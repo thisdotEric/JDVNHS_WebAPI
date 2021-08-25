@@ -1,10 +1,15 @@
 import { Container } from 'inversify';
-import IDatabase from './../database/IDatabase';
+import TYPES from './binding-types';
 import KnexQueryBuilder from './../database/knexQueryBuilder/knexDatabase';
+import IDatabase from './../database/IDatabase';
 import knex from 'knex';
 
 const container = new Container();
 
-container.bind<IDatabase<knex>>('IDatabase').to(KnexQueryBuilder);
+// bindings
+container
+    .bind<IDatabase<knex>>(TYPES.IDatabase)
+    .to(KnexQueryBuilder)
+    .inSingletonScope();
 
 export default container;

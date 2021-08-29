@@ -1,5 +1,9 @@
 import * as Knex from 'knex';
 
+// Important, locate .env file to make migrations and seedings work
+// .env file is located in the root of the project
+require('dotenv').config({ path: '../../../.env' });
+
 interface IKnexConfig {
     [key: string]: Knex.Config;
 }

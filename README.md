@@ -12,7 +12,7 @@ Search for Git Clone then paste:
 
 https://github.com/thisdotEric/JDVNHS_WebAPI.git
 ```
-5. Install all dependencies in package.json.
+5. Open VS Code terminal and install all dependencies in package.json.
 ```
 npm install
 ```

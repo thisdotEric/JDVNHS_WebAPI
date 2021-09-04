@@ -7,7 +7,7 @@ import express from 'express';
 // Controllers
 import './controller/home.controller';
 
-const server = new InversifyExpressServer(container);
+const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 
 server.setConfig(app => {
     app.use(express.json());

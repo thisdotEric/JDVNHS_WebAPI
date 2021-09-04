@@ -4,7 +4,7 @@ import app from '../../src/server';
 
 describe('Server Test', () => {
     it('should return 200 status on home route', async () => {
-        const response = await request(app).get('/');
+        const response = await request(app).get('/v1');
 
         expect(response.statusCode).to.equal(200);
     });

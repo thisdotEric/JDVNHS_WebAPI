@@ -6,6 +6,7 @@ import express from 'express';
 
 // Controllers
 import './controller/home.controller';
+import './controller/student.controller';
 
 const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 

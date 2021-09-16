@@ -1,7 +1,9 @@
 import knex from 'knex';
 import config from './knexfile';
 import IDatabase from '../IDatabase';
+import { injectable } from 'inversify';
 
+@injectable()
 class KnexQueryBuilder implements IDatabase<knex> {
     private readonly db: knex;
 

@@ -15,6 +15,9 @@
         "postinstall": "npm run tsc",
         "knex:migrate:make": "npx knex migrate:make --migrations-directory src/database/knexQueryBuilder/migrations --knexfile src/database/knexQueryBuilder/knexfile.ts -x ts",
         "knex:migrate:latest": "npx knex migrate:latest --knexfile src/database/knexQueryBuilder/knexfile.ts",
+        "knex:migrate:down": "npx knex migrate:down --knexfile src/database/knexQueryBuilder/knexfile.ts",
+        "knex:migrate:rollback_all": "npx knex migrate:rollback --all --knexfile src/database/knexQueryBuilder/knexfile.ts",
+        "knex:migrate:rollback": "npx knex migrate:rollback --knexfile src/database/knexQueryBuilder/knexfile.ts",
         "knex:seed:make": "npx knex seed:make -x ts --knexfile src/database/knexQueryBuilder/knexfile.ts",
         "knex:seed:run": "npx knex seed:run --knexfile src/database/knexQueryBuilder/knexfile.ts"
     },

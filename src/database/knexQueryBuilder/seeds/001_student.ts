@@ -1,11 +1,12 @@
 import * as Knex from 'knex';
+import { DbConstants } from '../../../constant/db.constant';
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
-    await knex('student').del();
+    await knex(DbConstants.STUDENT_TABLE).del();
 
     // Inserts seed entries
-    await knex('student').insert([
+    await knex(DbConstants.STUDENT_TABLE).insert([
         {
             LRN: '123456789123',
             first_name: 'John Eric',

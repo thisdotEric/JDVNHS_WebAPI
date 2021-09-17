@@ -1,7 +1,8 @@
 import * as Knex from 'knex';
+import { DbConstants } from '../../../constant/db.constants';
 
 export async function up(knex: Knex): Promise<void> {
-    return knex.schema.createTable('student', table => {
+    return knex.schema.createTable(DbConstants.STUDENT_TABLE, table => {
         table.string('LRN', 12).notNullable().unique().primary();
         table.string('first_name').notNullable();
         table.string('middle_name').notNullable();
@@ -15,5 +16,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-    return knex.schema.dropTableIfExists('student');
+    return knex.schema.dropTableIfExists(DbConstants.STUDENT_TABLE);
 }

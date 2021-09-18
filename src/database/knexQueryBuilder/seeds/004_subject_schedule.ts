@@ -12,12 +12,14 @@ export async function seed(knex: Knex): Promise<void> {
             meeting_day: 'Wednesday',
             start_time: '10:00',
             end_time: '13:00',
+            schedule_date: '2021-09-30',
         },
         {
             subject_id: 'MMW1',
             meeting_day: 'Monday',
             start_time: '10:00',
             end_time: '11:00',
+            schedule_date: '2021-09-10',
         },
     ]);
 }

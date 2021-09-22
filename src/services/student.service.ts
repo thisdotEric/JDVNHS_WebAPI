@@ -1,5 +1,6 @@
 import { injectable, inject } from 'inversify';
-import StudentRepository, { IStudent } from '../repository/student.repository';
+import { IStudent } from '../repository/student.repository';
+import IStudentRepository from '../repository/IStudentRepository';
 import TYPES from '../ioc/binding-types';
 import { StudentConstants } from '../constant/constants';
 
@@ -7,7 +8,7 @@ import { StudentConstants } from '../constant/constants';
 class StudentService {
     constructor(
         @inject(TYPES.StudentRepository)
-        private readonly studentRepo: StudentRepository
+        private readonly studentRepo: IStudentRepository
     ) {}
 
     async getStudentByLRN(lrn: string): Promise<IStudent> {

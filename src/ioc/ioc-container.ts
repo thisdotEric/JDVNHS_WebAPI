@@ -10,6 +10,9 @@ import StudentService from '../services/student.service';
 // repositories
 import StudentRepository from '../repository/student.repository';
 
+//interfaces
+import IStudentRepository from '../repository/IStudentRepository';
+
 const container = new Container();
 
 // bindings
@@ -20,7 +23,7 @@ container
 
 container.bind<StudentService>(TYPES.StudentService).to(StudentService);
 container
-    .bind<StudentRepository>(TYPES.StudentRepository)
+    .bind<IStudentRepository>(TYPES.StudentRepository)
     .to(StudentRepository);
 
 export default container;

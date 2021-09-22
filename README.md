@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-9. Open Chrome and visit **http://localhost:PORT**. Change the PORT based on **.env** file, defaults to 4000.
+9. Open Chrome and visit **http://localhost:PORT/v1/**. Change the PORT based on **.env** file, defaults to 4000.
 
 #### Github
 

@@ -1,32 +1,34 @@
 import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
+import IStudentRepository from './IStudentRepository';
+import { DbConstants } from '../constant/db.constants';
 
 export interface IStudent {
-    LRN: string;
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-    birthdate: Date;
-    address: string;
-    grade_level: string;
-    contact_number: string;
-    gender: string;
+    readonly LRN: string;
+    readonly first_name: string;
+    readonly middle_name: string;
+    readonly last_name: string;
+    readonly birthdate: Date;
+    readonly address: string;
+    readonly grade_level: string;
+    readonly contact_number: string;
+    readonly gender: string;
 }
 
 @injectable()
-class StudentRepository {
+class StudentRepository implements IStudentRepository {
     constructor(
         @inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder
     ) {}
 
     async getStudentByLRN(lrn: string): Promise<IStudent> {
         const student = await this.db
-            .getDbInstance()('student')
+            .getDbInstance()(DbConstants.STUDENT_TABLE)
             .where({ LRN: lrn })
-            .select<IStudent>('*');
+            .select('*');
 
-        return student;
+        return student[0];
     }
 }
 

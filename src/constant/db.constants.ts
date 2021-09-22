@@ -5,4 +5,5 @@ export abstract class DbConstants {
     static readonly SCHEDULE_TABLE = 'schedule';
     static readonly TEACHER_SUBJECTS = 'teachers_subject';
     static readonly STUDENT_SUBJECTS = 'students_subject';
+    static readonly ATTENDANCE_TABLE = 'attendance';
 }

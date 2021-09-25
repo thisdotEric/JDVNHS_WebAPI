@@ -3,6 +3,7 @@ import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import IStudentRepository from './IStudentRepository';
 import { DbConstants } from '../constant/db.constants';
+import StudentNotFoundException from '../exceptions/StudentNotFoundException';
 
 export interface IStudent {
     readonly LRN: string;
@@ -27,6 +28,9 @@ class StudentRepository implements IStudentRepository {
             .getDbInstance()(DbConstants.STUDENT_TABLE)
             .where({ LRN: lrn })
             .select('*');
+
+        if (!student[0])
+            throw new StudentNotFoundException();
 
         return student[0];
     }

@@ -1,17 +1,22 @@
 import * as Knex from 'knex';
 import { DbConstants } from '../../../constant/db.constants';
+import { StudentConstants } from '../../../constant/constants';
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(DbConstants.STUDENT_TABLE, table => {
-        table.string('LRN', 12).notNullable().unique().primary();
-        table.string('first_name').notNullable();
-        table.string('middle_name').notNullable();
-        table.string('last_name').notNullable();
-        table.enum('gender', ['male', 'female']).defaultTo('male');
-        table.string('contact_number', 11).notNullable();
+        table
+            .string('LRN', StudentConstants.LRN_LENGTH)
+            .notNullable()
+            .unique()
+            .primary();
         table.date('birth_date').notNullable();
         table.string('address');
         table.enum('grade_level', [7, 8, 9, 10]).defaultTo(10);
+
+        table
+            .foreign('LRN')
+            .references('user_id')
+            .inTable(DbConstants.USERS_TABLE);
     });
 }
 

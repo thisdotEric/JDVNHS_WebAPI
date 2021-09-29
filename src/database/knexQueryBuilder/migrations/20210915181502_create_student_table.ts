@@ -1,5 +1,5 @@
 import * as Knex from 'knex';
-import { DbConstants } from '../../../constant/db.constants';
+import { DbConstants, ReferenceOptions } from '../../../constant/db.constants';
 import { StudentConstants } from '../../../constant/constants';
 
 export async function up(knex: Knex): Promise<void> {
@@ -16,7 +16,8 @@ export async function up(knex: Knex): Promise<void> {
         table
             .foreign('LRN')
             .references('user_id')
-            .inTable(DbConstants.USERS_TABLE);
+            .inTable(DbConstants.USERS_TABLE)
+            .onDelete(ReferenceOptions.CASCADE);
     });
 }
 

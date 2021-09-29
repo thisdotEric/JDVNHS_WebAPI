@@ -1,5 +1,5 @@
 import * as Knex from 'knex';
-import { DbConstants } from '../../../constant/db.constants';
+import { DbConstants, ReferenceOptions } from '../../../constant/db.constants';
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(DbConstants.ATTENDANCE_TABLE, table => {
@@ -14,11 +14,13 @@ export async function up(knex: Knex): Promise<void> {
         table
             .foreign('subject_id')
             .references('subject_id')
-            .inTable(DbConstants.SUBJECT_TABLE);
+            .inTable(DbConstants.SUBJECT_TABLE)
+            .onDelete(ReferenceOptions.CASCADE);
         table
             .foreign('LRN')
             .references('LRN')
-            .inTable(DbConstants.STUDENT_TABLE);
+            .inTable(DbConstants.STUDENT_TABLE)
+            .onDelete(ReferenceOptions.CASCADE);
     });
 }
 

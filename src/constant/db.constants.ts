@@ -8,3 +8,7 @@ export abstract class DbConstants {
     static readonly ATTENDANCE_TABLE = 'attendance';
     static readonly USERS_TABLE = 'users';
 }
+
+export abstract class ReferenceOptions {
+    static readonly CASCADE = 'CASCADE';
+}

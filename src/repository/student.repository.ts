@@ -37,6 +37,7 @@ class StudentRepository implements IStudentRepository {
                 'gender',
                 'contact_number',
                 'gender',
+                'birth_date',
                 'address',
                 'grade_level'
             );

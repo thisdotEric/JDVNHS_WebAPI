@@ -6,9 +6,11 @@ import knex from 'knex';
 
 // service class
 import StudentService from '../services/student.service';
+import SubjectService from '../services/subject.service';
 
 // repositories
 import StudentRepository from '../repository/student.repository';
+import SubjectRepository from '../repository/subject.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -22,8 +24,12 @@ container
     .inSingletonScope();
 
 container.bind<StudentService>(TYPES.StudentService).to(StudentService);
+container.bind<SubjectService>(TYPES.SubjectService).to(SubjectService);
 container
     .bind<IStudentRepository>(TYPES.StudentRepository)
     .to(StudentRepository);
+container
+    .bind<SubjectRepository>(TYPES.SubjectRepository)
+    .to(SubjectRepository);
 
 export default container;

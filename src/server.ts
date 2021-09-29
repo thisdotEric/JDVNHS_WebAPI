@@ -8,6 +8,7 @@ import exceptionsMiddleware from './middleware/exceptions.middleware';
 // Controllers
 import './controller/home.controller';
 import './controller/student.controller';
+import './controller/subject.controller';
 
 const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 

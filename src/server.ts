@@ -14,10 +14,12 @@ import './controller/subject.controller';
 
 const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 
+// Catch all exceptions thrown from any part of the application
 server.setErrorConfig(app => {
     app.use(exceptionsMiddleware);
 });
 
+// Add all the necessary middlewares 
 server.setConfig(app => {
     app.use(cors);
     app.use(express.json());

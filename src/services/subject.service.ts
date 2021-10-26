@@ -3,12 +3,15 @@ import TYPES from '../ioc/binding-types';
 import SubjectRepository, {
     EnrolledStudents,
 } from '../repository/subject.repository';
+import AttendanceRepository from '../repository/attendance.repository';
 
 @injectable()
 class SubjectService {
     constructor(
         @inject(TYPES.SubjectRepository)
-        private readonly subjectRepo: SubjectRepository
+        private readonly subjectRepo: SubjectRepository,
+        @inject(TYPES.AttendanceRepository)
+        private readonly attendanceRepo: AttendanceRepository
     ) {}
 
     async getEnrolledStudents(
@@ -19,6 +22,13 @@ class SubjectService {
 
     async getSubjectTeacher(subjectName: string) {
         return await this.subjectRepo.getSubjectTeacher(subjectName);
+    }
+
+    async getStudentAttendanceByMonth(month: string, LRN: string) {
+        return await this.attendanceRepo.getStudentAttendanceByMonth(
+            month,
+            LRN
+        );
     }
 }
 

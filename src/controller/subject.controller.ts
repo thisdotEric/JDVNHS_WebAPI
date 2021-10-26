@@ -45,6 +45,21 @@ class SubjectController extends BaseHttpController {
         const response = JsonResponse.success(subjectTeacher, 200);
         res.status(response.statusCode).send(response);
     }
+
+    @httpGet('/:subject_name/attendance')
+    async getStudentAttendanceByMonth(
+        @request() req: Request,
+        @response() res: Response
+    ) {
+        const month = `${req.query.month}`;
+        const LRN = `${req.query.LRN}`;
+
+        const attendance =
+            await this.subjectService.getStudentAttendanceByMonth(month, LRN);
+
+        const response = JsonResponse.success(attendance, 200);
+        res.status(response.statusCode).send(response);
+    }
 }
 
 export default SubjectController;

@@ -1,5 +1,6 @@
+if (process.env.NODE_ENV != 'production') require('dotenv').config();
+
 import 'reflect-metadata';
-import 'dotenv/config';
 import container from './ioc/ioc-container';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import express from 'express';

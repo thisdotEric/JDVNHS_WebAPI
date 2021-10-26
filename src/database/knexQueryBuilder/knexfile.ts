@@ -28,9 +28,8 @@ const configs: IKnexConfig = {
     production: {
         client: 'postgresql',
         connection: {
-            database: 'jdvnhs_db',
-            user: 'username',
-            password: 'password',
+            connectionString: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: false },
         },
         pool: {
             min: 2,

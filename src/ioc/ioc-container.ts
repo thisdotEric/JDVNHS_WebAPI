@@ -11,6 +11,7 @@ import SubjectService from '../services/subject.service';
 // repositories
 import StudentRepository from '../repository/student.repository';
 import SubjectRepository from '../repository/subject.repository';
+import AttendanceRepository from '../repository/attendance.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -31,5 +32,8 @@ container
 container
     .bind<SubjectRepository>(TYPES.SubjectRepository)
     .to(SubjectRepository);
+container
+    .bind<AttendanceRepository>(TYPES.AttendanceRepository)
+    .to(AttendanceRepository);
 
 export default container;

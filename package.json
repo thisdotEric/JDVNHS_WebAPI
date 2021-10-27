@@ -24,7 +24,7 @@
         "prod-knex:seed:run": "knex seed:run --knexfile dist/src/database/knexQueryBuilder/knexfile.js",
         "prod-knex:migrate:rollback_all": "knex migrate:rollback --all --knexfile dist/src/database/knexQueryBuilder/knexfile.js",
         "prod-knex:migrate:latest": "knex migrate:latest --knexfile dist/src/database/knexQueryBuilder/knexfile.js",
-        "production-dbMigrations": "npm run prod-knex:migrate:rollback_all && npm run prod-knex:migrate:latest && prod-knex:seed:run"        
+        "production-dbMigrations": "npm run prod-knex:migrate:rollback_all && npm run prod-knex:migrate:latest && npm run prod-knex:seed:run"        
   	},
     "keywords": [],
     "author": "John Eric Siguenza",

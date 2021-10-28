@@ -7,6 +7,7 @@ export abstract class DbConstants {
     static readonly STUDENT_SUBJECTS = 'students_subject';
     static readonly ATTENDANCE_TABLE = 'attendance';
     static readonly USERS_TABLE = 'users';
+    static readonly PASSWORD_TABLE = 'password';
 }
 
 export abstract class ReferenceOptions {

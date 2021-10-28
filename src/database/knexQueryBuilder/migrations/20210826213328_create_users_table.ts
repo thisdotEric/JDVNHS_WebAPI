@@ -10,7 +10,6 @@ export async function up(knex: Knex): Promise<void> {
         table.enum('gender', ['male', 'female']).defaultTo('male');
         table.string('contact_number').notNullable();
         table.enum('role', ['student', 'teacher']).defaultTo('student');
-        table.string('password').notNullable();
     });
 }
 

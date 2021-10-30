@@ -12,6 +12,7 @@ import AuthenticationService from '../services/authentication.service';
 // repositories
 import StudentRepository from '../repository/student.repository';
 import SubjectRepository from '../repository/subject.repository';
+import AttendanceRepository from '../repository/attendance.repository';
 import AuthenticationRepository from '../repository/authentication.repository';
 
 //interfaces
@@ -28,16 +29,16 @@ container
 container.bind<StudentService>(TYPES.StudentService).to(StudentService);
 container.bind<SubjectService>(TYPES.SubjectService).to(SubjectService);
 container
+    .bind<IStudentRepository>(TYPES.StudentRepository)
+    .to(StudentRepository);
+container
+    .bind<AttendanceRepository>(TYPES.AttendanceRepository)
+    .to(AttendanceRepository);
+container
     .bind<AuthenticationService>(TYPES.AuthService)
     .to(AuthenticationService);
 container
     .bind<AuthenticationRepository>(TYPES.AuthRepository)
     .to(AuthenticationRepository);
-container
-    .bind<IStudentRepository>(TYPES.StudentRepository)
-    .to(StudentRepository);
-container
-    .bind<SubjectRepository>(TYPES.SubjectRepository)
-    .to(SubjectRepository);
 
 export default container;

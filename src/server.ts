@@ -11,6 +11,7 @@ import cors from './utils/cors';
 import './controller/home.controller';
 import './controller/student.controller';
 import './controller/subject.controller';
+import './controller/authentication.controller';
 
 const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 

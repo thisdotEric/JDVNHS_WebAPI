@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import JsonResponse from '../utils/JsonResponse';
-import StudentNotFoundException from '../exceptions/StudentNotFoundException';
+import {
+    StudentNotFoundException,
+    UserNotFoundException,
+    PasswordIncorrectException,
+} from '../exceptions/';
 
 export default function exceptionsMiddleware(
     err: Error,
@@ -10,7 +14,11 @@ export default function exceptionsMiddleware(
 ) {
     let response: JsonResponse;
 
-    if (err instanceof StudentNotFoundException) {
+    if (
+        err instanceof StudentNotFoundException ||
+        err instanceof PasswordIncorrectException ||
+        err instanceof UserNotFoundException
+    ) {
         response = JsonResponse.failed(err.message, err.statusCode);
     } else {
         response = JsonResponse.failed(err.message);

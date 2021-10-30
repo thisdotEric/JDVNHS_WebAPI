@@ -10,7 +10,7 @@ export async function seed(knex: Knex): Promise<void> {
         {
             attendance_id: 1,
             subject_id: 'MMW1',
-            LRN: '123456789123',
+            LRN: '123456789120',
             attendance_stat: 'present',
         },
     ]);

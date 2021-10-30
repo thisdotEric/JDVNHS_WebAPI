@@ -7,11 +7,13 @@ import knex from 'knex';
 // service class
 import StudentService from '../services/student.service';
 import SubjectService from '../services/subject.service';
+import AuthenticationService from '../services/authentication.service';
 
 // repositories
 import StudentRepository from '../repository/student.repository';
 import SubjectRepository from '../repository/subject.repository';
 import AttendanceRepository from '../repository/attendance.repository';
+import AuthenticationRepository from '../repository/authentication.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -30,10 +32,21 @@ container
     .bind<IStudentRepository>(TYPES.StudentRepository)
     .to(StudentRepository);
 container
+<<<<<<< HEAD
     .bind<SubjectRepository>(TYPES.SubjectRepository)
     .to(SubjectRepository);
 container
     .bind<AttendanceRepository>(TYPES.AttendanceRepository)
     .to(AttendanceRepository);
+=======
+    .bind<AttendanceRepository>(TYPES.AttendanceRepository)
+    .to(AttendanceRepository);
+container
+    .bind<AuthenticationService>(TYPES.AuthService)
+    .to(AuthenticationService);
+container
+    .bind<AuthenticationRepository>(TYPES.AuthRepository)
+    .to(AuthenticationRepository);
+>>>>>>> authentication
 
 export default container;

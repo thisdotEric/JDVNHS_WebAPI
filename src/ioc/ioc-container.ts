@@ -32,13 +32,9 @@ container
     .bind<IStudentRepository>(TYPES.StudentRepository)
     .to(StudentRepository);
 container
-<<<<<<< HEAD
     .bind<SubjectRepository>(TYPES.SubjectRepository)
     .to(SubjectRepository);
 container
-    .bind<AttendanceRepository>(TYPES.AttendanceRepository)
-    .to(AttendanceRepository);
-=======
     .bind<AttendanceRepository>(TYPES.AttendanceRepository)
     .to(AttendanceRepository);
 container
@@ -47,6 +43,5 @@ container
 container
     .bind<AuthenticationRepository>(TYPES.AuthRepository)
     .to(AuthenticationRepository);
->>>>>>> authentication
 
 export default container;

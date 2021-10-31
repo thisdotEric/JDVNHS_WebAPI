@@ -3,7 +3,6 @@ import { DbConstants } from '../../../constant/db.constants';
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(DbConstants.TEACHER_SUBJECTS, table => {
-        table.increments('teachers_subject_id').defaultTo(0);
         table.string('teacher_id').notNullable();
         table.string('subject_id').notNullable();
         table

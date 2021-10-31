@@ -20,7 +20,7 @@ server.setErrorConfig(app => {
     app.use(exceptionsMiddleware);
 });
 
-// Add all the necessary middlewares 
+// Add all the necessary middlewares
 server.setConfig(app => {
     app.use(cors);
     app.use(express.json());

@@ -3,6 +3,7 @@ import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
 import { IStudent } from './student.repository';
+import { SubjectNotFoundException } from '../exceptions';
 
 export type EnrolledStudents = Pick<
     IStudent,
@@ -37,7 +38,7 @@ class SubjectRepository {
     }
 
     async getSubjectTeacher(subjectName: string) {
-        const subjectTeachers = await this.db
+        const subjectTeacher = await this.db
             .getDbInstance()(DbConstants.USERS_TABLE)
             .join(
                 DbConstants.TEACHER_SUBJECTS,
@@ -45,14 +46,30 @@ class SubjectRepository {
                 '=',
                 `${DbConstants.TEACHER_SUBJECTS}.teacher_id`
             )
+            .join(
+                DbConstants.TEACHER_TABLE,
+                `${DbConstants.USERS_TABLE}.user_id`,
+                '=',
+                `${DbConstants.TEACHER_TABLE}.teacher_id`
+            )
             .where(
                 `${DbConstants.TEACHER_SUBJECTS}.subject_id`,
                 'like',
                 subjectName
             )
-            .select('user_id', 'first_name', 'middle_name', 'last_name');
+            .select(
+                'user_id',
+                'first_name',
+                'middle_name',
+                'last_name',
+                'contact_number',
+                `${DbConstants.TEACHER_TABLE}.email_address`
+            )
+            .first();
 
-        return subjectTeachers[0];
+        if (!subjectTeacher) throw new SubjectNotFoundException();
+
+        return subjectTeacher;
     }
 }
 

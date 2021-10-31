@@ -6,6 +6,7 @@ import {
     PasswordIncorrectException,
     TeacherNotFoundException,
     SubjectNotFoundException,
+    IncompleteRequestBodyException,
 } from '../exceptions/';
 
 export default function exceptionsMiddleware(
@@ -21,6 +22,7 @@ export default function exceptionsMiddleware(
         err instanceof PasswordIncorrectException ||
         err instanceof TeacherNotFoundException ||
         err instanceof SubjectNotFoundException ||
+        err instanceof IncompleteRequestBodyException ||
         err instanceof UserNotFoundException
     ) {
         response = JsonResponse.failed(err.message, err.statusCode);

@@ -9,6 +9,7 @@ import { Request, Response } from 'express';
 import PasswordUtil from '../algorithms/password/password';
 import TYPES from '../ioc/binding-types';
 import AuthenticationService from '../services/authentication.service';
+import { IncompleteRequestBodyException } from '../exceptions';
 
 @controller('/auth')
 export class AuthenticationController {
@@ -20,6 +21,9 @@ export class AuthenticationController {
     @httpGet('/login')
     async index(@request() req: Request, @response() res: Response) {
         const { id, password } = req.body;
+
+        if (!id || !password) throw new IncompleteRequestBodyException();
+
         const authCredentials = await this.authService.login(id, password);
 
         res.status(200).send(authCredentials);

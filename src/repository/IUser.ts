@@ -1,3 +1,3 @@
 export default interface IUser {
-    readonly user_id: string;
+  readonly user_id: string;
 }

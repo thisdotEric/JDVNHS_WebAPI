@@ -1,3 +1,3 @@
 export abstract class StudentConstants {
-    static readonly LRN_LENGTH = 12;
+  static readonly LRN_LENGTH = 12;
 }

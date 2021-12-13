@@ -5,18 +5,16 @@ import { DbConstants } from '../constant/db.constants';
 
 @injectable()
 class AttendanceRepository {
-    constructor(
-        @inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder
-    ) {}
+  constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
-    async getStudentAttendanceByMonth(month: string, LRN: string) {
-        const studentAttendance: any[] = await this.db
-            .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
-            .where({ LRN: LRN })
-            .select('subject_id', 'attendance_stat');
+  async getStudentAttendanceByMonth(month: string, LRN: string) {
+    const studentAttendance: any[] = await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .where({ LRN: LRN })
+      .select('subject_id', 'attendance_stat');
 
-        return studentAttendance;
-    }
+    return studentAttendance;
+  }
 }
 
 export default AttendanceRepository;

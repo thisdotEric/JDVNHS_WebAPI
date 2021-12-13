@@ -1,8 +1,8 @@
 import {
-    controller,
-    httpGet,
-    request,
-    response,
+  controller,
+  httpGet,
+  request,
+  response,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { Request, Response } from 'express';
@@ -13,19 +13,19 @@ import { IncompleteRequestBodyException } from '../exceptions';
 
 @controller('/auth')
 export class AuthenticationController {
-    constructor(
-        @inject(TYPES.AuthService)
-        private readonly authService: AuthenticationService
-    ) {}
+  constructor(
+    @inject(TYPES.AuthService)
+    private readonly authService: AuthenticationService
+  ) {}
 
-    @httpGet('/login')
-    async index(@request() req: Request, @response() res: Response) {
-        const { id, password } = req.body;
+  @httpGet('/login')
+  async index(@request() req: Request, @response() res: Response) {
+    const { id, password } = req.body;
 
-        if (!id || !password) throw new IncompleteRequestBodyException();
+    if (!id || !password) throw new IncompleteRequestBodyException();
 
-        const authCredentials = await this.authService.login(id, password);
+    const authCredentials = await this.authService.login(id, password);
 
-        res.status(200).send(authCredentials);
-    }
+    res.status(200).send(authCredentials);
+  }
 }

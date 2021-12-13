@@ -5,15 +5,15 @@ import { injectable } from 'inversify';
 
 @injectable()
 class KnexQueryBuilder implements IDatabase<knex> {
-    private readonly db: knex;
+  private readonly db: knex;
 
-    constructor() {
-        this.db = knex(config[`${process.env.NODE_ENV}`]);
-    }
+  constructor() {
+    this.db = knex(config[`${process.env.NODE_ENV}`]);
+  }
 
-    public getDbInstance(): knex {
-        return this.db;
-    }
+  public getDbInstance(): knex {
+    return this.db;
+  }
 }
 
 export default KnexQueryBuilder;

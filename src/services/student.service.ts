@@ -6,19 +6,19 @@ import { StudentConstants } from '../constant/constants';
 
 @injectable()
 class StudentService {
-    constructor(
-        @inject(TYPES.StudentRepository)
-        private readonly studentRepo: IStudentRepository
-    ) {}
+  constructor(
+    @inject(TYPES.StudentRepository)
+    private readonly studentRepo: IStudentRepository
+  ) {}
 
-    async getStudentByLRN(lrn: string): Promise<IStudent> {
-        if (lrn.length != StudentConstants.LRN_LENGTH)
-            throw new Error('LRN must have length of 12');
+  async getStudentByLRN(lrn: string): Promise<IStudent> {
+    if (lrn.length != StudentConstants.LRN_LENGTH)
+      throw new Error('LRN must have length of 12');
 
-        const student: IStudent = await this.studentRepo.getStudentByLRN(lrn);
+    const student: IStudent = await this.studentRepo.getStudentByLRN(lrn);
 
-        return student;
-    }
+    return student;
+  }
 }
 
 export default StudentService;

@@ -22,26 +22,26 @@ const container = new Container();
 
 // bindings
 container
-    .bind<IDatabase<knex>>(TYPES.IDatabase)
-    .to(KnexQueryBuilder)
-    .inSingletonScope();
+  .bind<IDatabase<knex>>(TYPES.IDatabase)
+  .to(KnexQueryBuilder)
+  .inSingletonScope();
 
 container.bind<StudentService>(TYPES.StudentService).to(StudentService);
 container.bind<SubjectService>(TYPES.SubjectService).to(SubjectService);
 container
-    .bind<IStudentRepository>(TYPES.StudentRepository)
-    .to(StudentRepository);
+  .bind<IStudentRepository>(TYPES.StudentRepository)
+  .to(StudentRepository);
 container
-    .bind<SubjectRepository>(TYPES.SubjectRepository)
-    .to(SubjectRepository);
+  .bind<SubjectRepository>(TYPES.SubjectRepository)
+  .to(SubjectRepository);
 container
-    .bind<AttendanceRepository>(TYPES.AttendanceRepository)
-    .to(AttendanceRepository);
+  .bind<AttendanceRepository>(TYPES.AttendanceRepository)
+  .to(AttendanceRepository);
 container
-    .bind<AuthenticationService>(TYPES.AuthService)
-    .to(AuthenticationService);
+  .bind<AuthenticationService>(TYPES.AuthService)
+  .to(AuthenticationService);
 container
-    .bind<AuthenticationRepository>(TYPES.AuthRepository)
-    .to(AuthenticationRepository);
+  .bind<AuthenticationRepository>(TYPES.AuthRepository)
+  .to(AuthenticationRepository);
 
 export default container;

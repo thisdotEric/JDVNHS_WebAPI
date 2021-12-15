@@ -1,6 +1,7 @@
 import {
   controller,
   httpGet,
+  httpDelete,
   BaseHttpController,
   request,
   response,
@@ -57,6 +58,32 @@ class SubjectController extends BaseHttpController {
     );
 
     const response = JsonResponse.success(attendance, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name')
+  async removeStudentFromClass(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject = `${req.params.subject_name}`;
+    const lrn = `${req.query.lrn}`;
+
+    const deleted = await this.subjectService.removeStudentFromClass(
+      subject,
+      lrn
+    );
+
+    let data = `Succesfully removed from class ${subject}`;
+    let statusCode = 200;
+
+    // Student not found
+    if (!deleted) {
+      data = `Student not found in class ${subject}`;
+      statusCode = 404;
+    }
+
+    const response = JsonResponse.success(data, statusCode);
     res.status(response.statusCode).send(response);
   }
 }

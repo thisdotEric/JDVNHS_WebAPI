@@ -59,6 +59,19 @@ class SubjectRepository {
 
     return subjectTeacher;
   }
+
+  async removeStudentFromClass(
+    subjectName: string,
+    lrn: string
+  ): Promise<boolean> {
+    const LRN = await this.db
+      .getDbInstance()(DbConstants.STUDENT_SUBJECTS)
+      .where('LRN', lrn)
+      .andWhere('subject_id', subjectName)
+      .del();
+
+    return LRN == 1;
+  }
 }
 
 export default SubjectRepository;

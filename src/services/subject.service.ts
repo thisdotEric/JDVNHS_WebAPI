@@ -25,6 +25,10 @@ class SubjectService {
   async getStudentAttendanceByMonth(month: string, LRN: string) {
     return await this.attendanceRepo.getStudentAttendanceByMonth(month, LRN);
   }
+
+  async removeStudentFromClass(subjectName: string, LRN: string) {
+    return this.subjectRepo.removeStudentFromClass(subjectName, LRN);
+  }
 }
 
 export default SubjectService;

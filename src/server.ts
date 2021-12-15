@@ -17,13 +17,13 @@ const server = new InversifyExpressServer(container, null, { rootPath: '/v1' });
 
 // Catch all exceptions thrown from any part of the application
 server.setErrorConfig(app => {
-    app.use(exceptionsMiddleware);
+  app.use(exceptionsMiddleware);
 });
 
 // Add all the necessary middlewares
 server.setConfig(app => {
-    app.use(cors);
-    app.use(express.json());
+  app.use(cors);
+  app.use(express.json());
 });
 
 const app = server.build();
@@ -31,5 +31,5 @@ const app = server.build();
 const port = parseInt(<string>process.env.PORT, 10) || 4000;
 
 export default app.listen(port, () => {
-    console.log(`Server running in port ${port}`);
+  console.log(`Server running in port ${port}`);
 });

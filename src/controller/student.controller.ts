@@ -1,9 +1,9 @@
 import {
-    controller,
-    httpGet,
-    BaseHttpController,
-    request,
-    response,
+  controller,
+  httpGet,
+  BaseHttpController,
+  request,
+  response,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { Request, Response } from 'express';
@@ -13,22 +13,20 @@ import TYPES from '../ioc/binding-types';
 
 @controller('/student')
 class StudentController extends BaseHttpController {
-    constructor(
-        @inject(TYPES.StudentService)
-        private readonly studentService: StudentService
-    ) {
-        super();
-    }
+  constructor(
+    @inject(TYPES.StudentService)
+    private readonly studentService: StudentService
+  ) {
+    super();
+  }
 
-    @httpGet('/:lrn')
-    async all(@request() req: Request, @response() res: Response) {
-        const student = await this.studentService.getStudentByLRN(
-            req.params.lrn
-        );
+  @httpGet('/:lrn')
+  async all(@request() req: Request, @response() res: Response) {
+    const student = await this.studentService.getStudentByLRN(req.params.lrn);
 
-        const response = JsonResponse.success(student, 200);
-        res.status(response.statusCode).send(response);
-    }
+    const response = JsonResponse.success(student, 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default StudentController;

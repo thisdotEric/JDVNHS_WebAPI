@@ -21,7 +21,7 @@ npm install
 ```
 
 6.  Install PostgreSQL Database. Refer to this [video](https://m.youtube.com/watch?v=BLH3s5eTL4Y&t=438s). Take note of your login credentials.
-    -   Create database **jdvnhs_db**
+    - Create database **jdvnhs_db**
 7.  Navigate to the root of the project and create a **.env** file. Follow the format of the _.env.example file_ and fill up the database credentials.
 8.  Run the project. Open VS Code terminal.
 

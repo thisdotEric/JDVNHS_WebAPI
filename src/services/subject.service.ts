@@ -4,6 +4,7 @@ import SubjectRepository, {
   EnrolledStudents,
 } from '../repository/subject.repository';
 import AttendanceRepository from '../repository/attendance.repository';
+import AssessmentScoresRepository from '../repository/scores.repository';
 
 @injectable()
 class SubjectService {
@@ -11,7 +12,9 @@ class SubjectService {
     @inject(TYPES.SubjectRepository)
     private readonly subjectRepo: SubjectRepository,
     @inject(TYPES.AttendanceRepository)
-    private readonly attendanceRepo: AttendanceRepository
+    private readonly attendanceRepo: AttendanceRepository,
+    @inject(TYPES.AssessmentScoresRepository)
+    private readonly scoresRepo: AssessmentScoresRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -28,6 +31,10 @@ class SubjectService {
 
   async removeStudentFromClass(subjectName: string, LRN: string) {
     return this.subjectRepo.removeStudentFromClass(subjectName, LRN);
+  }
+
+  async getScoresByAssessmentId(assessment_id: number) {
+    return this.scoresRepo.getScoresByAssessmentId(assessment_id);
   }
 }
 

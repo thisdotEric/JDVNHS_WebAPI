@@ -14,6 +14,7 @@ import StudentRepository from '../repository/student.repository';
 import SubjectRepository from '../repository/subject.repository';
 import AttendanceRepository from '../repository/attendance.repository';
 import AuthenticationRepository from '../repository/authentication.repository';
+import AssessmentScoresRepository from '../repository/scores.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -43,5 +44,8 @@ container
 container
   .bind<AuthenticationRepository>(TYPES.AuthRepository)
   .to(AuthenticationRepository);
+container
+  .bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository)
+  .to(AssessmentScoresRepository);
 
 export default container;

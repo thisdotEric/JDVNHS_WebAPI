@@ -6,6 +6,7 @@ import PasswordUtil from '../../../algorithms/password/password';
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(DbConstants.STUDENT_TABLE).del();
+  await knex(DbConstants.TEACHER_SUBJECTS).del();
   await knex(DbConstants.USERS_TABLE).del();
 
   const userSeedData: any[] = [];

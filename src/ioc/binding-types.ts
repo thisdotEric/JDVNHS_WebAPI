@@ -7,6 +7,7 @@ const types = {
   SubjectService: Symbol.for('SubjectService'),
   AttendanceRepository: Symbol.for('AttendanceRepository'),
   AuthService: Symbol.for('AuthenticationService'),
+  AssessmentScoresRepository: Symbol.for('AssessmentScoresRepository'),
 };
 
 export default types;

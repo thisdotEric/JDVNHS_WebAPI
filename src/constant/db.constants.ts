@@ -8,6 +8,10 @@ export abstract class DbConstants {
   static readonly ATTENDANCE_TABLE = 'attendance';
   static readonly USERS_TABLE = 'users';
   static readonly PASSWORD_TABLE = 'password';
+  static readonly SCORES_TABLE = 'scores';
+  static readonly ASSESSMENT_TABLE = 'assessments';
+  static readonly LECTURE_TABLE = 'lectures';
+  static readonly LESSONS_TABLE = 'lessons';
 }
 
 export abstract class ReferenceOptions {

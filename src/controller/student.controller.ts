@@ -1,6 +1,7 @@
 import {
   controller,
   httpGet,
+  httpPut,
   BaseHttpController,
   request,
   response,
@@ -25,6 +26,20 @@ class StudentController extends BaseHttpController {
     const student = await this.studentService.getStudentByLRN(req.params.lrn);
 
     const response = JsonResponse.success(student, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPut('/')
+  async updateStudentInformation(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const { updatedStudent } = req.body;
+
+    console.log(updatedStudent);
+    await this.studentService.updateStudentInformation(updatedStudent);
+
+    const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
 }

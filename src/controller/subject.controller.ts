@@ -45,13 +45,13 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet('/:subject_name/attendance/:subject_id')
+  @httpGet('/:subject_name/attendance/:lecture_id')
   async getStudentAttendanceByMonth(
     @request() req: Request,
     @response() res: Response
   ) {
     const subject_id = req.params.subject_name;
-    const lecture_id = parseInt(<string>req.params.subject_id, 10);
+    const lecture_id = parseInt(<string>req.params.lecture_id, 10);
 
     const attendance = await this.subjectService.getAttendanceByLectureId(
       subject_id,
@@ -75,13 +75,13 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpDelete('/:subject_name')
+  @httpDelete('/:subject_name/students/:lrn')
   async removeStudentFromClass(
     @request() req: Request,
     @response() res: Response
   ) {
     const subject = `${req.params.subject_name}`;
-    const lrn = `${req.query.lrn}`;
+    const lrn = `${req.params.lrn}`;
 
     const deleted = await this.subjectService.removeStudentFromClass(
       subject,

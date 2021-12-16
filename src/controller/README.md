@@ -14,6 +14,42 @@
         <td>Home route of the WebAPI. Returns <em property='italic'>"JDVNHS WebAPI"</em></td>
         <td>None</td>
     </tr>
+     <tr>
+        <td colspan="3"  align='center'>Student Routes ( /student ) </td>
+    </tr>
+     <tr>
+        <td>GET /:lrn </td>
+        <td> Return student information based on the given LRN </td>
+        <td>
+            <ul>
+                <li><strong>:lrn </strong> = Learner Reference Number </li>
+            </ul> 
+        </td>
+    </tr>
+     <tr>
+        <td>PUT /</td>
+        <td> Update student information </td>
+        <td>
+            <ul>
+                <li><strong>request body </strong> = Updated Student information ( example: <code>{
+                      "updatedStudentInformation":
+                        {
+                          "updatedStudent": {
+                            "user_id": "123456789120",
+                            "first_name": "Mario",
+                            "middle_name": "Super",
+                            "last_name": "SuperSuper",
+                            "gender": "male",
+                            "contact_number": "09323658741",
+                            "address": "Naga City",
+                            "birth_date": "2021-12-05"
+                          }
+                        }
+                    } </code> )
+                </li>
+            </ul> 
+        </td>
+    </tr>
     <tr>
         <td colspan="3"  align='center'>Subject Routes ( /subject ) </td>
     </tr>

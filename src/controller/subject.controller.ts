@@ -44,17 +44,17 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet('/:subject_name/attendance')
+  @httpGet('/:subject_name/attendance/:subject_id')
   async getStudentAttendanceByMonth(
     @request() req: Request,
     @response() res: Response
   ) {
-    const month = `${req.query.month}`;
-    const LRN = `${req.query.LRN}`;
+    const subject_id = req.params.subject_name;
+    const lecture_id = parseInt(<string>req.params.subject_id, 10)
 
-    const attendance = await this.subjectService.getStudentAttendanceByMonth(
-      month,
-      LRN
+    const attendance = await this.subjectService.getAttendanceByLectureId(
+      subject_id,
+      lecture_id
     );
 
     const response = JsonResponse.success(attendance, 200);

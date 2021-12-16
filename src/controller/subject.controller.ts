@@ -2,6 +2,7 @@ import {
   controller,
   httpGet,
   httpDelete,
+  httpPost,
   BaseHttpController,
   request,
   response,
@@ -50,7 +51,7 @@ class SubjectController extends BaseHttpController {
     @response() res: Response
   ) {
     const subject_id = req.params.subject_name;
-    const lecture_id = parseInt(<string>req.params.subject_id, 10)
+    const lecture_id = parseInt(<string>req.params.subject_id, 10);
 
     const attendance = await this.subjectService.getAttendanceByLectureId(
       subject_id,
@@ -58,6 +59,19 @@ class SubjectController extends BaseHttpController {
     );
 
     const response = JsonResponse.success(attendance, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/attendance')
+  async addNewAttendanceRecord(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const { attendance } = req.body;
+
+    await this.subjectService.addNewAttendanceRecord(attendance);
+
+    const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
 

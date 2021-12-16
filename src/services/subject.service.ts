@@ -5,6 +5,7 @@ import SubjectRepository, {
 } from '../repository/subject.repository';
 import AttendanceRepository, {
   ATTENDANCE_STATUS,
+  Attendance,
 } from '../repository/attendance.repository';
 import AssessmentScoresRepository from '../repository/scores.repository';
 
@@ -41,6 +42,10 @@ class SubjectService {
 
   async getAttendanceByLectureId(subject_id: string, lecture_id: number) {
     return this.attendanceRepo.getAttendanceByLectureId(subject_id, lecture_id);
+  }
+
+  async addNewAttendanceRecord(attendancelist: Attendance[]) {
+    return this.attendanceRepo.addNewAttendanceRecord(attendancelist);
   }
 }
 

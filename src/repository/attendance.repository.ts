@@ -5,9 +5,21 @@ import { DbConstants } from '../constant/db.constants';
 
 export type ATTENDANCE_STATUS = 'present' | 'absent' | 'excused';
 
+export interface Attendance {
+  lecture_id: number;
+  LRN: string;
+  status: ATTENDANCE_STATUS;
+}
+
 @injectable()
 class AttendanceRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
+
+  async addNewAttendanceRecord(attendancelist: Attendance[]) {
+    await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .insert(attendancelist);
+  }
 
   async getAttendanceByLectureId(subject_id: string, lecture_id: number) {
     const date = await this.db

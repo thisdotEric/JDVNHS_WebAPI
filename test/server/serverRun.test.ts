@@ -5,7 +5,7 @@ import createServer from '../../src/createServer';
 describe('Server Test', () => {
   let app: Express.Application;
 
-  beforeEach(async () => {
+  before(async () => {
     app = await createServer();
   });
 

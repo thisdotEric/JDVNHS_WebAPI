@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import checkUserType from '../../src/algorithms/user/user-checker';
 
 describe('user id checker', () => {
@@ -7,7 +6,7 @@ describe('user id checker', () => {
 
     const actual = checkUserType(studentLRN);
     const expected = 'student';
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 
   it("should return 'teacher' when valid teacher id is passed", () => {
@@ -15,7 +14,7 @@ describe('user id checker', () => {
 
     const actual = checkUserType(teacherID);
     const expected = 'teacher';
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 
   it("should return 'invalid' when invalid LRN or teacher id is passed", () => {
@@ -23,6 +22,6 @@ describe('user id checker', () => {
 
     const actual = checkUserType(user_id);
     const expected = 'invalid';
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 });

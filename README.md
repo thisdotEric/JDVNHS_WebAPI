@@ -14,10 +14,10 @@ Search for Git Clone then paste:
 https://github.com/thisdotEric/JDVNHS_WebAPI.git
 ```
 
-5. Open VS Code terminal and install all dependencies in package.json.
+5. Open VS Code terminal and install all dependencies in package.json. *(Make sure to have yarn installed in your system)*
 
 ```
-npm install
+yarn install
 ```
 
 6.  Install PostgreSQL Database. Refer to this [video](https://m.youtube.com/watch?v=BLH3s5eTL4Y&t=438s). Take note of your login credentials.
@@ -26,7 +26,7 @@ npm install
 8.  Run the project. Open VS Code terminal.
 
 ```
-npm run dev
+yarn dev
 ```
 
 9. Open Chrome and visit **http://localhost:PORT/v1/**. Change the PORT based on **.env** file, defaults to 4000.

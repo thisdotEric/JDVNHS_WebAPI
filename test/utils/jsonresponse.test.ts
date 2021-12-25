@@ -1,5 +1,4 @@
 import JsonResponse from '../../src/utils/JsonResponse';
-import { expect } from 'chai';
 
 describe('Json Response Object', () => {
   it('should return a valid object JsonResponse object when success function is called', () => {
@@ -11,7 +10,7 @@ describe('Json Response Object', () => {
       error: null,
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should return a Json Response object with empty message when success function is called and message parameter is omitted', () => {
@@ -23,7 +22,7 @@ describe('Json Response Object', () => {
       error: null,
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should return a Json Response object with null data when failed function is called', () => {
@@ -35,6 +34,6 @@ describe('Json Response Object', () => {
       error: 'Error Message',
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).toEqual(expected);
   });
 });

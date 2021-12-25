@@ -1,4 +1,4 @@
-*Example call to the WEB API:* **localhost:4000/v1/subject/PreCal/students**
+_Example call to the WEB API:_ **localhost:4000/v1/subject/PreCal/students**
 
 <table>
     <tr>

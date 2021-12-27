@@ -7,24 +7,28 @@ export async function seed(knex: Knex): Promise<void> {
 
   let attendance = [];
 
-  // Seed 20 students
   const start = 10;
-  const end = 20;
+  const end = 50;
 
   let LRN: string = '';
   let attendance_id = 1;
+
+  const id = await knex(DbConstants.LECTURE_TABLE)
+    .returning('lecture_id')
+    .insert({
+      lecture_date: '2021-12-16',
+      subject_id: 'PreCal',
+      grading_period: 1,
+    });
 
   for (let count = start; count <= end; count++) {
     LRN = `1234567891${count}`;
 
     attendance.push({
-      attendance_id,
-      subject_id: 'MMW1',
-      LRN: '123456789120',
-      attendance_stat: 'present',
+      lecture_id: id[0],
+      LRN,
+      status: 'present',
     });
-
-    attendance_id++;
   }
 
   // Inserts seed entries

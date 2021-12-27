@@ -1,4 +1,4 @@
-import { Container } from 'inversify';
+import { AsyncContainerModule, interfaces } from 'inversify';
 import TYPES from './binding-types';
 import KnexQueryBuilder from './../database/knexQueryBuilder/knexDatabase';
 import IDatabase from './../database/IDatabase';
@@ -18,34 +18,36 @@ import AssessmentScoresRepository from '../repository/scores.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
+import TeacherRepository from '../repository/teacher.repository';
+import { TYPE } from 'inversify-express-utils';
+import TeacherService from '../services/teacher.service';
 
-const container = new Container();
+const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
+  // async!
+  // bindings
+  bind<IDatabase<knex>>(TYPES.IDatabase)
+    .to(KnexQueryBuilder)
+    .inSingletonScope();
 
-// bindings
-container
-  .bind<IDatabase<knex>>(TYPES.IDatabase)
-  .to(KnexQueryBuilder)
-  .inSingletonScope();
+  bind<StudentService>(TYPES.StudentService).to(StudentService);
+  bind<SubjectService>(TYPES.SubjectService).to(SubjectService);
+  bind<IStudentRepository>(TYPES.StudentRepository).to(StudentRepository);
+  bind<SubjectRepository>(TYPES.SubjectRepository).to(SubjectRepository);
+  bind<AttendanceRepository>(TYPES.AttendanceRepository).to(
+    AttendanceRepository
+  );
+  bind<AuthenticationService>(TYPES.AuthService).to(AuthenticationService);
 
-container.bind<StudentService>(TYPES.StudentService).to(StudentService);
-container.bind<SubjectService>(TYPES.SubjectService).to(SubjectService);
-container
-  .bind<IStudentRepository>(TYPES.StudentRepository)
-  .to(StudentRepository);
-container
-  .bind<SubjectRepository>(TYPES.SubjectRepository)
-  .to(SubjectRepository);
-container
-  .bind<AttendanceRepository>(TYPES.AttendanceRepository)
-  .to(AttendanceRepository);
-container
-  .bind<AuthenticationService>(TYPES.AuthService)
-  .to(AuthenticationService);
-container
-  .bind<AuthenticationRepository>(TYPES.AuthRepository)
-  .to(AuthenticationRepository);
-container
-  .bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository)
-  .to(AssessmentScoresRepository);
+  bind<AuthenticationRepository>(TYPES.AuthRepository).to(
+    AuthenticationRepository
+  );
 
-export default container;
+  bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository).to(
+    AssessmentScoresRepository
+  );
+
+  bind<TeacherRepository>(TYPES.TeacherRepository).to(TeacherRepository);
+  bind<TeacherService>(TYPES.TeacherService).to(TeacherService);
+});
+
+export default bindings;

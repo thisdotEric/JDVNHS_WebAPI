@@ -72,6 +72,15 @@ class SubjectRepository {
 
     return LRN == 1;
   }
+
+  async getEnrolledStudentCount(subject_id: string) {
+    const count = await this.db
+      .getDbInstance()(DbConstants.STUDENT_SUBJECTS)
+      .count('*')
+      .where({ subject_id });
+
+    return count;
+  }
 }
 
 export default SubjectRepository;

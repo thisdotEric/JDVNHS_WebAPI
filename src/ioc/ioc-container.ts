@@ -18,6 +18,9 @@ import AssessmentScoresRepository from '../repository/scores.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
+import TeacherRepository from '../repository/teacher.repository';
+import { TYPE } from 'inversify-express-utils';
+import TeacherService from '../services/teacher.service';
 
 const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   // async!
@@ -42,6 +45,9 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository).to(
     AssessmentScoresRepository
   );
+
+  bind<TeacherRepository>(TYPES.TeacherRepository).to(TeacherRepository);
+  bind<TeacherService>(TYPES.TeacherService).to(TeacherService);
 });
 
 export default bindings;

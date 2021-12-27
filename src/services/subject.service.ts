@@ -47,6 +47,10 @@ class SubjectService {
   async addNewAttendanceRecord(attendancelist: Attendance[]) {
     return this.attendanceRepo.addNewAttendanceRecord(attendancelist);
   }
+
+  async getEnrolledStudentCount(subject_id: string) {
+    return this.subjectRepo.getEnrolledStudentCount(subject_id);
+  }
 }
 
 export default SubjectService;

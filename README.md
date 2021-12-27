@@ -14,7 +14,7 @@ Search for Git Clone then paste:
 https://github.com/thisdotEric/JDVNHS_WebAPI.git
 ```
 
-5. Open VS Code terminal and install all dependencies in package.json. *(Make sure to have yarn installed in your system)*
+5. Open VS Code terminal and install all dependencies in package.json. _(Make sure to have yarn installed in your system)_
 
 ```
 yarn install

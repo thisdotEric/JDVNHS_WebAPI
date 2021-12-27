@@ -13,6 +13,7 @@ import './controller/home.controller';
 import './controller/student.controller';
 import './controller/subject.controller';
 import './controller/authentication.controller';
+import './controller/teacher.controller';
 
 async function createServer() {
   let container = new Container();

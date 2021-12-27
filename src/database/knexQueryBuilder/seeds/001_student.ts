@@ -13,9 +13,8 @@ export async function seed(knex: Knex): Promise<void> {
   const studentAddtionalData: any[] = [];
   const userPasswordData: any[] = [];
 
-  // Seed 20 students
   const start = 10;
-  const end = 20;
+  const end = 50;
 
   let LRN: string = '';
 

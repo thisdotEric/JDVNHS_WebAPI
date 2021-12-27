@@ -14,7 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
 
   const start = 10;
-  const end = 20;
+  const end = 50;
   let LRN;
 
   const enrolledStudentsInMMW: any[] = [];
@@ -35,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
     knex(DbConstants.STUDENT_SUBJECTS).insert(enrolledStudentsInGenMath),
     /* Add subject teachers and subjects they handled */
     knex(DbConstants.TEACHER_SUBJECTS).insert([
-      { teacher_id: '1111110', subject_id: 'GenMath' },
+      { teacher_id: '1111111', subject_id: 'GenMath' },
       { teacher_id: '1111111', subject_id: 'PreCal' },
       { teacher_id: '1111112', subject_id: 'PS1' },
       { teacher_id: '1111113', subject_id: 'MMW1' },

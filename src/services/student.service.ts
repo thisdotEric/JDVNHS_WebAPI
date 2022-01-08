@@ -23,6 +23,10 @@ class StudentService {
   async updateStudentInformation(updatedStudentInformation: Partial<IStudent>) {
     return this.studentRepo.updateStudentInformation(updatedStudentInformation);
   }
+
+  async getEnrolledSubjects(lrn: string) {
+    return this.studentRepo.getEnrolledSubjects(lrn);
+  }
 }
 
 export default StudentService;

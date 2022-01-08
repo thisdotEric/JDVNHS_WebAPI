@@ -64,6 +64,11 @@ class SubjectRepository {
     subjectName: string,
     lrn: string
   ): Promise<boolean> {
+    await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .update({ LRN: null })
+      .where({ LRN: lrn });
+
     const LRN = await this.db
       .getDbInstance()(DbConstants.STUDENT_SUBJECTS)
       .where('LRN', lrn)
@@ -80,6 +85,21 @@ class SubjectRepository {
       .where({ subject_id });
 
     return count;
+  }
+
+  async getAttendanceByLectureId(lecture_id: number) {
+    const attendance = await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .where({
+        lecture_id,
+      })
+      .select(
+        'status',
+        'LRN'
+        // 'users."first_name" || " " || users."middle_name" || " " || users."last_name" as fullname'
+      );
+
+    return attendance;
   }
 }
 

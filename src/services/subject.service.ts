@@ -40,8 +40,8 @@ class SubjectService {
     return this.scoresRepo.getScoresByAssessmentId(assessment_id);
   }
 
-  async getAttendanceByLectureId(subject_id: string, lecture_id: number) {
-    return this.attendanceRepo.getAttendanceByLectureId(subject_id, lecture_id);
+  async getAttendanceByLectureId(lecture_id: number) {
+    return this.attendanceRepo.getAttendanceByLectureId(lecture_id);
   }
 
   async addNewAttendanceRecord(attendancelist: Attendance[]) {
@@ -50,6 +50,14 @@ class SubjectService {
 
   async getEnrolledStudentCount(subject_id: string) {
     return this.subjectRepo.getEnrolledStudentCount(subject_id);
+  }
+
+  async updateAttendance(
+    LRN: string,
+    newStatus: ATTENDANCE_STATUS,
+    lecture_id: number
+  ) {
+    return this.attendanceRepo.updateAttendance(LRN, newStatus, lecture_id);
   }
 }
 

@@ -21,33 +21,65 @@ class AttendanceRepository {
       .insert(attendancelist);
   }
 
-  async getAttendanceByLectureId(subject_id: string, lecture_id: number) {
-    const date = await this.db
-      .getDbInstance()(DbConstants.LECTURE_TABLE)
-      .where({
-        subject_id,
-        lecture_id,
-      })
-      .select('lecture_date');
+  async getAttendanceByLectureId(lecture_id: number) {
+    // const date = await this.db
+    //   .getDbInstance()(DbConstants.LECTURE_TABLE)
+    //   .where({
+    //     subject_id,
+    //     lecture_id,
+    //   })
+    //   .select('lecture_date');
+    // const attendance = await this.db
+    //   .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+    //   .join(
+    //     DbConstants.LECTURE_TABLE,
+    //     `${DbConstants.LECTURE_TABLE}.lecture_id`,
+    //     '=',
+    //     `${DbConstants.ATTENDANCE_TABLE}.lecture_id`
+    //   )
+    //   .where(`${DbConstants.ATTENDANCE_TABLE}.lecture_id`, lecture_id)
+    //   .where(`${DbConstants.LECTURE_TABLE}.subject_id`, subject_id)
+    //   .select('LRN', 'status');
+    // return {
+    //   subject_id,
+    //   lecture_id,
+    //   lecture_date: date[0].lecture_date,
+    //   attendance,
+    // };
 
     const attendance = await this.db
       .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
       .join(
-        DbConstants.LECTURE_TABLE,
-        `${DbConstants.LECTURE_TABLE}.lecture_id`,
+        DbConstants.USERS_TABLE,
+        `${DbConstants.USERS_TABLE}.user_id`,
         '=',
-        `${DbConstants.ATTENDANCE_TABLE}.lecture_id`
+        `${DbConstants.ATTENDANCE_TABLE}.LRN`
       )
-      .where(`${DbConstants.ATTENDANCE_TABLE}.lecture_id`, lecture_id)
-      .where(`${DbConstants.LECTURE_TABLE}.subject_id`, subject_id)
-      .select('LRN', 'status');
+      .where({
+        lecture_id,
+      })
+      .select('status', 'LRN', 'first_name', 'middle_name', 'last_name')
+      .orderBy('last_name');
 
-    return {
-      subject_id,
-      lecture_id,
-      lecture_date: date[0].lecture_date,
-      attendance,
-    };
+    return attendance;
+  }
+
+  async updateAttendance(
+    LRN: string,
+    newStatus: ATTENDANCE_STATUS,
+    lecture_id: number
+  ) {
+    console.log(LRN, newStatus, lecture_id);
+
+    await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .update({
+        status: newStatus,
+      })
+      .where({
+        LRN,
+        lecture_id,
+      });
   }
 
   async getStudentAttendanceByMonth(month: string, LRN: string) {

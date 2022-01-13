@@ -45,14 +45,25 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet('/:subject_name/:lecture_id/attendance')
+  @httpGet('/:subject_name/attendance')
   async getStudentAttendanceByMonth(
     @request() req: Request,
     @response() res: Response
   ) {
-    const lecture_id = parseInt(<string>req.params.lecture_id, 10);
+    const lecture_id = parseInt(<string>req.query.id, 10);
+    const subject_id = `${req.params.subject_name}`;
 
-    const attendance = await this.subjectService.getAttendanceByLectureId(1);
+    const time = req.query;
+
+    let attendance = [];
+
+    if (time.id === 'latest') {
+      attendance = await this.subjectService.getLatestAttendance(subject_id);
+    } else if (lecture_id > 0) {
+      attendance = await this.subjectService.getAttendanceByLectureId(
+        lecture_id
+      );
+    }
 
     const response = JsonResponse.success(attendance, 200);
     res.status(response.statusCode).send(response);

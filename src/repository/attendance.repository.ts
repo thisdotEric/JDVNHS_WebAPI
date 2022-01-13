@@ -22,31 +22,6 @@ class AttendanceRepository {
   }
 
   async getAttendanceByLectureId(lecture_id: number) {
-    // const date = await this.db
-    //   .getDbInstance()(DbConstants.LECTURE_TABLE)
-    //   .where({
-    //     subject_id,
-    //     lecture_id,
-    //   })
-    //   .select('lecture_date');
-    // const attendance = await this.db
-    //   .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
-    //   .join(
-    //     DbConstants.LECTURE_TABLE,
-    //     `${DbConstants.LECTURE_TABLE}.lecture_id`,
-    //     '=',
-    //     `${DbConstants.ATTENDANCE_TABLE}.lecture_id`
-    //   )
-    //   .where(`${DbConstants.ATTENDANCE_TABLE}.lecture_id`, lecture_id)
-    //   .where(`${DbConstants.LECTURE_TABLE}.subject_id`, subject_id)
-    //   .select('LRN', 'status');
-    // return {
-    //   subject_id,
-    //   lecture_id,
-    //   lecture_date: date[0].lecture_date,
-    //   attendance,
-    // };
-
     const attendance = await this.db
       .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
       .join(
@@ -89,6 +64,23 @@ class AttendanceRepository {
       .select('subject_id', 'attendance_stat');
 
     return studentAttendance;
+  }
+
+  async getClassLatestAttendance(subject_id: string) {
+    const first_join =
+      'inner join lectures on lectures."lecture_id" = attendance."lecture_id"';
+    const second_join = 'join users on users."user_id" = attendance."LRN"';
+    const subquery = `(select lecture_id from lectures where subject_id = '${subject_id}' order by lecture_id desc limit 1)`;
+    const selects =
+      'select attendance."LRN", attendance."status" , users."first_name", users."middle_name", users."last_name" from attendance';
+
+    const latest = await this.db
+      .getDbInstance()
+      .raw(
+        `${selects} ${first_join} ${second_join} where attendance."lecture_id" = ${subquery} AND attendance."LRN" IS NOT NULL`
+      );
+
+    return latest.rows;
   }
 }
 

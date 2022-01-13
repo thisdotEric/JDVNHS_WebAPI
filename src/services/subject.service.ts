@@ -59,6 +59,10 @@ class SubjectService {
   ) {
     return this.attendanceRepo.updateAttendance(LRN, newStatus, lecture_id);
   }
+
+  async getLatestAttendance(subject_id: string) {
+    return this.attendanceRepo.getClassLatestAttendance(subject_id);
+  }
 }
 
 export default SubjectService;

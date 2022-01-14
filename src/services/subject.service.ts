@@ -55,13 +55,13 @@ class SubjectService {
   async updateAttendance(
     LRN: string,
     newStatus: ATTENDANCE_STATUS,
-    lecture_id: number
+    date: string
   ) {
-    return this.attendanceRepo.updateAttendance(LRN, newStatus, lecture_id);
+    return this.attendanceRepo.updateAttendance(LRN, newStatus, date);
   }
 
-  async getLatestAttendance(subject_id: string) {
-    return this.attendanceRepo.getClassLatestAttendance(subject_id);
+  async getClassAttendance(subject_id: string, date: string) {
+    return this.attendanceRepo.getClassAttendance(subject_id, date);
   }
 }
 

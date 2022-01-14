@@ -15,10 +15,31 @@ export interface Attendance {
 class AttendanceRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
+  private async insertNewLecture(
+    lecture_date: string,
+    subject_id: string,
+    grading_period: number = 1
+  ) {
+    const lecture_id = await this.db
+      .getDbInstance()(DbConstants.LECTURE_TABLE)
+      .insert({
+        lecture_date,
+        subject_id,
+        grading_period,
+      })
+      .returning('lecture_id');
+
+    return lecture_id;
+  }
+
   async addNewAttendanceRecord(attendancelist: Attendance[]) {
-    await this.db
-      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
-      .insert(attendancelist);
+    const lecture_id = await this.insertNewLecture('2022-01-15', 'PreCal');
+
+    console.log(lecture_id);
+
+    // await this.db
+    //   .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+    //   .insert(attendancelist);
   }
 
   async getAttendanceByLectureId(lecture_id: number) {
@@ -42,19 +63,13 @@ class AttendanceRepository {
   async updateAttendance(
     LRN: string,
     newStatus: ATTENDANCE_STATUS,
-    lecture_id: number
+    date: string
   ) {
-    console.log(LRN, newStatus, lecture_id);
-
     await this.db
-      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
-      .update({
-        status: newStatus,
-      })
-      .where({
-        LRN,
-        lecture_id,
-      });
+      .getDbInstance()
+      .raw(
+        `update attendance set status = '${newStatus}' from lectures l where attendance."LRN" = '${LRN}' and l."lecture_date" = '${date}'`
+      );
   }
 
   async getStudentAttendanceByMonth(month: string, LRN: string) {
@@ -66,11 +81,11 @@ class AttendanceRepository {
     return studentAttendance;
   }
 
-  async getClassLatestAttendance(subject_id: string) {
+  async getClassAttendance(subject_id: string, date: string) {
     const first_join =
       'inner join lectures on lectures."lecture_id" = attendance."lecture_id"';
     const second_join = 'join users on users."user_id" = attendance."LRN"';
-    const subquery = `(select lecture_id from lectures where subject_id = '${subject_id}' order by lecture_id desc limit 1)`;
+    const subquery = `(select lecture_id from lectures where subject_id = '${subject_id}' and DATE(lecture_date)::TEXT LIKE '${date}' limit 1)`;
     const selects =
       'select attendance."LRN", attendance."status" , users."first_name", users."middle_name", users."last_name" from attendance';
 
@@ -80,7 +95,25 @@ class AttendanceRepository {
         `${selects} ${first_join} ${second_join} where attendance."lecture_id" = ${subquery} AND attendance."LRN" IS NOT NULL`
       );
 
-    return latest.rows;
+    const latest_lecture_date = await this.db
+      .getDbInstance()
+      .raw(
+        `select lectures."lecture_date", lectures."lecture_id" from lectures join attendance on attendance."lecture_id" = lectures."lecture_id" order by lectures.lecture_id desc limit 1`
+      );
+
+    return {
+      lecture_date: this.formatDate(latest_lecture_date.rows[0].lecture_date),
+      lecture_id: latest_lecture_date.rows[0].lecture_id,
+      attendance: latest.rows,
+    };
+  }
+
+  private formatDate(date: string) {
+    return new Date(date)
+      .toISOString()
+      .substring(0, 10)
+      .replace(/T/, ' ')
+      .replace(/\..+/, '');
   }
 }
 

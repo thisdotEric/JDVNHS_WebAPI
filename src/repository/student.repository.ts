@@ -71,6 +71,27 @@ class StudentRepository implements IStudentRepository {
 
     await Promise.all([userUpdate, studentUpdate]);
   }
+
+  async getEnrolledSubjects(lrn: string) {
+    const subjects = await this.db
+      .getDbInstance()(DbConstants.STUDENT_SUBJECTS)
+      .join(
+        DbConstants.STUDENT_TABLE,
+        `${DbConstants.STUDENT_SUBJECTS}.LRN`,
+        '=',
+        `${DbConstants.STUDENT_TABLE}.LRN`
+      )
+      .join(
+        DbConstants.SUBJECT_TABLE,
+        `${DbConstants.STUDENT_SUBJECTS}.subject_id`,
+        '=',
+        `${DbConstants.SUBJECT_TABLE}.subject_id`
+      )
+      .where('student.LRN', lrn)
+      .select('students_subject.subject_id', 'subject.subject_name');
+
+    return subjects;
+  }
 }
 
 export default StudentRepository;

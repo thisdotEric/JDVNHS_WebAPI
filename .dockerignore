@@ -1,0 +1,9 @@
+.github
+.git/
+.gitignore
+dist/
+node_modules
+.prettierignore
+.prettier.json
+test/
+jest.config.json

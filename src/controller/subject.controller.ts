@@ -6,6 +6,7 @@ import {
   BaseHttpController,
   request,
   response,
+  httpPatch,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { Request, Response } from 'express';
@@ -45,20 +46,37 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet('/:subject_name/attendance/:lecture_id')
+  @httpGet('/:subject_name/attendance')
   async getStudentAttendanceByMonth(
     @request() req: Request,
     @response() res: Response
   ) {
-    const subject_id = req.params.subject_name;
-    const lecture_id = parseInt(<string>req.params.lecture_id, 10);
+    const lecture_date = `${req.query.date}`;
+    const subject_id = `${req.params.subject_name}`;
 
-    const attendance = await this.subjectService.getAttendanceByLectureId(
+    const attendance = await this.subjectService.getClassAttendance(
       subject_id,
-      lecture_id
+      lecture_date
     );
 
     const response = JsonResponse.success(attendance, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPatch('/:subject_name/:lecture_id/attendance')
+  async updateStudentAttendance(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const lecture_id = `${req.params.lecture_id}`;
+    const subject_name = `${req.params.subject_name}`;
+    const { LRN, newStatus } = req.body;
+
+    console.log(lecture_id, subject_name, LRN, newStatus);
+
+    await this.subjectService.updateAttendance(LRN, newStatus, lecture_id);
+
+    const response = JsonResponse.success('attendance', 200);
     res.status(response.statusCode).send(response);
   }
 
@@ -67,9 +85,13 @@ class SubjectController extends BaseHttpController {
     @request() req: Request,
     @response() res: Response
   ) {
-    const { attendance } = req.body;
+    const { attendance, attendance_date } = req.body;
+    const subject_id = `${req.params.subject_name}`;
 
-    await this.subjectService.addNewAttendanceRecord(attendance);
+    await this.subjectService.addNewAttendanceRecord(attendance, {
+      subject_id,
+      lecture_date: attendance_date,
+    });
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);

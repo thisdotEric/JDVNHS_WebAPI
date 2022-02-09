@@ -1,7 +1,7 @@
 name: Practice Express
 on:
   push:
-    branches: [master, production]
+    branches: [master]
 jobs:
   tests:
     name: 'JDVNHS WebAPI CI'

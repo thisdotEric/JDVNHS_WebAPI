@@ -6,6 +6,7 @@ import SubjectRepository, {
 import AttendanceRepository, {
   ATTENDANCE_STATUS,
   Attendance,
+  LectureInfo,
 } from '../repository/attendance.repository';
 import AssessmentScoresRepository from '../repository/scores.repository';
 
@@ -44,8 +45,14 @@ class SubjectService {
     return this.attendanceRepo.getAttendanceByLectureId(lecture_id);
   }
 
-  async addNewAttendanceRecord(attendancelist: Attendance[]) {
-    return this.attendanceRepo.addNewAttendanceRecord(attendancelist);
+  async addNewAttendanceRecord(
+    attendancelist: Attendance[],
+    lecture_info: LectureInfo
+  ) {
+    return this.attendanceRepo.addNewAttendanceRecord(
+      attendancelist,
+      lecture_info
+    );
   }
 
   async getEnrolledStudentCount(subject_id: string) {
@@ -55,9 +62,9 @@ class SubjectService {
   async updateAttendance(
     LRN: string,
     newStatus: ATTENDANCE_STATUS,
-    date: string
+    lecture_id: string
   ) {
-    return this.attendanceRepo.updateAttendance(LRN, newStatus, date);
+    return this.attendanceRepo.updateAttendance(LRN, newStatus, lecture_id);
   }
 
   async getClassAttendance(subject_id: string, date: string) {

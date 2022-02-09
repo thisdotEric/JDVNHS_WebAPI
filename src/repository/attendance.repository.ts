@@ -11,15 +11,21 @@ export interface Attendance {
   status: ATTENDANCE_STATUS;
 }
 
+export interface LectureInfo {
+  lecture_date: string;
+  subject_id: string;
+  grading_period?: number;
+}
+
 @injectable()
 class AttendanceRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
-  private async insertNewLecture(
-    lecture_date: string,
-    subject_id: string,
-    grading_period: number = 1
-  ) {
+  private async insertNewLecture({
+    lecture_date,
+    subject_id,
+    grading_period,
+  }: LectureInfo) {
     const lecture_id = await this.db
       .getDbInstance()(DbConstants.LECTURE_TABLE)
       .insert({
@@ -32,14 +38,27 @@ class AttendanceRepository {
     return lecture_id;
   }
 
-  async addNewAttendanceRecord(attendancelist: Attendance[]) {
-    const lecture_id = await this.insertNewLecture('2022-01-15', 'PreCal');
+  async addNewAttendanceRecord(
+    attendancelist: Attendance[],
+    lecture_info: LectureInfo
+  ) {
+    const lecture_id = await this.insertNewLecture({
+      ...lecture_info,
+      grading_period: 1,
+    });
 
-    console.log(lecture_id);
+    const generated_lecture_id = lecture_id[0];
 
-    // await this.db
-    //   .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
-    //   .insert(attendancelist);
+    attendancelist = attendancelist.map(attendance => ({
+      ...attendance,
+      lecture_id: generated_lecture_id,
+    }));
+
+    await this.db
+      .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
+      .insert(attendancelist);
+
+    return generated_lecture_id;
   }
 
   async getAttendanceByLectureId(lecture_id: number) {
@@ -63,12 +82,12 @@ class AttendanceRepository {
   async updateAttendance(
     LRN: string,
     newStatus: ATTENDANCE_STATUS,
-    date: string
+    lecture_id: string
   ) {
     await this.db
       .getDbInstance()
       .raw(
-        `update attendance set status = '${newStatus}' from lectures l where attendance."LRN" = '${LRN}' and l."lecture_date" = '${date}'`
+        `update attendance set status = '${newStatus}' from lectures l where attendance."LRN" = '${LRN}' and l."lecture_id" = '${lecture_id}'`
       );
   }
 
@@ -92,14 +111,13 @@ class AttendanceRepository {
     const latest = await this.db
       .getDbInstance()
       .raw(
-        `${selects} ${first_join} ${second_join} where attendance."lecture_id" = ${subquery} AND attendance."LRN" IS NOT NULL`
+        `${selects} ${first_join} ${second_join} where attendance."lecture_id" = ${subquery} AND attendance."LRN" IS NOT NULL  order by users."last_name" asc`
       );
 
-    const latest_lecture_date = await this.db
-      .getDbInstance()
-      .raw(
-        `select lectures."lecture_date", lectures."lecture_id" from lectures join attendance on attendance."lecture_id" = lectures."lecture_id" order by lectures.lecture_id desc limit 1`
-      );
+    const latest_lecture_date = await this.db.getDbInstance().raw(
+      // `select lectures."lecture_date", lectures."lecture_id" from lectures join attendance on attendance."lecture_id" = lectures."lecture_id" order by lectures.lecture_id desc limit 1`
+      `select lectures."lecture_date", lectures."lecture_id" from lectures where lectures."lecture_date" = '${date}'`
+    );
 
     return {
       lecture_date: this.formatDate(latest_lecture_date.rows[0].lecture_date),

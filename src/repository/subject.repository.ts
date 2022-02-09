@@ -24,7 +24,14 @@ class SubjectRepository {
         `${DbConstants.STUDENT_SUBJECTS}.LRN`
       )
       .where(`${DbConstants.STUDENT_SUBJECTS}.subject_id`, 'like', subjectName)
-      .select('user_id', 'first_name', 'middle_name', 'last_name');
+      .select(
+        'user_id',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'contact_number',
+        'gender'
+      );
 
     return students;
   }

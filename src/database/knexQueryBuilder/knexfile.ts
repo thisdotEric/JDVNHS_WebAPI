@@ -28,7 +28,7 @@ const configs: IKnexConfig = {
   production: {
     client: 'postgresql',
     connection: {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: process.env.DB,
       ssl: { rejectUnauthorized: false },
     },
     pool: {

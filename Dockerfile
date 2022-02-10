@@ -35,4 +35,4 @@ RUN yarn install --production --frozen-lockfile
 RUN yarn --cwd ./webapp/ install --production --frozen-lockfile
 
 EXPOSE 4000
-CMD node dist/src/server.js
+CMD node dist/server.js

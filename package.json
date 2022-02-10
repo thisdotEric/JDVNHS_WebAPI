@@ -11,8 +11,8 @@
         "dev": "ts-node-dev src/server.ts",
         "pretty": "npx prettier --write .",
         "test": "jest",
-        "build": "tsc -p .",
-        "start": "node dist/src/server.js",
+        "build": "rm -rf dist && NODE_ENV=production tsc -p .",
+        "start": "node dist/server.js",
         "knex": "npx knex --knexfile src/database/knexQueryBuilder/knexfile.ts",
         "prod:knex": "knex --knexfile dist/src/database/knexQueryBuilder/knexfile.js"
     },

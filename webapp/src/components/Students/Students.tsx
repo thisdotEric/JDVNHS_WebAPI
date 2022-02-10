@@ -33,12 +33,10 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);
-
-    console.log(import.meta.env.JDVNHS_SERVER);
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/v1/subject/${selectedSubject}/students`)
+    fetch(`api/subject/${selectedSubject}/students`)
       .then((res) => res.json())
       .then((students) => {
         setStudents(students.data);

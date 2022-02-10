@@ -23,7 +23,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:4000/v1/teacher/1111111/subjects')
+    fetch('api/teacher/1111111/subjects')
       .then((res) => res.json())
       .then((subjectList) => {
         setLoading(false);
@@ -76,7 +76,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           </div>
           <div className="content">
             <SubjectContext.Provider value={selectedSubject}>
-              <Outlet/>
+              <Outlet />
             </SubjectContext.Provider>
           </div>
         </main>

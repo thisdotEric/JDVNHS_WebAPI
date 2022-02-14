@@ -7,6 +7,7 @@ import {
   PasswordIncorrectException,
 } from '../exceptions/';
 import PasswordUtil from '../algorithms/password/password';
+import { USERS, PASSWORD } from '../constant/tables';
 
 @injectable()
 class AuthenticationRepository {
@@ -24,18 +25,10 @@ class AuthenticationRepository {
     if (!samePasswordHash) throw new PasswordIncorrectException();
 
     const user = await this.db
-      .getDbInstance()(DbConstants.USERS_TABLE)
-      .where(`${DbConstants.USERS_TABLE}.user_id`, id)
-      .andWhere(
-        `${DbConstants.PASSWORD_TABLE}.password`,
-        storedPassword.password
-      )
-      .join(
-        DbConstants.PASSWORD_TABLE,
-        `${DbConstants.USERS_TABLE}.user_id`,
-        '=',
-        `${DbConstants.PASSWORD_TABLE}.user_id`
-      )
+      .getDbInstance()(USERS)
+      .where(`${USERS}.user_id`, id)
+      .andWhere(`${PASSWORD}.password`, storedPassword.password)
+      .join(PASSWORD, `${USERS}.user_id`, '=', `${USERS}.user_id`)
       .select('users.user_id', 'users.role')
       .first();
 
@@ -46,7 +39,7 @@ class AuthenticationRepository {
 
   private async getPasswordAndSaltValue(id: string) {
     const hashedPassword = await this.db
-      .getDbInstance()(DbConstants.PASSWORD_TABLE)
+      .getDbInstance()(PASSWORD)
       .where({ user_id: id })
       .select('password', 'salt')
       .first();

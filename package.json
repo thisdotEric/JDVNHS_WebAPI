@@ -8,10 +8,10 @@
         "npm": "8.x"
     },
     "scripts": {
-        "dev": "ts-node-dev src/server.ts",
+        "dev": "tsnd --respawn --transpile-only src/server.ts",
         "pretty": "npx prettier --write .",
         "test": "jest",
-        "build": "rm -rf dist && NODE_ENV=production tsc -p .",
+        "build": "rm -rf dist &&  tsc -p .",
         "start": "node dist/server.js",
         "knex": "npx knex --knexfile src/database/knexQueryBuilder/knexfile.ts",
         "prod:knex": "knex --knexfile dist/src/database/knexQueryBuilder/knexfile.js"
@@ -20,9 +20,11 @@
     "author": "John Eric Siguenza",
     "license": "ISC",
     "dependencies": {
+        "connect-session-knex": "^2.1.1",
         "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
+        "express-session": "^1.17.2",
         "faker": "^5.5.3",
         "inversify": "^6.0.1",
         "inversify-express-utils": "^6.4.3",
@@ -35,6 +37,7 @@
     "devDependencies": {
         "@types/cors": "^2.8.12",
         "@types/express": "^4.17.13",
+        "@types/express-session": "^1.17.4",
         "@types/faker": "^5.5.8",
         "@types/jest": "^27.0.3",
         "@types/jsonwebtoken": "^8.5.5",

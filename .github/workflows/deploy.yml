@@ -28,7 +28,7 @@ jobs:
         run: yarn --cwd webapp/ install --frozen-lockfile
 
       - name: Build application
-        run: SNOWPACK_PUBLIC_JDVNHS_SERVER=${{ secrets.JDVNHS_SERVER }} yarn build
+        run: SNOWPACK_PUBLIC_JDVNHS_SERVER=${{ secrets.JDVNHS_SERVER }} yarn --cwd webapp/ build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2

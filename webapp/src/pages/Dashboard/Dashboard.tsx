@@ -5,6 +5,7 @@ import { SideNav } from '../../components/SideNav';
 import { SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
 import { SubjectContext } from '../../context';
+import { axios } from '../../utils';
 
 interface DashboardProps {}
 
@@ -23,14 +24,13 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('api/teacher/1111111/subjects')
-      .then((res) => res.json())
-      .then((subjectList) => {
-        setLoading(false);
-        setSubjects(subjectList.data);
-        setSelectedSubject(subjectList.data[0].subject_id);
-      })
-      .catch(console.error);
+
+    axios.get('teacher/1111111/subjects').then(subjectList => {
+      const teachersSubject = subjectList.data.data;
+      setLoading(false);
+      setSubjects(teachersSubject);
+      setSelectedSubject(teachersSubject[0].subject_id);
+    });
   }, []);
 
   return (
@@ -44,9 +44,10 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           <p>John Eric Siguenza</p>
           <form
             method="POST"
-            onSubmit={(e) => {
+            onSubmit={async e => {
               e.preventDefault();
 
+              await axios.post('auth/logout');
               navigate('/signin');
             }}
           >

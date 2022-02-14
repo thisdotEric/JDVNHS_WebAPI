@@ -3,7 +3,7 @@
 .gitignore
 dist/
 node_modules
-webapp/node_modules
+webapp/
 .prettierignore
 .prettier.json
 test/

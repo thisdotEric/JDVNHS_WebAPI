@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import AuthenticationRepository from '../repository/authentication.repository';
 import JwtAuthentication from '../algorithms/password/jwt';
-import PasswordUtil from '../algorithms/password/password';
 
 @injectable()
 class AuthenticationService {

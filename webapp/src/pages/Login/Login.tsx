@@ -1,12 +1,41 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useReducer } from 'react';
 import './Login.scss';
 import { wave, user, SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
+import { axios } from '../../utils';
 
 interface LoginProps {}
 
+interface LoginAction {
+  type: 'user_id' | 'password';
+  payload: string;
+}
+
+function loginReducer(state: UserCredentials, action: LoginAction) {
+  switch (action.type) {
+    case 'user_id':
+      return { ...state, user_id: action.payload };
+
+    case 'password':
+      return { ...state, password: action.payload };
+
+    default:
+      return state;
+  }
+}
+
+interface UserCredentials {
+  user_id: string;
+  password: string;
+}
+
 const Login: FC<LoginProps> = ({}: LoginProps) => {
   const navigate = useNavigate();
+
+  const [userCredentials, dispatch] = useReducer(loginReducer, {
+    user_id: '',
+    password: '',
+  });
 
   return (
     <div className="login">
@@ -18,10 +47,16 @@ const Login: FC<LoginProps> = ({}: LoginProps) => {
         </div>
         <div className="login-content">
           <form
-            onSubmit={(e) => {
+            onSubmit={async e => {
               e.preventDefault();
 
-              navigate('/students');
+              console.log(userCredentials);
+
+              const result = await axios.post('auth/login', userCredentials);
+
+              console.log(result.status);
+
+              if (result.status === 200) navigate('/students');
             }}
           >
             <img src={user} />
@@ -32,7 +67,18 @@ const Login: FC<LoginProps> = ({}: LoginProps) => {
               </div>
               <div className="div">
                 <h5>Username</h5>
-                <input type="text" className="input" name="user_id" />
+                <input
+                  type="text"
+                  className="input"
+                  name="user_id"
+                  value={userCredentials.user_id}
+                  onChange={e => {
+                    dispatch({
+                      type: 'user_id',
+                      payload: e.currentTarget.value,
+                    });
+                  }}
+                />
               </div>
             </div>
             <div className="input-div pass">
@@ -41,7 +87,18 @@ const Login: FC<LoginProps> = ({}: LoginProps) => {
               </div>
               <div className="div">
                 <h5>Password</h5>
-                <input type="password" className="input" name="password" />
+                <input
+                  type="password"
+                  className="input"
+                  name="password"
+                  value={userCredentials.password}
+                  onChange={e => {
+                    dispatch({
+                      type: 'password',
+                      payload: e.currentTarget.value,
+                    });
+                  }}
+                />
               </div>
             </div>
             <input type="submit" className="btn" value="Login" />

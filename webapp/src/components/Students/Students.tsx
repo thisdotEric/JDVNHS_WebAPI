@@ -4,6 +4,7 @@ import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
+import { axios } from '../../utils';
 
 interface StudentsProps {}
 
@@ -36,23 +37,22 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   };
 
   useEffect(() => {
-    fetch(`api/subject/${selectedSubject}/students`)
-      .then((res) => res.json())
-      .then((students) => {
-        setStudents(students.data);
+    axios.get(`subject/${selectedSubject}/students`).then(response => {
+      const students = response.data.data;
 
-        setSubjectStats({
-          femaleCount: students.data!.reduce((prev: number, curr: IStudent) => {
-            return curr.gender === 'female' ? prev + 1 : prev + 0;
-          }, 0),
-          maleCount: students.data!.reduce((prev: number, curr: IStudent) => {
-            return curr.gender === 'male' ? prev + 1 : prev + 0;
-          }, 0),
-          totalStudents: students.data!.length,
-          gradeLevel: 10,
-        });
-      })
-      .catch(console.error);
+      setStudents(students);
+
+      setSubjectStats({
+        femaleCount: students.reduce((prev: number, curr: IStudent) => {
+          return curr.gender === 'female' ? prev + 1 : prev + 0;
+        }, 0),
+        maleCount: students.reduce((prev: number, curr: IStudent) => {
+          return curr.gender === 'male' ? prev + 1 : prev + 0;
+        }, 0),
+        totalStudents: students.length,
+        gradeLevel: 10,
+      });
+    });
   }, [selectedSubject]);
 
   return (
@@ -69,12 +69,6 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         disabled={selectedStudent === undefined}
         onClick={async () => {
           console.log('Selected Student ID: ', selectedStudent);
-          // await fetch(
-          //   `http://localhost:4000/v1/subject/${selectedSubject}/students/${selectedStudent}`,
-          //   {
-          //     method: 'DELETE',
-          //   },
-          // );
           gridApi.refreshCells({ force: true, suppressFlash: false });
         }}
       >

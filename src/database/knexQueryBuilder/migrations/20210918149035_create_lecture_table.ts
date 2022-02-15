@@ -1,10 +1,11 @@
 import * as Knex from 'knex';
-import { DbConstants, ReferenceOptions } from '../../../constant/db.constants';
+import { LECTURES, LESSONS, SUBJECT } from 'src/constant/tables';
+import { ReferenceOptions } from '../../../constant/db.constants';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
 
-    .createTable(DbConstants.LECTURE_TABLE, table => {
+    .createTable(LECTURES, table => {
       table
         .increments('lecture_id')
         .primary()
@@ -18,10 +19,10 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('subject_id')
         .references('subject_id')
-        .inTable(DbConstants.SUBJECT_TABLE)
+        .inTable(SUBJECT)
         .onDelete(ReferenceOptions.CASCADE);
     })
-    .createTable(DbConstants.LESSONS_TABLE, table => {
+    .createTable(LESSONS, table => {
       table.string('lesson_name').notNullable();
       table.string('lesson_description');
       table.string('subject_id').notNullable();
@@ -30,13 +31,11 @@ export async function up(knex: Knex): Promise<void> {
       table
         .foreign('lecture_id')
         .references('lecture_id')
-        .inTable(DbConstants.LECTURE_TABLE)
+        .inTable(LECTURES)
         .onDelete(ReferenceOptions.CASCADE);
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema
-    .dropTableIfExists(DbConstants.LESSONS_TABLE)
-    .dropTableIfExists(DbConstants.LECTURE_TABLE);
+  return knex.schema.dropTableIfExists(LESSONS).dropTableIfExists(LECTURES);
 }

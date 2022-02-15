@@ -1,8 +1,9 @@
 import * as Knex from 'knex';
-import { DbConstants, ReferenceOptions } from '../../../constant/db.constants';
+import { ASSESSMENT, SUBJECT } from 'src/constant/tables';
+import { ReferenceOptions } from '../../../constant/db.constants';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable(DbConstants.ASSESSMENT_TABLE, table => {
+  return knex.schema.createTable(ASSESSMENT, table => {
     table
       .increments('assessment_id')
       .primary()
@@ -17,11 +18,11 @@ export async function up(knex: Knex): Promise<void> {
     table
       .foreign('subject_id')
       .references('subject_id')
-      .inTable(DbConstants.SUBJECT_TABLE)
+      .inTable(SUBJECT)
       .onDelete(ReferenceOptions.CASCADE);
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists(DbConstants.ASSESSMENT_TABLE);
+  return knex.schema.dropTableIfExists(ASSESSMENT);
 }

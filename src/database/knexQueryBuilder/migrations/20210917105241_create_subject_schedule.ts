@@ -1,8 +1,9 @@
 import * as Knex from 'knex';
 import { DbConstants, ReferenceOptions } from '../../../constant/db.constants';
+import { SCHEDULE, SUBJECT } from '../../../constant/tables';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable(DbConstants.SCHEDULE_TABLE, table => {
+  return knex.schema.createTable(SCHEDULE, table => {
     table.string('subject_id').notNullable();
     table
       .enum('meeting_day', [
@@ -20,11 +21,11 @@ export async function up(knex: Knex): Promise<void> {
     table
       .foreign('subject_id')
       .references('subject_id')
-      .inTable(DbConstants.SUBJECT_TABLE)
+      .inTable(SUBJECT)
       .onDelete(ReferenceOptions.CASCADE);
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists(DbConstants.SCHEDULE_TABLE);
+  return knex.schema.dropTableIfExists(SCHEDULE);
 }

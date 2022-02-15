@@ -1,14 +1,14 @@
 import * as Knex from 'knex';
-import { DbConstants } from '../../../constant/db.constants';
+import { ATTENDANCE } from 'src/constant/tables';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.alterTable(DbConstants.ATTENDANCE_TABLE, table => {
+  return knex.schema.alterTable(ATTENDANCE, table => {
     table.string('LRN').nullable().alter();
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.alterTable(DbConstants.ATTENDANCE_TABLE, table => {
+  return knex.schema.alterTable(ATTENDANCE, table => {
     table.string('LRN').notNullable().alter();
   });
 }

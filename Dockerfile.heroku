@@ -13,6 +13,9 @@ COPY . ./
 # Build the server
 RUN yarn build 
 
+# Build the webapp
+RUN yarn --cwd webapp/ build
+
 # Stage 2, create the production image
 FROM node:16-alpine
 

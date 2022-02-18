@@ -44,6 +44,7 @@ async function createServer() {
     app.use(cors);
     app.use(express.json());
     app.use(session);
+    app.set('trust proxy', 1);
 
     app.use(express.static(join(__dirname, FRONTEND_BUILD_FILES_PATH)));
 

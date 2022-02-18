@@ -23,6 +23,7 @@ const sessionConfig: SessionOptions = {
     secure: process.env.NODE_ENV === 'production',
     maxAge: SESSION_TTL,
     domain: `${process.env.JDVNHS_DOMAIN}`,
+    sameSite: 'strict',
   },
 };
 

@@ -10,7 +10,7 @@ import { inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import JsonResponse from '../utils/JsonResponse';
 
-@controller('/teacher')
+@controller('/teacher', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 export class TeacherController {
   constructor(
     @inject(TYPES.TeacherService)

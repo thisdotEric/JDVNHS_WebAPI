@@ -10,6 +10,11 @@ const types = {
   AssessmentScoresRepository: Symbol.for('AssessmentScoresRepository'),
   TeacherRepository: Symbol.for('TeacherRepository'),
   TeacherService: Symbol.for('TeacherService'),
+  AuthMiddleware: Symbol.for('AuthMiddleware'),
+  TeacherAccessONLY: Symbol.for('TeacherAccessONLY'),
+  StudentAccessONLY: Symbol.for('StudentAccessONLY'),
+  UserRepository: Symbol.for('UserRepository'),
+  UserService: Symbol.for('UserService'),
 };
 
 export default types;

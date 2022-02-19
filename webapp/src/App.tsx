@@ -21,14 +21,13 @@ function App({}: AppProps) {
             <Route path="attendance" element={<Attendance />} />
           </Route>
         </Route>
-
         <Route element={<ProtectedRoutes hasAccess="student" />}>
           <Route path="/s" element={<Dashboard />}>
             <Route
-              path="students"
+              path="profile"
               element={
                 <>
-                  <p>John</p>
+                  <p>John Eric Siguenza</p>
                 </>
               }
             />

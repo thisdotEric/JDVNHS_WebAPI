@@ -1,26 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './SideNav.scss';
 import { NavLink } from 'react-router-dom';
+import type { UserType } from '../../types';
+import type { ILink } from '../../constants';
 
-interface SideNavProps {}
-
-interface ILink {
-  to: string;
-  name: string;
+interface SideNavProps {
+  links: ILink[];
 }
 
-const links: ILink[] = [
-  {
-    to: '/t/students',
-    name: 'Students',
-  },
-  // {
-  //   to: '/attendance',
-  //   name: 'Attendance',
-  // },
-];
-
-const SideNav: FC<SideNavProps> = ({}: SideNavProps) => {
+const SideNav: FC<SideNavProps> = ({ links }: SideNavProps) => {
   return (
     <nav>
       {links.map((link, index) => (

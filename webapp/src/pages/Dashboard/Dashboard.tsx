@@ -2,11 +2,12 @@ import React, { FC, useEffect, useState, useRef, useMemo } from 'react';
 import './Dashboard.scss';
 import { Outlet } from 'react-router-dom';
 import { SideNav } from '../../components/SideNav';
-import { SchoolLogo } from '../../assets';
+import { SchoolLogo, user } from '../../assets';
 import { useNavigate } from 'react-router-dom';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
-import { User, UserContext } from '../../context';
+import { useCurrentUser } from '../../hooks';
+import { teacherNavigations, studentNavigations } from '../../constants';
 
 interface DashboardProps {}
 
@@ -23,28 +24,17 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [user, setUser] = useState<User | null>(null);
-
-  const userValue = useMemo(() => ({ user, setUser }), [user, setUser]);
-
-  useEffect(() => {
-    /**
-     * Get the currently logged in user
-     */
-    axios.get<User>('/api/auth/me').then(me => {
-      setUser(me.data);
-    });
-  }, []);
+  const currentUser = useCurrentUser();
 
   useEffect(() => {
     setLoading(true);
 
-    if (user) {
+    if (currentUser) {
       /**
        * Get all the subjects of the user
        */
       axios
-        .get(`/api/${user.role}/${user.user_id}/subjects`)
+        .get(`/api/${currentUser.role}/${currentUser.user_id}/subjects`)
         .then(subjectList => {
           const subjects = subjectList.data.data;
           setLoading(false);
@@ -52,18 +42,25 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           setSelectedSubject(subjects[0].subject_id);
         });
     }
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <div className="dashboard">
       <div className="side">
         <div>
           <img src={SchoolLogo} alt="School Logo" height={170} width={170} />
-          <SideNav />
+          <SideNav
+            links={
+              currentUser?.role === 'student'
+                ? studentNavigations
+                : teacherNavigations
+            }
+          />
         </div>
         <div className="user">
           <p>
-            {user?.first_name} {user?.middle_name} {user?.last_name}
+            {currentUser?.first_name} {currentUser?.middle_name}{' '}
+            {currentUser?.last_name}
           </p>
           <form
             method="POST"
@@ -99,11 +96,9 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
             <p>Students</p>
           </div>
           <div className="content">
-            <UserContext.Provider value={userValue}>
-              <SubjectContext.Provider value={selectedSubject}>
-                <Outlet />
-              </SubjectContext.Provider>
-            </UserContext.Provider>
+            <SubjectContext.Provider value={selectedSubject}>
+              <Outlet />
+            </SubjectContext.Provider>
           </div>
         </main>
       )}

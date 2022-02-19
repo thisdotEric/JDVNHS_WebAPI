@@ -37,7 +37,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   };
 
   useEffect(() => {
-    axios.get(`subject/${selectedSubject}/students`).then(response => {
+    axios.get(`/api/subject/${selectedSubject}/students`).then(response => {
       const students = response.data.data;
 
       setStudents(students);

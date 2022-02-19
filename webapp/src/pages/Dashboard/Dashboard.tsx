@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useState, useRef, useMemo } from 'react';
 import './Dashboard.scss';
 import { Outlet } from 'react-router-dom';
 import { SideNav } from '../../components/SideNav';
@@ -6,6 +6,7 @@ import { SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
+import { User, UserContext } from '../../context';
 
 interface DashboardProps {}
 
@@ -18,20 +19,40 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const navigate = useNavigate();
   const ref = useRef(null);
 
-  const [subjects, setSubjects] = useState<Subject[]>();
+  const [userSubjects, setUserSubjects] = useState<Subject[]>();
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [user, setUser] = useState<User | null>(null);
+
+  const userValue = useMemo(() => ({ user, setUser }), [user, setUser]);
+
+  useEffect(() => {
+    /**
+     * Get the currently logged in user
+     */
+    axios.get<User>('/api/auth/me').then(me => {
+      setUser(me.data);
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
 
-    axios.get('teacher/1111111/subjects').then(subjectList => {
-      const teachersSubject = subjectList.data.data;
-      setLoading(false);
-      setSubjects(teachersSubject);
-      setSelectedSubject(teachersSubject[0].subject_id);
-    });
-  }, []);
+    if (user) {
+      /**
+       * Get all the subjects of the user
+       */
+      axios
+        .get(`/api/${user.role}/${user.user_id}/subjects`)
+        .then(subjectList => {
+          const subjects = subjectList.data.data;
+          setLoading(false);
+          setUserSubjects(subjects);
+          setSelectedSubject(subjects[0].subject_id);
+        });
+    }
+  }, [user]);
 
   return (
     <div className="dashboard">
@@ -41,14 +62,16 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           <SideNav />
         </div>
         <div className="user">
-          <p>John Eric Siguenza</p>
+          <p>
+            {user?.first_name} {user?.middle_name} {user?.last_name}
+          </p>
           <form
             method="POST"
             onSubmit={async e => {
               e.preventDefault();
 
-              await axios.post('auth/logout');
-              navigate('/signin');
+              await axios.post('/api/auth/logout');
+              navigate('/');
             }}
           >
             <input type="submit" value="Sign out" />
@@ -67,8 +90,8 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
                 localStorage.setItem('selectedSubject', e.target.value);
               }}
             >
-              {subjects &&
-                subjects.map(({ subject_id, subject_name }, index) => (
+              {userSubjects &&
+                userSubjects.map(({ subject_id, subject_name }, index) => (
                   <option value={subject_id}>{subject_name}</option>
                 ))}
             </select>
@@ -76,9 +99,11 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
             <p>Students</p>
           </div>
           <div className="content">
-            <SubjectContext.Provider value={selectedSubject}>
-              <Outlet />
-            </SubjectContext.Provider>
+            <UserContext.Provider value={userValue}>
+              <SubjectContext.Provider value={selectedSubject}>
+                <Outlet />
+              </SubjectContext.Provider>
+            </UserContext.Provider>
           </div>
         </main>
       )}

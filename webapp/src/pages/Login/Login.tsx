@@ -1,8 +1,9 @@
-import React, { FC, useState, useReducer } from 'react';
+import React, { FC, useContext, useEffect, useReducer } from 'react';
 import './Login.scss';
-import { wave, user, SchoolLogo } from '../../assets';
+import { wave, user as userImage, SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../utils';
+import { UserContext, User } from '../../context';
 
 interface LoginProps {}
 
@@ -32,10 +33,17 @@ interface UserCredentials {
 const Login: FC<LoginProps> = ({}: LoginProps) => {
   const navigate = useNavigate();
 
+  const { user } = useContext(UserContext);
   const [userCredentials, dispatch] = useReducer(loginReducer, {
     user_id: '',
     password: '',
   });
+
+  useEffect(() => {
+    axios.get<User>('/api/auth/me').then(({ data }) => {
+      console.log(data);
+    });
+  }, []);
 
   return (
     <div className="login">
@@ -50,16 +58,14 @@ const Login: FC<LoginProps> = ({}: LoginProps) => {
             onSubmit={async e => {
               e.preventDefault();
 
-              console.log(userCredentials);
-
-              const result = await axios.post('auth/login', userCredentials);
-
-              console.log(result.status);
-
-              if (result.status === 200) navigate('/students');
+              const result = await axios.post(
+                '/api/auth/login',
+                userCredentials,
+              );
+              if (result.status === 200) navigate('/t/students');
             }}
           >
-            <img src={user} />
+            <img src={userImage} />
             <h2 className="title"> Welcome</h2>
             <div className="input-div one">
               <div className="i">

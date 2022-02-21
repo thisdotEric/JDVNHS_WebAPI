@@ -31,6 +31,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   const [subjectStats, setSubjectStats] = useState<SubjectStats>();
 
   const [gridApi, setGridApi] = useState<any>();
+  const [updateTable, setUpdateTable] = useState<number>(0);
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);
@@ -53,7 +54,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         gradeLevel: 10,
       });
     });
-  }, [selectedSubject]);
+  }, [selectedSubject, updateTable]);
 
   return (
     <div className="class-students">
@@ -68,11 +69,15 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
       <button
         disabled={selectedStudent === undefined}
         onClick={async () => {
-          console.log('Selected Student ID: ', selectedStudent);
-          gridApi.refreshCells({ force: true, suppressFlash: false });
+          await axios.delete(
+            `/api/subject/${selectedSubject}/students/${selectedStudent}`,
+          );
+
+          setUpdateTable(updateTable + 1);
+          gridApi.refreshCells({ force: true });
         }}
       >
-        Delete Student
+        Remove student from class
       </button>
 
       <div

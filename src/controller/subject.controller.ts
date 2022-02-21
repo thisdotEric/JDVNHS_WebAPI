@@ -14,7 +14,7 @@ import JsonResponse from '../utils/JsonResponse';
 import SubjectService from '../services/subject.service';
 import TYPES from '../ioc/binding-types';
 
-@controller('/subject')
+@controller('/subject', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 class SubjectController extends BaseHttpController {
   constructor(
     @inject(TYPES.SubjectService)

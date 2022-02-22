@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
 import './Students.scss';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -37,6 +39,15 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
     setGridApi(params.api);
   };
 
+  const removeStudentFromClass = async () => {
+    await axios.delete(
+      `/api/subject/${selectedSubject}/students/${selectedStudent}`,
+    );
+
+    setUpdateTable(updateTable + 1);
+    gridApi.refreshCells();
+  };
+
   useEffect(() => {
     axios.get(`/api/subject/${selectedSubject}/students`).then(response => {
       const students = response.data.data;
@@ -68,13 +79,21 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
       <button
         disabled={selectedStudent === undefined}
-        onClick={async () => {
-          await axios.delete(
-            `/api/subject/${selectedSubject}/students/${selectedStudent}`,
-          );
-
-          setUpdateTable(updateTable + 1);
-          gridApi.refreshCells({ force: true });
+        onClick={() => {
+          confirmAlert({
+            title: 'Confirm Delete?',
+            message: `${selectedStudent} will be removed from ${selectedSubject} class.`,
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: async () => await removeStudentFromClass(),
+              },
+              {
+                label: 'No',
+                onClick: () => {},
+              },
+            ],
+          });
         }}
       >
         Remove student from class

@@ -41,7 +41,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
   const removeStudentFromClass = async () => {
     await axios.delete(
-      `/api/subject/${selectedSubject}/students/${selectedStudent}`,
+      `subject/${selectedSubject}/students/${selectedStudent}`,
     );
 
     setUpdateTable(updateTable + 1);
@@ -49,7 +49,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   };
 
   useEffect(() => {
-    axios.get(`/api/subject/${selectedSubject}/students`).then(response => {
+    axios.get(`subject/${selectedSubject}/students`).then(response => {
       const students = response.data.data;
 
       setStudents(students);

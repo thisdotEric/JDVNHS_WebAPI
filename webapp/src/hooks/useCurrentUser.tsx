@@ -6,7 +6,7 @@ function useCurrentUser() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    axios.get('/api/auth/me').then(({ data }) => {
+    axios.get('auth/me').then(({ data }) => {
       setUser(data);
     });
   }, []);

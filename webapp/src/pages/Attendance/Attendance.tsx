@@ -21,21 +21,24 @@ interface Attendance {
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   const [attendanceList, setAttendanceList] = useState<Attendance[]>();
   const selectedSubject = useContext(SubjectContext);
-  const [attendanceDate, setAttendanceDate] = useState(new Date());
+  const [attendanceDate, setAttendanceDate] = useState<Date>(new Date());
 
   useEffect(() => {
-    const date = attendanceDate
-      .toLocaleDateString('zh-Hans-CN')
+    // Format date in accordance to servers expected date (yyyy-MM-dd)
+    let date = attendanceDate
+      .toLocaleDateString('zh-Hans-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
       .replaceAll('/', '-');
-    console.log(date);
 
     axios
-      .get(`/api/subject/${selectedSubject}/attendance?date=2021-12-16`)
+      .get(`subject/${selectedSubject}/attendance/${date}`)
       .then(({ data }) => {
-        // setAttendanceList(data.data.attendance);
-        console.log(data);
+        setAttendanceList(data.data.attendance);
       });
-  }, [selectedSubject]);
+  }, [selectedSubject, attendanceDate]);
 
   return (
     <>

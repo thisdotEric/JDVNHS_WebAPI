@@ -152,6 +152,23 @@ class SubjectController extends BaseHttpController {
     const response = JsonResponse.success(studentCount, 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpGet('/:subject_name/lecture-dates')
+  async getValidLectureDates(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const teacher_id = `${req.query.teacher}`;
+    const subject_id = `${req.params.subject_name}`;
+
+    const lecture_dates = await this.subjectService.getValidLectureDates(
+      teacher_id,
+      subject_id
+    );
+
+    const response = JsonResponse.success(lecture_dates, 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default SubjectController;

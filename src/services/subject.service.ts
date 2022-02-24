@@ -9,6 +9,7 @@ import AttendanceRepository, {
   LectureInfo,
 } from '../repository/attendance.repository';
 import AssessmentScoresRepository from '../repository/scores.repository';
+import LectureRepository from '../repository/lecture.repository';
 
 @injectable()
 class SubjectService {
@@ -18,7 +19,9 @@ class SubjectService {
     @inject(TYPES.AttendanceRepository)
     private readonly attendanceRepo: AttendanceRepository,
     @inject(TYPES.AssessmentScoresRepository)
-    private readonly scoresRepo: AssessmentScoresRepository
+    private readonly scoresRepo: AssessmentScoresRepository,
+    @inject(TYPES.LectureRepository)
+    private readonly lectureRepo: LectureRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -69,6 +72,10 @@ class SubjectService {
 
   async getClassAttendance(subject_id: string, date: string) {
     return this.attendanceRepo.getClassAttendance(subject_id, date);
+  }
+
+  async getValidLectureDates(teacher_id: string, subject_id: string) {
+    return this.lectureRepo.getValidLectureDates(teacher_id, subject_id);
   }
 }
 

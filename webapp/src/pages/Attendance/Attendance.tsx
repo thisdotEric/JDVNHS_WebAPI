@@ -7,6 +7,8 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useCurrentUser } from '../../hooks';
+import AttendanceAction from './AttendanceAction';
 
 interface AttendanceProps {}
 
@@ -18,10 +20,48 @@ interface Attendance {
   status: 'present' | 'absent' | 'excused';
 }
 
+function Cell() {
+  return <p>JOhn ERic</p>;
+}
+
+const columnDefs = [
+  {
+    field: 'LRN',
+    headerName: 'LRN',
+  },
+  {
+    field: 'first_name',
+    headerName: 'First Name',
+  },
+  {
+    field: 'middle_name',
+    headerName: 'Middle Name',
+  },
+  {
+    field: 'last_name',
+    headerName: 'Last Name',
+  },
+  {
+    field: 'status',
+    headerName: 'Attendance',
+  },
+  {
+    headerName: 'Action',
+    cellRendererFramework: (params: any) => {
+      return <AttendanceAction />;
+    },
+  },
+];
+
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
+  const [columns, setColumns] = useState(columnDefs);
   const [attendanceList, setAttendanceList] = useState<Attendance[]>();
   const selectedSubject = useContext(SubjectContext);
   const [attendanceDate, setAttendanceDate] = useState<Date>(new Date());
+  const [validLectureDates, setValidLectureDates] =
+    useState<{ lecture_date: Date }[]>();
+
+  const user = useCurrentUser();
 
   useEffect(() => {
     // Format date in accordance to servers expected date (yyyy-MM-dd)
@@ -32,6 +72,12 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         day: '2-digit',
       })
       .replaceAll('/', '-');
+
+    axios
+      .get(`subject/${selectedSubject}/lecture-dates?teacher=${user?.user_id}`)
+      .then(({ data }) => {
+        setValidLectureDates(data.data);
+      });
 
     axios
       .get(`subject/${selectedSubject}/attendance/${date}`)
@@ -57,6 +103,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       >
         <AgGridReact
           rowData={attendanceList}
+          columnDefs={columns}
           pagination={true}
           rowSelection={'single'}
           enableCellChangeFlash={true}
@@ -69,13 +116,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
             filter: true,
             resizable: true,
           }}
-        >
-          <AgGridColumn field="LRN" headerName="LRN" />
-          <AgGridColumn field="first_name" headerName="First Name" />
-          <AgGridColumn field="middle_name" headerName="Middle Name" />
-          <AgGridColumn field="last_name" headerName="Last Name" />
-          <AgGridColumn field="status" headerName="Attendance" />
-        </AgGridReact>
+        ></AgGridReact>
       </div>
     </>
   );

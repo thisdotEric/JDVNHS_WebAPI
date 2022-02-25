@@ -7,63 +7,92 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { useCurrentUser } from '../../hooks';
-import AttendanceAction from './AttendanceAction';
 
 interface AttendanceProps {}
+
+export type AttendanceStatus = 'present' | 'absent' | 'excused';
 
 interface Attendance {
   LRN: string;
   first_name: string;
   middle_name: string;
   last_name: string;
-  status: 'present' | 'absent' | 'excused';
+  status: AttendanceStatus;
 }
-
-function Cell() {
-  return <p>JOhn ERic</p>;
-}
-
-const columnDefs = [
-  {
-    field: 'LRN',
-    headerName: 'LRN',
-  },
-  {
-    field: 'first_name',
-    headerName: 'First Name',
-  },
-  {
-    field: 'middle_name',
-    headerName: 'Middle Name',
-  },
-  {
-    field: 'last_name',
-    headerName: 'Last Name',
-  },
-  {
-    field: 'status',
-    headerName: 'Attendance',
-  },
-  {
-    headerName: 'Action',
-    cellRendererFramework: (params: any) => {
-      return <AttendanceAction />;
-    },
-  },
-];
 
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
-  const [columns, setColumns] = useState(columnDefs);
-  const [attendanceList, setAttendanceList] = useState<Attendance[]>();
+  const [attendanceList, setAttendanceList] = useState<
+    Attendance & { lecture_id: number }[]
+  >();
   const selectedSubject = useContext(SubjectContext);
   const [attendanceDate, setAttendanceDate] = useState<Date>(new Date());
-  const [validLectureDates, setValidLectureDates] =
-    useState<{ lecture_date: Date }[]>();
+  // const [validLectureDates, setValidLectureDates] =
+  //   useState<{ lecture_date: Date }[]>();
 
-  const user = useCurrentUser();
+  const [columns] = useState([
+    {
+      field: 'LRN',
+      headerName: 'LRN',
+    },
+    {
+      field: 'first_name',
+      headerName: 'First Name',
+    },
+    {
+      field: 'middle_name',
+      headerName: 'Middle Name',
+    },
+    {
+      field: 'last_name',
+      headerName: 'Last Name',
+    },
+    {
+      field: 'status',
+      headerName: 'Attendance',
+    },
+    {
+      field: 'lecture_id',
+      headerName: 'Lecture_id',
+      hide: true,
+      default: 13,
+    },
+    {
+      headerName: 'Action',
+      cellRendererFramework: (params: any) => {
+        const [status] = useState<AttendanceStatus[]>([
+          'present',
+          'excused',
+          'absent',
+        ]);
 
-  useEffect(() => {
+        return (
+          <div>
+            {status.map(stat => (
+              <button
+                key={stat}
+                onClick={async () => {
+                  const LRN = params.data.LRN;
+                  const lecture_id = params.data.lecture_id;
+
+                  await axios.patch(
+                    `subject/${selectedSubject}/${lecture_id}/attendance`,
+                    {
+                      LRN,
+                      newStatus: stat,
+                    },
+                  );
+                }}
+              >
+                {stat}
+              </button>
+            ))}
+          </div>
+        );
+      },
+    },
+  ]);
+
+  const fetchStudentsAttendance = () => {
     // Format date in accordance to servers expected date (yyyy-MM-dd)
     let date = attendanceDate
       .toLocaleDateString('zh-Hans-CN', {
@@ -74,17 +103,30 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       .replaceAll('/', '-');
 
     axios
-      .get(`subject/${selectedSubject}/lecture-dates?teacher=${user?.user_id}`)
-      .then(({ data }) => {
-        setValidLectureDates(data.data);
-      });
-
-    axios
       .get(`subject/${selectedSubject}/attendance/${date}`)
       .then(({ data }) => {
-        setAttendanceList(data.data.attendance);
+        setAttendanceList(() => {
+          return data.data.attendance.map((at: any) => ({
+            ...at,
+            lecture_id: data.data.lecture_id,
+          }));
+        });
       });
+  };
+
+  useEffect(() => {
+    fetchStudentsAttendance();
+
+    // axios
+    //   .get(`subject/${selectedSubject}/lecture-dates?teacher=${user?.user_id}`)
+    //   .then(({ data }) => {
+    //     setValidLectureDates(data.data);
+    //   });
   }, [selectedSubject, attendanceDate]);
+
+  useEffect(() => {
+    fetchStudentsAttendance();
+  }, []);
 
   return (
     <>

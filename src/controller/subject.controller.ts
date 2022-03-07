@@ -54,13 +54,17 @@ class SubjectController extends BaseHttpController {
     const lecture_date = `${req.params.date}`;
     const subject_id = `${req.params.subject_name}`;
 
-    const attendance = await this.subjectService.getClassAttendance(
-      subject_id,
-      lecture_date
-    );
+    try {
+      const attendance = await this.subjectService.getClassAttendance(
+        subject_id,
+        lecture_date
+      );
 
-    const response = JsonResponse.success(attendance, 200);
-    res.status(response.statusCode).send(response);
+      const response = JsonResponse.success(attendance, 200);
+      res.status(response.statusCode).send(response);
+    } catch (error) {
+      res.status(404).send('Not Found');
+    }
   }
 
   @httpPatch('/:subject_name/:lecture_id/attendance')

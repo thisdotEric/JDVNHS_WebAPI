@@ -8,6 +8,7 @@ import { SubjectContext } from '../../context';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
+import { AddAttendance } from './AddAttendance';
 
 interface AttendanceProps {}
 
@@ -182,7 +183,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
           ></AgGridReact>
         </div>
       ) : (
-        <p>John</p>
+        <AddAttendance />
       )}
     </>
   );

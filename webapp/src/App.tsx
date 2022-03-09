@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Attendance } from './pages/Attendance';
 import { NotFound } from './pages/404';
 import { ProtectedRoutes } from './components/ProtectedRoutes';
+import { Scores } from './pages/Scores';
 
 interface AppProps {}
 
@@ -19,6 +20,7 @@ function App({}: AppProps) {
           <Route path="/t" element={<Dashboard />}>
             <Route path="students" element={<Students />} />
             <Route path="attendance" element={<Attendance />} />
+            <Route path="assessments" element={<Scores />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoutes hasAccess="student" />}>

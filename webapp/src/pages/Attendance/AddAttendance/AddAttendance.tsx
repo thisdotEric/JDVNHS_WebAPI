@@ -1,6 +1,6 @@
 import { AgGridReact } from 'ag-grid-react';
-import React, { FC, useEffect, useState, useRef } from 'react';
-// import './AddAttendance.scss';
+import React, { FC, useEffect, useState, useRef, useReducer } from 'react';
+import './AddAttendance.scss';
 import { attendanceColumns } from '../columns';
 import { axios } from '../../../utils';
 
@@ -12,11 +12,39 @@ const updatedAttendanceColumns = attendanceColumns.map(header => {
   return header;
 });
 
-export interface Attendance {
+type AttendanceStatus = 'present' | 'absent' | 'excused';
+
+interface AttendanceAction {
+  type: AttendanceStatus;
+}
+
+interface Attendance {
   lecture_id: number;
   LRN: string;
-  status: 'present' | 'absent' | 'excused';
+  status: AttendanceStatus;
 }
+
+function addAttendanceReducer(state: number[], action: AttendanceAction) {
+  switch (action.type) {
+    case 'absent':
+      return [2];
+    default:
+      return state;
+  }
+}
+
+// function loginReducer(state: UserCredentials, action: LoginAction) {
+//   switch (action.type) {
+//     case 'user_id':
+//       return { ...state, user_id: action.payload };
+
+//     case 'password':
+//       return { ...state, password: action.payload };
+
+//     default:
+//       return state;
+//   }
+// }
 
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
   const [columns] = useState([
@@ -54,6 +82,7 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
 
   const [students, setStudents] = useState();
   const gridRef = useRef(null);
+  const [attendance, dispatch] = useReducer(addAttendanceReducer, [10]);
 
   // Add record every click using useReducer
   const [newAttendanceList, setNewAttendanceList] = useState<Attendance[]>();
@@ -67,8 +96,11 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
   return (
     <div className="add-attendance">
       <button
-        onClick={() => {
-          console.log(students);
+        onClick={async () => {
+          axios.post('subject/PreCal/attendance', {
+            attendance: 'hello',
+            attendance_date: '2021-12-16',
+          });
         }}
       >
         Save

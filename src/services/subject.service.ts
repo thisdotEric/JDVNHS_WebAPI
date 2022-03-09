@@ -44,6 +44,10 @@ class SubjectService {
     return this.scoresRepo.getScoresByAssessmentId(assessment_id);
   }
 
+  async getAssessmentInfo(assessment_id: number) {
+    return this.scoresRepo.getAssessmentInfo(assessment_id);
+  }
+
   async getAttendanceByLectureId(lecture_id: number) {
     return this.attendanceRepo.getAttendanceByLectureId(lecture_id);
   }

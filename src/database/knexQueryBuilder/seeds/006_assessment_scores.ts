@@ -5,10 +5,16 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(DbConstants.SCORES_TABLE).del();
   await knex(DbConstants.ASSESSMENT_TABLE).del();
 
-  await knex(DbConstants.ASSESSMENT_TABLE).insert([
+  const assessments = [
     { date: '2021-12-15', subject_id: 'PreCal', items: 50, component: 'WW' },
+    { date: '2022-01-10', subject_id: 'PreCal', items: 20, component: 'QA' },
+    { date: '2022-01-15', subject_id: 'PreCal', items: 5, component: 'PT' },
+    { date: '2022-02-15', subject_id: 'PreCal', items: 15, component: 'WW' },
+    { date: '2022-03-05', subject_id: 'PreCal', items: 30, component: 'WW' },
     { date: '2021-12-15', subject_id: 'MMW1', items: 100, component: 'PT' },
-  ]);
+  ];
+
+  await knex(DbConstants.ASSESSMENT_TABLE).insert(assessments);
 
   const assessment_ids = await knex(DbConstants.ASSESSMENT_TABLE).select(
     'assessment_id'
@@ -18,7 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
 
   // Seed 20 students
   const start = 10;
-  const end = 20;
+  const end = 50;
 
   let LRN: string = '';
 
@@ -28,14 +34,42 @@ export async function seed(knex: Knex): Promise<void> {
       assessment_id: assessment_ids[0].assessment_id,
       grading_period: 1,
       LRN,
-      score: Math.floor(Math.random() * 50) + 1,
+      score: Math.floor(Math.random() * assessments[0].items) + 1,
     });
 
     studentScores.push({
       assessment_id: assessment_ids[1].assessment_id,
       grading_period: 1,
       LRN,
-      score: Math.floor(Math.random() * 100) + 1,
+      score: Math.floor(Math.random() * assessments[1].items) + 1,
+    });
+
+    studentScores.push({
+      assessment_id: assessment_ids[2].assessment_id,
+      grading_period: 1,
+      LRN,
+      score: Math.floor(Math.random() * assessments[2].items) + 1,
+    });
+
+    studentScores.push({
+      assessment_id: assessment_ids[3].assessment_id,
+      grading_period: 1,
+      LRN,
+      score: Math.floor(Math.random() * assessments[3].items) + 1,
+    });
+
+    studentScores.push({
+      assessment_id: assessment_ids[4].assessment_id,
+      grading_period: 1,
+      LRN,
+      score: Math.floor(Math.random() * assessments[4].items) + 1,
+    });
+
+    studentScores.push({
+      assessment_id: assessment_ids[5].assessment_id,
+      grading_period: 1,
+      LRN,
+      score: Math.floor(Math.random() * assessments[5].items) + 1,
     });
   }
 

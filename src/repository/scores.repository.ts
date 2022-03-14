@@ -23,6 +23,15 @@ class AssessmentScoresRepository {
 
     return assessmentInfo;
   }
+
+  async getAllAssessmentInfo(subject_id: string) {
+    const assessmentInfo = await this.db
+      .getDbInstance()(ASSESSMENT)
+      .where({ subject_id })
+      .orderBy('date', 'desc');
+
+    return assessmentInfo;
+  }
 }
 
 export default AssessmentScoresRepository;

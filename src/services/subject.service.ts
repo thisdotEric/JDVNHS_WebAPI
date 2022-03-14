@@ -80,6 +80,10 @@ class SubjectService {
 
   async getValidLectureDates(teacher_id: string, subject_id: string) {
     return this.lectureRepo.getValidLectureDates(teacher_id, subject_id);
+  }  
+  
+  async getAllAssessmentsInfo(subject_id: string) {
+    return this.scoresRepo.getAllAssessmentInfo(subject_id)
   }
 }
 

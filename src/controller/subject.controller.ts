@@ -138,31 +138,7 @@ class SubjectController extends BaseHttpController {
       assessment_id
     );
 
-    const filteredScores = scores.map(score => {
-      return {
-        LRN: score.LRN,
-        score: score.score,
-        score_id: score.score_id,
-      };
-    });
-
-    // TODO: paginate results (maybe by month)
-
-    console.log(
-      filteredScores,
-      scores[0].assessment_id,
-      scores[0].grading_period
-    );
-
-    const assessmentInfo = await this.subjectService.getAssessmentInfo(
-      scores[0].assessment_id
-    );
-    console.log(assessmentInfo);
-
-    const response = JsonResponse.success(
-      { scores: filteredScores, assessmentInfo },
-      200
-    );
+    const response = JsonResponse.success(scores, 200);
     res.status(response.statusCode).send(response);
   }
 

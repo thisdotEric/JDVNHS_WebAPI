@@ -1,3 +1,19 @@
 .scores {
   background: transparent;
+
+  .scores-accordion {
+    div {
+      cursor: pointer;
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+        background-color: turquoise;
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
 }

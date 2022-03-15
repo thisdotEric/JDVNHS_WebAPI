@@ -77,7 +77,8 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         <p>Grade Level: {subjectStats?.gradeLevel}</p>
       </div>
 
-      <button
+      {/* Disable for now the remove student buttons */}
+      {/* <button
         disabled={selectedStudent === undefined}
         onClick={() => {
           confirmAlert({
@@ -97,7 +98,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         }}
       >
         Remove student from class
-      </button>
+      </button> */}
 
       <div
         className="ag-theme-balham"

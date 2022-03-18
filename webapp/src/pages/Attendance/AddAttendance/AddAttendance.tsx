@@ -1,21 +1,21 @@
-import { AgGridReact } from 'ag-grid-react';
-import React, { FC, useEffect, useState, useRef, useReducer } from 'react';
+import React, { FC, useContext, useEffect, useState, useReducer } from 'react';
+import { useParams } from 'react-router-dom';
 import './AddAttendance.scss';
-import { attendanceColumns } from '../columns';
 import { axios } from '../../../utils';
+import { SubjectContext } from '../../../context';
+import useSetPageTitle from '../../../hooks/useSetPageTitle';
 
 interface AddAttendanceProps {}
-
-const updatedAttendanceColumns = attendanceColumns.map(header => {
-  if (header.headerName === 'LRN') header.field = 'user_id';
-
-  return header;
-});
 
 type AttendanceStatus = 'present' | 'absent' | 'excused';
 
 interface AttendanceAction {
   type: AttendanceStatus;
+  payload: string;
+}
+
+interface AttendanceState {
+  attendance: Attendance[];
 }
 
 interface Attendance {
@@ -24,111 +24,105 @@ interface Attendance {
   status: AttendanceStatus;
 }
 
-function addAttendanceReducer(state: number[], action: AttendanceAction) {
-  switch (action.type) {
-    case 'absent':
-      return [2];
-    default:
-      return state;
-  }
+interface AttendanceActionProps {
+  index: number;
+  dispatch: React.Dispatch<AttendanceAction>;
+  LRN: string;
 }
 
-// function loginReducer(state: UserCredentials, action: LoginAction) {
-//   switch (action.type) {
-//     case 'user_id':
-//       return { ...state, user_id: action.payload };
+const AttendanceAction: FC<AttendanceActionProps> = ({
+  index,
+  dispatch,
+  LRN,
+}: AttendanceActionProps) => {
+  return (
+    <div>
+      <input
+        onClick={() => {
+          dispatch({
+            type: 'present',
+            payload: LRN,
+          });
+        }}
+        type="radio"
+        name={`attendance${index}`}
+        id="present"
+      />
+      <label htmlFor="absent">Present</label>{' '}
+      <input type="radio" name={`attendance${index}`} id="absent" />
+      <label htmlFor="absent">Absent</label>{' '}
+      <input type="radio" name={`attendance${index}`} id="excused" />
+      <label htmlFor="excused">Excused</label>
+    </div>
+  );
+};
 
-//     case 'password':
-//       return { ...state, password: action.payload };
+function attendanceReducer(state: AttendanceState, action: AttendanceAction) {
+  switch (action.type) {
+    case 'present':
+      console.log(action.payload);
+      return { ...state };
+  }
 
-//     default:
-//       return state;
-//   }
-// }
+  return state;
+}
 
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
-  const [columns] = useState([
-    ...updatedAttendanceColumns,
-    {
-      headerName: 'Action',
-      cellRendererFramework: (params: any) => (
-        <>
-          <div className="attendance-action-column">
-            <input
-              type="radio"
-              name={`attendance${params.rowIndex}`}
-              id="present"
-            />
-            <label htmlFor="present">Present</label>
+  const [students, setStudents] = useState<any[]>();
+  const [newAttendance, dispatch] = useReducer(attendanceReducer, {
+    attendance: [],
+  });
 
-            <input
-              type="radio"
-              name={`attendance${params.rowIndex}`}
-              id="absent"
-            />
-            <label htmlFor="absent">Absent</label>
+  const selectedSubject = useContext(SubjectContext);
 
-            <input
-              type="radio"
-              name={`attendance${params.rowIndex}`}
-              id="excused"
-            />
-            <label htmlFor="excused">Excused</label>
-          </div>
-        </>
-      ),
-    },
-  ]);
-
-  const [students, setStudents] = useState();
-  const gridRef = useRef(null);
-  const [attendance, dispatch] = useReducer(addAttendanceReducer, [10]);
-
-  // Add record every click using useReducer
-  const [newAttendanceList, setNewAttendanceList] = useState<Attendance[]>();
+  let params = useParams();
+  useSetPageTitle('John Eric Mendoza Siguenza');
 
   useEffect(() => {
-    axios.get(`subject/PreCal/students`).then(({ data }) => {
+    axios.get('subject/PreCal/students').then(({ data }) => {
       setStudents(data.data);
     });
   }, []);
 
   return (
-    <div className="add-attendance">
+    <div>
       <button
-        onClick={async () => {
-          axios.post('subject/PreCal/attendance', {
-            attendance: 'hello',
-            attendance_date: '2021-12-16',
-          });
+        onClick={() => {
+          console.log(newAttendance);
         }}
       >
-        Save
+        Save Attendance
       </button>
-      <div
-        className="ag-theme-balham"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={students}
-          ref={gridRef}
-          columnDefs={columns}
-          pagination={true}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          pinnedTopRowData={[]}
-          pinnedBottomRowData={[]}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
+
+      <div className="add-attendance">
+        <table>
+          <thead>
+            <th>LRN</th>
+            <th>Full Name</th>
+            <th>Attendance</th>
+          </thead>
+          <tbody>
+            {students &&
+              students.map((student, index) => {
+                return (
+                  <tr>
+                    <td>{student.user_id}</td>
+                    <td>
+                      {student.first_name} {student.middle_name}{' '}
+                      {student.last_name}{' '}
+                    </td>
+                    <td>
+                      <AttendanceAction
+                        index={index}
+                        dispatch={dispatch}
+                        LRN={student.user_id}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

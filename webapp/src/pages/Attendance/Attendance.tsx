@@ -9,6 +9,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
 import { AddAttendance } from './AddAttendance';
+import { useNavigate } from 'react-router-dom';
 
 interface AttendanceProps {}
 
@@ -55,6 +56,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   const [attendanceDate, setAttendanceDate] = useState<Date>(new Date());
   const [showMainAttendanceTable, setAttendanceTable] = useState<boolean>(true);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
+  const navigate = useNavigate();
 
   const [columns] = useState([
     ...attendanceColumns,
@@ -152,7 +154,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       />
       <button
         onClick={() => {
-          setAttendanceTable(!showMainAttendanceTable);
+          navigate('/t/attendance/new/johneric');
         }}
       >
         Create new attendance

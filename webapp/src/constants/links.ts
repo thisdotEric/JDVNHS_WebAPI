@@ -16,6 +16,10 @@ const teacherNavigations: ILink[] = [
     name: 'Students',
   },
   {
+    to: '/t/lectures',
+    name: 'Lectures',
+  },
+  {
     to: '/t/attendance',
     name: 'Attendance',
   },

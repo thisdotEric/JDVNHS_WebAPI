@@ -1,0 +1,23 @@
+#lectures {
+  .lecture-list {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    border-radius: 10px;
+
+    p {
+      color: turquoise;
+    }
+
+    .actions {
+      button {
+        padding: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+}

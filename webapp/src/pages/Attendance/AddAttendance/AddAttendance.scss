@@ -1,7 +1,12 @@
 .add-attendance {
-  .attendance-action-column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
   }
 }

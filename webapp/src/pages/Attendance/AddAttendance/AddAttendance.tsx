@@ -4,91 +4,65 @@ import './AddAttendance.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
 import useSetPageTitle from '../../../hooks/useSetPageTitle';
+import AttendanceActionColumn from './AttendanceActionColumn';
 
 interface AddAttendanceProps {}
 
-type AttendanceStatus = 'present' | 'absent' | 'excused';
+export type AttendanceStatus = 'present' | 'absent' | 'excused';
 
-interface AttendanceAction {
+export interface AttendanceAction {
   type: AttendanceStatus;
   payload: string;
 }
 
-interface AttendanceState {
-  attendance: Attendance[];
-}
-
 interface Attendance {
-  lecture_id: number;
   LRN: string;
   status: AttendanceStatus;
 }
 
-interface AttendanceActionProps {
-  index: number;
-  dispatch: React.Dispatch<AttendanceAction>;
-  LRN: string;
-}
-
-const AttendanceAction: FC<AttendanceActionProps> = ({
-  index,
-  dispatch,
-  LRN,
-}: AttendanceActionProps) => {
-  return (
-    <div>
-      <input
-        onClick={() => {
-          dispatch({
-            type: 'present',
-            payload: LRN,
-          });
-        }}
-        type="radio"
-        name={`attendance${index}`}
-        id="present"
-      />
-      <label htmlFor="absent">Present</label>{' '}
-      <input type="radio" name={`attendance${index}`} id="absent" />
-      <label htmlFor="absent">Absent</label>{' '}
-      <input type="radio" name={`attendance${index}`} id="excused" />
-      <label htmlFor="excused">Excused</label>
-    </div>
-  );
-};
-
-function attendanceReducer(state: AttendanceState, action: AttendanceAction) {
-  switch (action.type) {
-    case 'present':
-      console.log(action.payload);
-      return { ...state };
-  }
-
-  return state;
-}
-
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
   const [students, setStudents] = useState<any[]>();
-  const [newAttendance, dispatch] = useReducer(attendanceReducer, {
-    attendance: [],
-  });
+  const [attendance, setAttendance] = useState<Attendance[]>([]);
 
-  const selectedSubject = useContext(SubjectContext);
-
-  let params = useParams();
-  useSetPageTitle('John Eric Mendoza Siguenza');
+  let { lecture_id } = useParams();
+  useSetPageTitle('Create New Attendance');
 
   useEffect(() => {
     axios.get('subject/PreCal/students').then(({ data }) => {
+      // Set table data
       setStudents(data.data);
+
+      // Setup the initial attendance
+      const a = data.data.map((s: any) => {
+        return {
+          LRN: s.user_id,
+          status: 'present',
+        };
+      });
+
+      setAttendance(a);
     });
   }, []);
+
+  const updateAttendance = (status: AttendanceStatus, LRN: string) => {
+    setAttendance(
+      attendance.map(at => {
+        if (at.LRN === LRN) at.status = status;
+        return at;
+      }),
+    );
+  };
 
   return (
     <div>
       <button
-        onClick={() => {
-          console.log(newAttendance);
+        onClick={async () => {
+          console.log(attendance);
+
+          await axios.post('subject/PreCal/attendance', {
+            attendance,
+            lecture_id: lecture_id,
+          });
         }}
       >
         Save Attendance
@@ -97,9 +71,11 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
       <div className="add-attendance">
         <table>
           <thead>
-            <th>LRN</th>
-            <th>Full Name</th>
-            <th>Attendance</th>
+            <tr>
+              <th>LRN</th>
+              <th>Student Name</th>
+              <th>Attendance</th>
+            </tr>
           </thead>
           <tbody>
             {students &&
@@ -112,9 +88,9 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
                       {student.last_name}{' '}
                     </td>
                     <td>
-                      <AttendanceAction
+                      <AttendanceActionColumn
                         index={index}
-                        dispatch={dispatch}
+                        dispatch={updateAttendance}
                         LRN={student.user_id}
                       />
                     </td>

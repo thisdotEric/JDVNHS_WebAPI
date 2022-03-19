@@ -21,44 +21,12 @@ export interface LectureInfo {
 class AttendanceRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
-  private async insertNewLecture({
-    lecture_date,
-    subject_id,
-    grading_period,
-  }: LectureInfo) {
-    const lecture_id = await this.db
-      .getDbInstance()(DbConstants.LECTURE_TABLE)
-      .insert({
-        lecture_date,
-        subject_id,
-        grading_period,
-      })
-      .returning('lecture_id');
-
-    return lecture_id;
-  }
-
-  async addNewAttendanceRecord(
-    attendancelist: Attendance[],
-    lecture_info: LectureInfo
-  ) {
-    const lecture_id = await this.insertNewLecture({
-      ...lecture_info,
-      grading_period: 1,
-    });
-
-    const generated_lecture_id = lecture_id[0];
-
-    attendancelist = attendancelist.map(attendance => ({
-      ...attendance,
-      lecture_id: generated_lecture_id,
-    }));
+  async addNewAttendanceRecord(attendancelist: Attendance[]) {
+    // Check if lecture id is valid
 
     await this.db
       .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
       .insert(attendancelist);
-
-    return generated_lecture_id;
   }
 
   async getAttendanceByLectureId(lecture_id: number) {

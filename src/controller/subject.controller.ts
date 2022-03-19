@@ -13,6 +13,7 @@ import { Request, Response } from 'express';
 import JsonResponse from '../utils/JsonResponse';
 import SubjectService from '../services/subject.service';
 import TYPES from '../ioc/binding-types';
+import { Attendance } from '../repository/attendance.repository';
 
 @controller('/subject', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 class SubjectController extends BaseHttpController {
@@ -89,13 +90,18 @@ class SubjectController extends BaseHttpController {
     @request() req: Request,
     @response() res: Response
   ) {
-    const { attendance, attendance_date } = req.body;
+    const { attendance, lecture_id } = req.body;
     const subject_id = `${req.params.subject_name}`;
 
-    await this.subjectService.addNewAttendanceRecord(attendance, {
-      subject_id,
-      lecture_date: attendance_date,
+    const attendanceWithLectureId = attendance.map((at: any) => {
+      return {
+        lecture_id,
+        LRN: at.LRN,
+        status: at.status,
+      };
     });
+
+    await this.subjectService.addNewAttendanceRecord(attendanceWithLectureId);
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
@@ -182,6 +188,16 @@ class SubjectController extends BaseHttpController {
     );
 
     const response = JsonResponse.success(allAssessments, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/lectures')
+  async getAllLectures(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allLectures = await this.subjectService.getAllLectures(subject_id);
+
+    const response = JsonResponse.success(allLectures, 200);
     res.status(response.statusCode).send(response);
   }
 }

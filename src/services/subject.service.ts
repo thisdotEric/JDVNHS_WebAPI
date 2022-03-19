@@ -52,14 +52,8 @@ class SubjectService {
     return this.attendanceRepo.getAttendanceByLectureId(lecture_id);
   }
 
-  async addNewAttendanceRecord(
-    attendancelist: Attendance[],
-    lecture_info: LectureInfo
-  ) {
-    return this.attendanceRepo.addNewAttendanceRecord(
-      attendancelist,
-      lecture_info
-    );
+  async addNewAttendanceRecord(attendancelist: Attendance[]) {
+    return this.attendanceRepo.addNewAttendanceRecord(attendancelist);
   }
 
   async getEnrolledStudentCount(subject_id: string) {
@@ -80,10 +74,14 @@ class SubjectService {
 
   async getValidLectureDates(teacher_id: string, subject_id: string) {
     return this.lectureRepo.getValidLectureDates(teacher_id, subject_id);
-  }  
-  
+  }
+
   async getAllAssessmentsInfo(subject_id: string) {
-    return this.scoresRepo.getAllAssessmentInfo(subject_id)
+    return this.scoresRepo.getAllAssessmentInfo(subject_id);
+  }
+
+  async getAllLectures(subject_id: string) {
+    return this.lectureRepo.getAllLectures(subject_id);
   }
 }
 

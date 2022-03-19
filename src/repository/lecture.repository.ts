@@ -22,6 +22,15 @@ class LectureRepository {
 
     return lecture_dates;
   }
+
+  async getAllLectures(subject_id: string) {
+    const lectures = await this.db
+      .getDbInstance()(LECTURES)
+      .where({ subject_id })
+      .select('*');
+
+    return lectures;
+  }
 }
 
 export default LectureRepository;

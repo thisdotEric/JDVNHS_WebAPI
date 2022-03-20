@@ -5,11 +5,10 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
-import { AddAttendance } from './AddAttendance';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AttendanceDetails } from './AttendanceDetails';
 
 interface AttendanceProps {}
 
@@ -30,6 +29,12 @@ interface UpdateAttendanceProp {
     table: any,
     updatedAttendance: AttendanceStatus,
   ) => Promise<void>;
+}
+
+export interface AttendanceDetails {
+  presents: number;
+  absents: number;
+  excused: number;
 }
 
 const UpdateAttendance = ({
@@ -53,9 +58,11 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     Attendance & { lecture_id: number }[]
   >();
   const selectedSubject = useContext(SubjectContext);
-  const [attendanceDate, setAttendanceDate] = useState<Date>(new Date());
   const [showMainAttendanceTable, setAttendanceTable] = useState<boolean>(true);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
+  const [attendanceDetails, setAttendanceDetails] =
+    useState<AttendanceDetails>();
+  const params = useParams();
   const navigate = useNavigate();
 
   const [columns] = useState([
@@ -97,9 +104,13 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     updatedAttendance: AttendanceStatus,
   ) => {
     const LRN = table.data.LRN;
-    const lecture_id = table.data.lecture_id;
+    let lecture_id: string | null = params.id!;
 
-    await axios.patch(`subject/${selectedSubject}/${lecture_id}/attendance`, {
+    if (!lecture_id) {
+      lecture_id = localStorage.getItem('lecture_id');
+    }
+
+    await axios.patch(`subject/${selectedSubject}/attendance/${lecture_id}`, {
       LRN,
       newStatus: updatedAttendance,
     });
@@ -108,86 +119,108 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     setAttendanceUpdate(Math.random());
   };
 
-  const fetchStudentsAttendance = () => {
-    // Format date in accordance to servers expected date (yyyy-MM-dd)
-    let date = attendanceDate
-      .toLocaleDateString('zh-Hans-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
-      .replaceAll('/', '-');
+  const fetchStudentsAttendance = (isLatest: boolean = false) => {
+    const id = isLatest ? 'latest' : params.id;
 
-    if (!selectedSubject) {
-      console.log('Subject is still undefined');
-    } else
-      axios
-        .get(`subject/${selectedSubject}/attendance/${date}`)
-        .then(({ data }) => {
-          setAttendanceList(() => {
-            return data.data.attendance.map((at: any) => ({
-              ...at,
-              lecture_id: data.data.lecture_id,
-            }));
-          });
-        })
-        .catch(err => {
-          console.log('Not Found');
-        });
+    axios
+      .get(`subject/${selectedSubject}/attendance?id=${id}`)
+      .then(({ data }) => {
+        setAttendanceList(data.data.attendance);
+
+        // Save the lecture id
+        localStorage.setItem('lecture_id', data.data.lecture_id);
+
+        deriveAttendanceDetails(data.data.attendance);
+      })
+      .catch(err => {
+        console.log('Not Found');
+      });
+  };
+
+  const deriveAttendanceDetails = (attendance: any[]) => {
+    let presents = 0;
+    let excused = 0;
+    let absents = 0;
+
+    attendance.forEach(at => {
+      if (at.status === 'present') presents++;
+      if (at.status === 'absent') absents++;
+      if (at.status === 'excused') excused++;
+    });
+
+    setAttendanceDetails({
+      presents,
+      absents,
+      excused,
+    });
   };
 
   useEffect(() => {
-    fetchStudentsAttendance();
-  }, [selectedSubject, attendanceDate, attendanceUpdate]);
+    let isLatest = false;
+
+    if (!params.id) isLatest = true;
+
+    fetchStudentsAttendance(isLatest);
+  }, [attendanceUpdate]);
 
   useEffect(() => {
-    fetchStudentsAttendance();
+    let isLatest = false;
+
+    if (!params.id) isLatest = true;
+
+    fetchStudentsAttendance(isLatest);
   }, []);
 
   return (
-    <>
-      <Calendar
-        onChange={setAttendanceDate}
-        value={attendanceDate}
-        calendarType="Hebrew"
-        tileDisabled={({ activeStartDate, date, view }) => date.getDay() === 0}
-      />
-      <button
-        onClick={() => {
-          navigate('/t/attendance/new/johneric');
-        }}
-      >
-        Create new attendance
-      </button>
+    <div className="attendance">
+      {attendanceDetails && (
+        <AttendanceDetails
+          presents={attendanceDetails.presents}
+          absents={attendanceDetails.absents}
+          excused={attendanceDetails.excused}
+        />
+      )}
+
       {showMainAttendanceTable ? (
-        <div
-          className="ag-theme-balham"
-          id="student-table"
-          style={{
-            height: '550px',
-          }}
-        >
-          <AgGridReact
-            rowData={attendanceList}
-            columnDefs={columns}
-            pagination={true}
-            rowSelection={'single'}
-            enableCellChangeFlash={true}
-            pinnedTopRowData={[]}
-            pinnedBottomRowData={[]}
-            defaultColDef={{
-              sortable: true,
-              flex: 1,
-              minWidth: 100,
-              filter: true,
-              resizable: true,
+        <div>
+          <button
+            id="change-attendance"
+            onClick={() => {
+              navigate('/t/lectures');
             }}
-          ></AgGridReact>
+          >
+            Select another attendance
+          </button>
+
+          <div
+            className="ag-theme-balham"
+            id="student-table"
+            style={{
+              height: '550px',
+            }}
+          >
+            <AgGridReact
+              rowData={attendanceList}
+              columnDefs={columns}
+              pagination={true}
+              rowSelection={'single'}
+              enableCellChangeFlash={true}
+              pinnedTopRowData={[]}
+              pinnedBottomRowData={[]}
+              defaultColDef={{
+                sortable: true,
+                flex: 1,
+                minWidth: 100,
+                filter: true,
+                resizable: true,
+              }}
+            ></AgGridReact>
+          </div>
         </div>
       ) : (
-        <AddAttendance />
+        <p>Loading</p>
       )}
-    </>
+    </div>
   );
 };
 

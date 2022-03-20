@@ -4,16 +4,16 @@ const attendanceColumns = [
     headerName: 'LRN',
   },
   {
+    field: 'last_name',
+    headerName: 'Last Name',
+  },
+  {
     field: 'first_name',
     headerName: 'First Name',
   },
   {
     field: 'middle_name',
     headerName: 'Middle Name',
-  },
-  {
-    field: 'last_name',
-    headerName: 'Last Name',
   },
   {
     field: 'status',

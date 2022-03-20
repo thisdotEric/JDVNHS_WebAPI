@@ -1,8 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import './Lectures.scss';
 import { axios } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import useSetPageTitle from '../../hooks/useSetPageTitle';
+import { SubjectContext } from '../../context';
 
 interface LecturesProps {}
 
@@ -16,14 +17,19 @@ interface Lectures {
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const [lectures, setLectures] = useState<Lectures[]>();
   const navigate = useNavigate();
+  const selectedSubject = useContext(SubjectContext);
 
   useSetPageTitle('Lectures');
 
   useEffect(() => {
-    axios.get('subject/PreCal/lectures').then(({ data }) => {
+    console.log(`subject/${selectedSubject}/lectures`);
+
+    axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
       setLectures(data.data);
+
+      console.table(data.data);
     });
-  }, []);
+  }, [selectedSubject]);
 
   return (
     <div id="lectures">
@@ -40,6 +46,20 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                   }}
                 >
                   Create New Attendance
+                </button>{' '}
+                <button
+                  onClick={() => {
+                    navigate(`/t/attendance/${lecture_id}`);
+                  }}
+                >
+                  View/Update Attendance
+                </button>
+                <button
+                  onClick={() => {
+                    navigate(`/t/attendance/new/${lecture_id}`);
+                  }}
+                >
+                  View Assessment Scores
                 </button>
               </div>
             </div>

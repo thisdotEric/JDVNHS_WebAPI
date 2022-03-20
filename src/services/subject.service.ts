@@ -83,6 +83,21 @@ class SubjectService {
   async getAllLectures(subject_id: string) {
     return this.lectureRepo.getAllLectures(subject_id);
   }
+
+  async isValidAttendance(lecture_id: number) {
+    return this.attendanceRepo.isValidAttendance(lecture_id);
+  }
+
+  async getClassAttendanceByLectureId(lecture_id: number) {
+    return this.attendanceRepo.getAttendanceByLectureId(lecture_id);
+  }
+
+  async getLatestAttendance(subject_id: string) {
+    const latestLecture_id =
+      await this.attendanceRepo.getLatestAttendanceLectureId(subject_id);
+
+    return this.attendanceRepo.getAttendanceByLectureId(latestLecture_id);
+  }
 }
 
 export default SubjectService;

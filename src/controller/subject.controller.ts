@@ -13,7 +13,6 @@ import { Request, Response } from 'express';
 import JsonResponse from '../utils/JsonResponse';
 import SubjectService from '../services/subject.service';
 import TYPES from '../ioc/binding-types';
-import { Attendance } from '../repository/attendance.repository';
 
 @controller('/subject', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 class SubjectController extends BaseHttpController {
@@ -68,7 +67,36 @@ class SubjectController extends BaseHttpController {
     }
   }
 
-  @httpPatch('/:subject_name/:lecture_id/attendance')
+  @httpGet('/:subject_name/attendance')
+  async getClassAttendance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    console.log(req.query);
+
+    if (req.query.id === 'latest') {
+      const attendance = await this.subjectService.getLatestAttendance(
+        subject_id
+      );
+
+      const response = JsonResponse.success(attendance, 200);
+      res.status(response.statusCode).send(response);
+    } else {
+      const lecture_id = parseInt(req.query.id as string, 10);
+
+      console.log('Lecture Id', lecture_id);
+
+      try {
+        const attendance =
+          await this.subjectService.getClassAttendanceByLectureId(lecture_id);
+        const response = JsonResponse.success(attendance, 200);
+        res.status(response.statusCode).send(response);
+      } catch (error) {
+        res.status(404).send('Not Found');
+      }
+    }
+  }
+
+  @httpPatch('/:subject_name/attendance/:lecture_id')
   async updateStudentAttendance(
     @request() req: Request,
     @response() res: Response

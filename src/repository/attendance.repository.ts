@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
+import { ATTENDANCE, LECTURES } from '../constant/tables';
 
 export type ATTENDANCE_STATUS = 'present' | 'absent' | 'excused';
 
@@ -29,6 +30,16 @@ class AttendanceRepository {
       .insert(attendancelist);
   }
 
+  async isValidAttendance(lecture_id: number) {
+    const res = await this.db
+      .getDbInstance()(ATTENDANCE)
+      .where({ lecture_id })
+      .select('*')
+      .limit(1);
+
+    return res.length === 1;
+  }
+
   async getAttendanceByLectureId(lecture_id: number) {
     const attendance = await this.db
       .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
@@ -44,7 +55,7 @@ class AttendanceRepository {
       .select('status', 'LRN', 'first_name', 'middle_name', 'last_name')
       .orderBy('last_name');
 
-    return attendance;
+    return { attendance, lecture_id };
   }
 
   async updateAttendance(
@@ -92,6 +103,17 @@ class AttendanceRepository {
       lecture_id: latest_lecture_date.rows[0].lecture_id,
       attendance: latest.rows,
     };
+  }
+
+  async getLatestAttendanceLectureId(subject_id: string) {
+    const latest = await this.db
+      .getDbInstance()(LECTURES)
+      .where({ subject_id })
+      .orderBy('lecture_id', 'desc')
+      .select('*')
+      .limit(1);
+
+    return latest[0].lecture_id;
   }
 
   private formatDate(date: string) {

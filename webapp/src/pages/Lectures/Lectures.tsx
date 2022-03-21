@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useContext } from 'react';
 import './Lectures.scss';
 import { axios } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import useSetPageTitle from '../../hooks/useSetPageTitle';
+import { useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 
 interface LecturesProps {}
@@ -22,8 +22,6 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   useSetPageTitle('Lectures');
 
   useEffect(() => {
-    console.log(`subject/${selectedSubject}/lectures`);
-
     axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
       setLectures(data.data);
 

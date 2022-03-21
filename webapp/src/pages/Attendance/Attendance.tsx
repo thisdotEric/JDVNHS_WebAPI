@@ -9,6 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
+import { useSetPageTitle } from '../../hooks';
 
 interface AttendanceProps {}
 
@@ -64,6 +65,8 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     useState<AttendanceDetails>();
   const params = useParams();
   const navigate = useNavigate();
+
+  useSetPageTitle('Attendance');
 
   const [columns] = useState([
     ...attendanceColumns,

@@ -7,6 +7,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
+import { useSetPageTitle } from '../../hooks';
 
 interface StudentsProps {}
 
@@ -34,6 +35,8 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
   const [gridApi, setGridApi] = useState<any>();
   const [updateTable, setUpdateTable] = useState<number>(0);
+
+  useSetPageTitle('Students');
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);

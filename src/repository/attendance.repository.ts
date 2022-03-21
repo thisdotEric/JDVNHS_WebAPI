@@ -64,10 +64,14 @@ class AttendanceRepository {
     lecture_id: string
   ) {
     await this.db
-      .getDbInstance()
-      .raw(
-        `update attendance set status = '${newStatus}' from lectures l where attendance."LRN" = '${LRN}' and l."lecture_id" = '${lecture_id}'`
-      );
+      .getDbInstance()(ATTENDANCE)
+      .update({
+        status: newStatus,
+      })
+      .where({
+        lecture_id,
+        LRN,
+      });
   }
 
   async getStudentAttendanceByMonth(month: string, LRN: string) {

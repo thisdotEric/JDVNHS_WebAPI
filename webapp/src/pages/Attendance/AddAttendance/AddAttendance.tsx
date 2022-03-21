@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './AddAttendance.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
@@ -23,6 +23,7 @@ interface Attendance {
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
   const [students, setStudents] = useState<any[]>();
   const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const navigate = useNavigate();
 
   let { lecture_id } = useParams();
   useSetPageTitle('Create New Attendance');
@@ -63,6 +64,8 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
             attendance,
             lecture_id: lecture_id,
           });
+
+          navigate('/t/lectures');
         }}
       >
         Save Attendance

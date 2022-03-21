@@ -206,6 +206,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
               rowData={attendanceList}
               columnDefs={columns}
               pagination={true}
+              // paginationPageSize={15}
               rowSelection={'single'}
               enableCellChangeFlash={true}
               pinnedTopRowData={[]}

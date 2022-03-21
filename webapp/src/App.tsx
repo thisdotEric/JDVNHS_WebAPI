@@ -9,6 +9,7 @@ import { ProtectedRoutes } from './components/ProtectedRoutes';
 import { Scores } from './pages/Scores';
 import { AddAttendance } from './pages/Attendance/AddAttendance';
 import { Lectures } from './pages/Lectures';
+import { Assessments } from './pages/Assessments';
 
 interface AppProps {}
 
@@ -26,7 +27,10 @@ function App({}: AppProps) {
               <Route path=":id" element={<Attendance />} />
               <Route path="new/:lecture_id" element={<AddAttendance />} />
             </Route>
-            <Route path="assessments" element={<Scores />} />
+            <Route path="assessments">
+              <Route path="" element={<Assessments />} />
+              <Route path="scores/:id" element={<Scores />} />
+            </Route>
             <Route path="lectures" element={<Lectures />} />
           </Route>
         </Route>

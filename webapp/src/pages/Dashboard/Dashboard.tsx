@@ -23,6 +23,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const [userSubjects, setUserSubjects] = useState<Subject[]>();
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [showDropdown, setShowDropdown] = useState<boolean>(true);
 
   const currentUser = useCurrentUser();
 
@@ -92,8 +93,6 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
                   <option value={subject_id}>{subject_name}</option>
                 ))}
             </select>
-
-            <p>Students</p>
           </div>
           <div className="content">
             <SubjectContext.Provider value={selectedSubject}>

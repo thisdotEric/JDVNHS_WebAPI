@@ -1,0 +1,18 @@
+.assessments {
+  background: transparent;
+
+  .assessment-list {
+    div {
+      cursor: pointer;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        table-layout: fixed;
+        border-spacing: 0 1em;
+        padding: 10px;
+      }
+    }
+  }
+}

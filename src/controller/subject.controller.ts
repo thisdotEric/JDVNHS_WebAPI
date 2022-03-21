@@ -46,6 +46,21 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
+  // Todo, improve route naming
+  // Do not move this piece of code
+  @httpGet('/:subject_name/attendance/valid')
+  async getValidAttendance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allLectures = await this.subjectService.getLecturesWithAttendance(
+      subject_id
+    );
+
+    const response = JsonResponse.success(allLectures, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  // Tobe removed
   @httpGet('/:subject_name/attendance/:date')
   async getStudentAttendanceByMonth(
     @request() req: Request,

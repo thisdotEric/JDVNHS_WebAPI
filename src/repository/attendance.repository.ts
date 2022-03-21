@@ -30,6 +30,16 @@ class AttendanceRepository {
       .insert(attendancelist);
   }
 
+  async getLecturesWithAttendance(subject_id: string) {
+    const allAttendance = await this.db
+      .getDbInstance()
+      .raw(
+        `select distinct l.lecture_id from lectures l join attendance a on a."lecture_id" = l."lecture_id" where l."subject_id" = '${subject_id}';`
+      );
+
+    return allAttendance.rows;
+  }
+
   async isValidAttendance(lecture_id: number) {
     const res = await this.db
       .getDbInstance()(ATTENDANCE)

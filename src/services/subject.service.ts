@@ -98,6 +98,10 @@ class SubjectService {
 
     return this.attendanceRepo.getAttendanceByLectureId(latestLecture_id);
   }
+
+  async getLecturesWithAttendance(subject_id: string) {
+    return this.attendanceRepo.getLecturesWithAttendance(subject_id);
+  }
 }
 
 export default SubjectService;

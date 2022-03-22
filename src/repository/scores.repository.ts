@@ -2,7 +2,19 @@ import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
-import { ASSESSMENT } from '../../src/constant/tables';
+import { ASSESSMENT, SCORES } from '../../src/constant/tables';
+
+export interface Score {
+  score_id: number;
+  assessment_id: number;
+  grading_period: 1 | 2 | 3 | 4;
+  LRN: string;
+  score: number;
+}
+export interface UpdatedScore {
+  score_id: number;
+  score: number;
+}
 
 @injectable()
 class AssessmentScoresRepository {
@@ -31,6 +43,20 @@ class AssessmentScoresRepository {
       .orderBy('date', 'desc');
 
     return assessmentInfo;
+  }
+
+  async updateAssessmentScores(scores: UpdatedScore[]) {
+    let updates: any[] = [];
+
+    for (let { score_id, score } of scores) {
+      updates.push(
+        this.db.getDbInstance()(SCORES).update({ score }).where({
+          score_id,
+        })
+      );
+    }
+
+    await Promise.all(updates);
   }
 }
 

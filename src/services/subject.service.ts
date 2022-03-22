@@ -8,7 +8,9 @@ import AttendanceRepository, {
   Attendance,
   LectureInfo,
 } from '../repository/attendance.repository';
-import AssessmentScoresRepository from '../repository/scores.repository';
+import AssessmentScoresRepository, {
+  UpdatedScore,
+} from '../repository/scores.repository';
 import LectureRepository from '../repository/lecture.repository';
 
 @injectable()
@@ -101,6 +103,10 @@ class SubjectService {
 
   async getLecturesWithAttendance(subject_id: string) {
     return this.attendanceRepo.getLecturesWithAttendance(subject_id);
+  }
+
+  async updateAssessmentScores(scores: UpdatedScore[]) {
+    return this.scoresRepo.updateAssessmentScores(scores);
   }
 }
 

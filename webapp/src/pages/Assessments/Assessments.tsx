@@ -43,7 +43,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
       console.table(data.data);
     });
 
-    setCreateNewAssessment(!createNewAssessment);
+    if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
   }, [selectedSubject, refetchAssessments]);
 
   return (
@@ -82,8 +82,12 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                           View/Update Scores
                         </button>{' '}
                         <button
-                          onClick={() => {
-                            console.log('Deleted');
+                          onClick={async () => {
+                            await axios.delete(
+                              `subject/${selectedSubject}/assessment/${assessment_id}`,
+                            );
+
+                            setRefectchAssessments(Math.random());
                           }}
                         >
                           Delete Assessment

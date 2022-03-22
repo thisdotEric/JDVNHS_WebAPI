@@ -19,6 +19,7 @@ import AuthenticationRepository from '../repository/authentication.repository';
 import AssessmentScoresRepository from '../repository/scores.repository';
 import UserRepository from '../repository/user.repository';
 import LectureRepository from '../repository/lecture.repository';
+import AssessmentRepository from '../repository/assessment.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -53,6 +54,9 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
 
   bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository).to(
     AssessmentScoresRepository
+  );
+  bind<AssessmentRepository>(TYPES.AssessmentRepository).to(
+    AssessmentRepository
   );
 
   bind<TeacherRepository>(TYPES.TeacherRepository).to(TeacherRepository);

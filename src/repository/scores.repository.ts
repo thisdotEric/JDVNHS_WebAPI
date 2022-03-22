@@ -28,23 +28,6 @@ class AssessmentScoresRepository {
     return scores;
   }
 
-  async getAssessmentInfo(assessment_id: number) {
-    const assessmentInfo = await this.db
-      .getDbInstance()(ASSESSMENT)
-      .where({ assessment_id });
-
-    return assessmentInfo;
-  }
-
-  async getAllAssessmentInfo(subject_id: string) {
-    const assessmentInfo = await this.db
-      .getDbInstance()(ASSESSMENT)
-      .where({ subject_id })
-      .orderBy('date', 'desc');
-
-    return assessmentInfo;
-  }
-
   async updateAssessmentScores(scores: UpdatedScore[]) {
     let updates: any[] = [];
 

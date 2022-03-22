@@ -12,6 +12,9 @@ import AssessmentScoresRepository, {
   UpdatedScore,
 } from '../repository/scores.repository';
 import LectureRepository from '../repository/lecture.repository';
+import AssessmentRepository, {
+  Assessment,
+} from '../repository/assessment.repository';
 
 @injectable()
 class SubjectService {
@@ -23,7 +26,9 @@ class SubjectService {
     @inject(TYPES.AssessmentScoresRepository)
     private readonly scoresRepo: AssessmentScoresRepository,
     @inject(TYPES.LectureRepository)
-    private readonly lectureRepo: LectureRepository
+    private readonly lectureRepo: LectureRepository,
+    @inject(TYPES.AssessmentRepository)
+    private readonly assessmentRepo: AssessmentRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -47,7 +52,7 @@ class SubjectService {
   }
 
   async getAssessmentInfo(assessment_id: number) {
-    return this.scoresRepo.getAssessmentInfo(assessment_id);
+    return this.assessmentRepo.getAssessmentInfo(assessment_id);
   }
 
   async getAttendanceByLectureId(lecture_id: number) {
@@ -79,7 +84,7 @@ class SubjectService {
   }
 
   async getAllAssessmentsInfo(subject_id: string) {
-    return this.scoresRepo.getAllAssessmentInfo(subject_id);
+    return this.assessmentRepo.getAllAssessmentInfo(subject_id);
   }
 
   async getAllLectures(subject_id: string) {
@@ -107,6 +112,10 @@ class SubjectService {
 
   async updateAssessmentScores(scores: UpdatedScore[]) {
     return this.scoresRepo.updateAssessmentScores(scores);
+  }
+
+  async addNewAssessment(assessment: Assessment) {
+    return this.assessmentRepo.addNewAssessment(assessment);
   }
 }
 

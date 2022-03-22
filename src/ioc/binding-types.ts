@@ -16,6 +16,7 @@ const types = {
   UserRepository: Symbol.for('UserRepository'),
   UserService: Symbol.for('UserService'),
   LectureRepository: Symbol.for('LectureRepository'),
+  AssessmentRepository: Symbol.for('AssessmentRepository'),
 };
 
 export default types;

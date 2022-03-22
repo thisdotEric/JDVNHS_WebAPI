@@ -30,6 +30,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   const [createNewAssessment, setCreateNewAssessment] =
     useState<boolean>(false);
   const [refetchAssessments, setRefectchAssessments] = useState<number>();
+  const [assessmentWithScores, setAssessmentWithScores] = useState<number[]>();
 
   const navigate = useNavigate();
 
@@ -43,6 +44,12 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
       console.table(data.data);
     });
 
+    axios
+      .get(`subject/${selectedSubject}/assessments/scores/valid`)
+      .then(({ data }) => {
+        setAssessmentWithScores(data.data.map((a: any) => a.assessment_id));
+      });
+
     if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
   }, [selectedSubject, refetchAssessments]);
 
@@ -51,6 +58,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
       <button
         onClick={() => {
           setCreateNewAssessment(!createNewAssessment);
+          console.log(assessmentWithScores);
         }}
       >
         {!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
@@ -74,13 +82,27 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                         Component Type: {toLongLearningComponentName(component)}
                       </td>
                       <td>
-                        <button
-                          onClick={() => {
-                            navigate(`/t/assessments/scores/${assessment_id}`);
-                          }}
-                        >
-                          View/Update Scores
-                        </button>{' '}
+                        {assessmentWithScores?.includes(assessment_id) ? (
+                          <button
+                            onClick={() => {
+                              navigate(
+                                `/t/assessments/scores/${assessment_id}`,
+                              );
+                            }}
+                          >
+                            View/Update Scores
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              navigate(
+                                `/t/assessments/scores/new/${assessment_id}`,
+                              );
+                            }}
+                          >
+                            Add Scores
+                          </button>
+                        )}{' '}
                         <button
                           onClick={async () => {
                             await axios.delete(

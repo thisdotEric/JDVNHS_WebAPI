@@ -121,6 +121,10 @@ class SubjectService {
   async removeAssessment(assessment_id: number) {
     return this.assessmentRepo.removeAssessment(assessment_id);
   }
+
+  async getAllAssessmentsWithScores(subject_id: string) {
+    return this.scoresRepo.getAllAssessmentsWithScores(subject_id);
+  }
 }
 
 export default SubjectService;

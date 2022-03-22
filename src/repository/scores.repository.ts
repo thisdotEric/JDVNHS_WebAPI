@@ -41,6 +41,16 @@ class AssessmentScoresRepository {
 
     await Promise.all(updates);
   }
+
+  async getAllAssessmentsWithScores(subject_id: string) {
+    const allAssessmentsWithScores = await this.db
+      .getDbInstance()
+      .raw(
+        `select distinct a."assessment_id" from assessments a join scores s on s."assessment_id" = a."assessment_id" where subject_id = '${subject_id}'`
+      );
+
+    return allAssessmentsWithScores.rows;
+  }
 }
 
 export default AssessmentScoresRepository;

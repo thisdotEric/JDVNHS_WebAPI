@@ -281,6 +281,20 @@ class SubjectController extends BaseHttpController {
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpGet('/:subject_name/assessments/scores/valid')
+  async getAllAssessmentsWithScores(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allAssessmentsWithScores =
+      await this.subjectService.getAllAssessmentsWithScores(subject_id);
+
+    const response = JsonResponse.success(allAssessmentsWithScores, 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default SubjectController;

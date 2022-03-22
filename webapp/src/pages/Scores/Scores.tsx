@@ -23,9 +23,14 @@ interface Scores {
   grading_period: 1 | 2 | 3 | 4;
 }
 
+interface UpdatedScore {
+  score_id: number;
+  score: number;
+}
+
 const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   const [classScores, setScores] = useState<Scores[]>();
-  const [updatedScores, setUpdatedScores] = useState<Scores[]>([]);
+  const [updatedScores, setUpdatedScores] = useState<UpdatedScore[]>([]);
 
   const [scoreColumns] = useState([
     {
@@ -46,7 +51,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
           let currentIndex: number = 0;
 
           old.forEach((s, index) => {
-            if (s.LRN === row.LRN) {
+            if (s.score_id === row.score_id) {
               needsUpdate = true;
               currentIndex = index;
               return;
@@ -60,8 +65,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
           return [
             ...old,
             {
-              LRN: row.LRN,
-              grading_period: row.grading_period,
+              score_id: row.score_id,
               score: row.score,
             },
           ];
@@ -94,8 +98,12 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   return (
     <div className="scores">
       <button
-        onClick={() => {
+        onClick={async () => {
           console.table(updatedScores);
+
+          await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
+            scores: updatedScores,
+          });
         }}
       >
         Save Updated Scores

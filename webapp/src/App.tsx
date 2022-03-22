@@ -10,6 +10,7 @@ import { Scores } from './pages/Scores';
 import { AddAttendance } from './pages/Attendance/AddAttendance';
 import { Lectures } from './pages/Lectures';
 import { Assessments } from './pages/Assessments';
+import { AddScores } from './pages/Scores/AddScores';
 
 interface AppProps {}
 
@@ -30,6 +31,7 @@ function App({}: AppProps) {
             <Route path="assessments">
               <Route path="" element={<Assessments />} />
               <Route path="scores/:id" element={<Scores />} />
+              <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
             <Route path="lectures" element={<Lectures />} />
           </Route>

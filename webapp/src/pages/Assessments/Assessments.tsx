@@ -1,13 +1,13 @@
 import React, { FC, useState, useContext, useEffect } from 'react';
 import './Assessments.scss';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { axios, shortenDate } from '../../utils';
 import { SubjectContext } from '../../context';
 import { useSetPageTitle } from '../../hooks';
+import type { Assessment, LearningComponent } from './types';
+import { AddAssessment } from './AddAssessment';
 
 interface AssessmentsProps {}
-
-type LearningComponent = 'WW' | 'PT' | 'QA';
 
 function toLongLearningComponentName(
   learningComponent: LearningComponent,
@@ -24,16 +24,13 @@ function toLongLearningComponentName(
   }
 }
 
-interface Assessments {
-  assessment_id: number;
-  date: Date;
-  subject_id: string;
-  items: number;
-  component: LearningComponent;
-}
-
 const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
-  const [assessments, setAssessments] = useState<Assessments[]>();
+  const [assessments, setAssessments] =
+    useState<(Assessment & { assessment_id: number })[]>();
+  const [createNewAssessment, setCreateNewAssessment] =
+    useState<boolean>(false);
+  const [refetchAssessments, setRefectchAssessments] = useState<number>();
+
   const navigate = useNavigate();
 
   const selectedSubject = useContext(SubjectContext);
@@ -43,11 +40,26 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
       setAssessments(data.data);
+      console.table(data.data);
     });
-  }, [selectedSubject]);
+
+    setCreateNewAssessment(!createNewAssessment);
+  }, [selectedSubject, refetchAssessments]);
 
   return (
     <div className="assessments">
+      <button
+        onClick={() => {
+          setCreateNewAssessment(!createNewAssessment);
+        }}
+      >
+        {!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
+      </button>
+
+      {createNewAssessment && (
+        <AddAssessment refetchAssessment={setRefectchAssessments} />
+      )}
+
       <div className="assessment-list">
         {assessments &&
           assessments.map(({ assessment_id, component, items, date }) => {
@@ -68,6 +80,13 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                           }}
                         >
                           View/Update Scores
+                        </button>{' '}
+                        <button
+                          onClick={() => {
+                            console.log('Deleted');
+                          }}
+                        >
+                          Delete Assessment
                         </button>
                       </td>
                     </tr>

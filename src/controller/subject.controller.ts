@@ -270,6 +270,17 @@ class SubjectController extends BaseHttpController {
     const response = JsonResponse.success(addedAssessment, 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpDelete('/:subject_name/assessment/:assessment_id')
+  async removeAssessment(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+    const assessment_id = parseInt(`${req.params.assessment_id}`, 10);
+
+    await this.subjectService.removeAssessment(assessment_id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default SubjectController;

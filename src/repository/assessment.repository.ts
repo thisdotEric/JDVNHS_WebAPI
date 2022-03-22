@@ -45,6 +45,10 @@ class AssessmentRepository {
 
     return assessmentInfo;
   }
+
+  async removeAssessment(assessment_id: number) {
+    await this.db.getDbInstance()(ASSESSMENT).where({ assessment_id }).delete();
+  }
 }
 
 export default AssessmentRepository;

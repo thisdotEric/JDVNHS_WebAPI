@@ -117,6 +117,10 @@ class SubjectService {
   async addNewAssessment(assessment: Assessment) {
     return this.assessmentRepo.addNewAssessment(assessment);
   }
+
+  async removeAssessment(assessment_id: number) {
+    return this.assessmentRepo.removeAssessment(assessment_id);
+  }
 }
 
 export default SubjectService;

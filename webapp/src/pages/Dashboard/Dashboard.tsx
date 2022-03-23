@@ -23,6 +23,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const [userSubjects, setUserSubjects] = useState<Subject[]>();
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [showDropdown, setShowDropdown] = useState<boolean>(true);
 
   const currentUser = useCurrentUser();
 
@@ -34,7 +35,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
        * Get all the subjects of the user
        */
       axios
-        .get(`/api/${currentUser.role}/${currentUser.user_id}/subjects`)
+        .get(`${currentUser.role}/${currentUser.user_id}/subjects`)
         .then(subjectList => {
           const subjects = subjectList.data.data;
           setLoading(false);
@@ -67,7 +68,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
             onSubmit={async e => {
               e.preventDefault();
 
-              await axios.post('/api/auth/logout');
+              await axios.post('auth/logout');
               navigate('/');
             }}
           >
@@ -92,8 +93,6 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
                   <option value={subject_id}>{subject_name}</option>
                 ))}
             </select>
-
-            <p>Students</p>
           </div>
           <div className="content">
             <SubjectContext.Provider value={selectedSubject}>

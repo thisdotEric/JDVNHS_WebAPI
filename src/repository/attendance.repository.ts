@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
+import { ATTENDANCE, LECTURES } from '../constant/tables';
 
 export type ATTENDANCE_STATUS = 'present' | 'absent' | 'excused';
 
@@ -21,44 +22,32 @@ export interface LectureInfo {
 class AttendanceRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
-  private async insertNewLecture({
-    lecture_date,
-    subject_id,
-    grading_period,
-  }: LectureInfo) {
-    const lecture_id = await this.db
-      .getDbInstance()(DbConstants.LECTURE_TABLE)
-      .insert({
-        lecture_date,
-        subject_id,
-        grading_period,
-      })
-      .returning('lecture_id');
-
-    return lecture_id;
-  }
-
-  async addNewAttendanceRecord(
-    attendancelist: Attendance[],
-    lecture_info: LectureInfo
-  ) {
-    const lecture_id = await this.insertNewLecture({
-      ...lecture_info,
-      grading_period: 1,
-    });
-
-    const generated_lecture_id = lecture_id[0];
-
-    attendancelist = attendancelist.map(attendance => ({
-      ...attendance,
-      lecture_id: generated_lecture_id,
-    }));
+  async addNewAttendanceRecord(attendancelist: Attendance[]) {
+    // Check if lecture id is valid
 
     await this.db
       .getDbInstance()(DbConstants.ATTENDANCE_TABLE)
       .insert(attendancelist);
+  }
 
-    return generated_lecture_id;
+  async getLecturesWithAttendance(subject_id: string) {
+    const allAttendance = await this.db
+      .getDbInstance()
+      .raw(
+        `select distinct l.lecture_id from lectures l join attendance a on a."lecture_id" = l."lecture_id" where l."subject_id" = '${subject_id}';`
+      );
+
+    return allAttendance.rows;
+  }
+
+  async isValidAttendance(lecture_id: number) {
+    const res = await this.db
+      .getDbInstance()(ATTENDANCE)
+      .where({ lecture_id })
+      .select('*')
+      .limit(1);
+
+    return res.length === 1;
   }
 
   async getAttendanceByLectureId(lecture_id: number) {
@@ -76,7 +65,7 @@ class AttendanceRepository {
       .select('status', 'LRN', 'first_name', 'middle_name', 'last_name')
       .orderBy('last_name');
 
-    return attendance;
+    return { attendance, lecture_id };
   }
 
   async updateAttendance(
@@ -85,10 +74,14 @@ class AttendanceRepository {
     lecture_id: string
   ) {
     await this.db
-      .getDbInstance()
-      .raw(
-        `update attendance set status = '${newStatus}' from lectures l where attendance."LRN" = '${LRN}' and l."lecture_id" = '${lecture_id}'`
-      );
+      .getDbInstance()(ATTENDANCE)
+      .update({
+        status: newStatus,
+      })
+      .where({
+        lecture_id,
+        LRN,
+      });
   }
 
   async getStudentAttendanceByMonth(month: string, LRN: string) {
@@ -124,6 +117,17 @@ class AttendanceRepository {
       lecture_id: latest_lecture_date.rows[0].lecture_id,
       attendance: latest.rows,
     };
+  }
+
+  async getLatestAttendanceLectureId(subject_id: string) {
+    const latest = await this.db
+      .getDbInstance()(LECTURES)
+      .where({ subject_id })
+      .orderBy('lecture_id', 'desc')
+      .select('*')
+      .limit(1);
+
+    return latest[0].lecture_id;
   }
 
   private formatDate(date: string) {

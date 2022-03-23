@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "snowpack dev",
+    "start": "SNOWPACK_PUBLIC_API_URL=http://localhost:4000/api/ snowpack dev",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -14,6 +14,8 @@
     "http2-proxy": "^5.0.53",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
+    "react-calendar": "^3.7.0",
+    "react-confirm-alert": "^2.8.0",
     "react-data-grid": "^7.0.0-beta.8",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
@@ -30,6 +32,7 @@
     "@types/chai": "^4.2.17",
     "@types/mocha": "^8.2.2",
     "@types/react": "^17.0.4",
+    "@types/react-calendar": "^3.4.5",
     "@types/react-dom": "^17.0.3",
     "@types/snowpack-env": "^2.3.3",
     "@web/test-runner": "^0.13.3",

@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
 import './Students.scss';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
+import { useSetPageTitle } from '../../hooks';
 
 interface StudentsProps {}
 
@@ -31,13 +34,25 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   const [subjectStats, setSubjectStats] = useState<SubjectStats>();
 
   const [gridApi, setGridApi] = useState<any>();
+  const [updateTable, setUpdateTable] = useState<number>(0);
+
+  useSetPageTitle('Students');
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);
   };
 
+  const removeStudentFromClass = async () => {
+    await axios.delete(
+      `subject/${selectedSubject}/students/${selectedStudent}`,
+    );
+
+    setUpdateTable(updateTable + 1);
+    gridApi.refreshCells();
+  };
+
   useEffect(() => {
-    axios.get(`/api/subject/${selectedSubject}/students`).then(response => {
+    axios.get(`subject/${selectedSubject}/students`).then(response => {
       const students = response.data.data;
 
       setStudents(students);
@@ -53,7 +68,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         gradeLevel: 10,
       });
     });
-  }, [selectedSubject]);
+  }, [selectedSubject, updateTable]);
 
   return (
     <div className="class-students">
@@ -65,15 +80,28 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         <p>Grade Level: {subjectStats?.gradeLevel}</p>
       </div>
 
-      <button
+      {/* Disable for now the remove student buttons */}
+      {/* <button
         disabled={selectedStudent === undefined}
-        onClick={async () => {
-          console.log('Selected Student ID: ', selectedStudent);
-          gridApi.refreshCells({ force: true, suppressFlash: false });
+        onClick={() => {
+          confirmAlert({
+            title: 'Confirm Delete?',
+            message: `${selectedStudent} will be removed from ${selectedSubject} class.`,
+            buttons: [
+              {
+                label: 'Yes',
+                onClick: async () => await removeStudentFromClass(),
+              },
+              {
+                label: 'No',
+                onClick: () => {},
+              },
+            ],
+          });
         }}
       >
-        Delete Student
-      </button>
+        Remove student from class
+      </button> */}
 
       <div
         className="ag-theme-balham"

@@ -23,6 +23,12 @@ class SubjectController extends BaseHttpController {
     super();
   }
 
+  // Scores
+  // Assessment
+  // Student
+  // Lecture
+  // Attendance
+
   @httpGet('/:subject_name/students')
   async getEnrolledStudents(
     @request() req: Request,
@@ -46,24 +52,72 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet('/:subject_name/attendance')
+  // Todo, improve route naming
+  // Do not move this piece of code
+  @httpGet('/:subject_name/attendance/valid')
+  async getValidAttendance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allLectures = await this.subjectService.getLecturesWithAttendance(
+      subject_id
+    );
+
+    const response = JsonResponse.success(allLectures, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  // Tobe removed
+  @httpGet('/:subject_name/attendance/:date')
   async getStudentAttendanceByMonth(
     @request() req: Request,
     @response() res: Response
   ) {
-    const lecture_date = `${req.query.date}`;
+    const lecture_date = `${req.params.date}`;
     const subject_id = `${req.params.subject_name}`;
 
-    const attendance = await this.subjectService.getClassAttendance(
-      subject_id,
-      lecture_date
-    );
+    try {
+      const attendance = await this.subjectService.getClassAttendance(
+        subject_id,
+        lecture_date
+      );
 
-    const response = JsonResponse.success(attendance, 200);
-    res.status(response.statusCode).send(response);
+      const response = JsonResponse.success(attendance, 200);
+      res.status(response.statusCode).send(response);
+    } catch (error) {
+      res.status(404).send('Not Found');
+    }
   }
 
-  @httpPatch('/:subject_name/:lecture_id/attendance')
+  @httpGet('/:subject_name/attendance')
+  async getClassAttendance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    console.log(req.query);
+
+    if (req.query.id === 'latest') {
+      const attendance = await this.subjectService.getLatestAttendance(
+        subject_id
+      );
+
+      const response = JsonResponse.success(attendance, 200);
+      res.status(response.statusCode).send(response);
+    } else {
+      const lecture_id = parseInt(req.query.id as string, 10);
+
+      console.log('Lecture Id', lecture_id);
+
+      try {
+        const attendance =
+          await this.subjectService.getClassAttendanceByLectureId(lecture_id);
+        const response = JsonResponse.success(attendance, 200);
+        res.status(response.statusCode).send(response);
+      } catch (error) {
+        res.status(404).send('Not Found');
+      }
+    }
+  }
+
+  @httpPatch('/:subject_name/attendance/:lecture_id')
   async updateStudentAttendance(
     @request() req: Request,
     @response() res: Response
@@ -85,13 +139,18 @@ class SubjectController extends BaseHttpController {
     @request() req: Request,
     @response() res: Response
   ) {
-    const { attendance, attendance_date } = req.body;
+    const { attendance, lecture_id } = req.body;
     const subject_id = `${req.params.subject_name}`;
 
-    await this.subjectService.addNewAttendanceRecord(attendance, {
-      subject_id,
-      lecture_date: attendance_date,
+    const attendanceWithLectureId = attendance.map((at: any) => {
+      return {
+        lecture_id,
+        LRN: at.LRN,
+        status: at.status,
+      };
     });
+
+    await this.subjectService.addNewAttendanceRecord(attendanceWithLectureId);
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
@@ -128,14 +187,13 @@ class SubjectController extends BaseHttpController {
     @request() req: Request,
     @response() res: Response
   ) {
-    const subject_id = req.params.subject_name;
     const assessment_id = parseInt(req.params.assessment_id, 10);
 
     const scores = await this.subjectService.getScoresByAssessmentId(
       assessment_id
     );
 
-    const response = JsonResponse.success({ subject_id, scores }, 200);
+    const response = JsonResponse.success(scores, 200);
     res.status(response.statusCode).send(response);
   }
 
@@ -150,6 +208,117 @@ class SubjectController extends BaseHttpController {
     );
 
     const response = JsonResponse.success(studentCount, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/lecture-dates')
+  async getValidLectureDates(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const teacher_id = `${req.query.teacher}`;
+    const subject_id = `${req.params.subject_name}`;
+
+    const lecture_dates = await this.subjectService.getValidLectureDates(
+      teacher_id,
+      subject_id
+    );
+
+    const response = JsonResponse.success(lecture_dates, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/assessments/all')
+  async getAllAssessments(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allAssessments = await this.subjectService.getAllAssessmentsInfo(
+      subject_id
+    );
+
+    const response = JsonResponse.success(allAssessments, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/lectures')
+  async getAllLectures(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allLectures = await this.subjectService.getAllLectures(subject_id);
+
+    const response = JsonResponse.success(allLectures, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPatch('/:subject_name/assessments/scores')
+  async updateAssessmentScores(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const { scores } = req.body;
+
+    await this.subjectService.updateAssessmentScores(scores);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/assessments/scores')
+  async addAssessmentScores(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const { assessment_id, grading_period, scores } = req.body;
+
+    const newScores = {
+      assessment_id: parseInt(assessment_id, 10),
+      grading_period,
+      scores,
+    };
+
+    await this.subjectService.addNewScores(newScores);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/assessment')
+  async addNewAssessment(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+    const { assessment } = req.body;
+
+    const addedAssessment = await this.subjectService.addNewAssessment(
+      assessment
+    );
+
+    const response = JsonResponse.success(addedAssessment, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/assessment/:assessment_id')
+  async removeAssessment(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+    const assessment_id = parseInt(`${req.params.assessment_id}`, 10);
+
+    await this.subjectService.removeAssessment(assessment_id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/assessments/scores/valid')
+  async getAllAssessmentsWithScores(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+
+    const allAssessmentsWithScores =
+      await this.subjectService.getAllAssessmentsWithScores(subject_id);
+
+    const response = JsonResponse.success(allAssessmentsWithScores, 200);
     res.status(response.statusCode).send(response);
   }
 }

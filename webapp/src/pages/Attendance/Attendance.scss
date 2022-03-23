@@ -1,3 +1,14 @@
-#john {
-  color: aqua;
+.attendance {
+  #change-attendance {
+    padding: 10px;
+    background: rgb(46, 220, 46);
+    border: none;
+    margin: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+
+    &:hover {
+      background: rgb(39, 214, 39);
+    }
+  }
 }

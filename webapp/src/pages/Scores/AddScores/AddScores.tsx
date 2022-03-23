@@ -3,6 +3,7 @@ import React, { FC, useEffect, useContext, useState } from 'react';
 import './AddScores.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface AddScoresProps {}
 
@@ -14,14 +15,11 @@ interface Student {
   score: number;
 }
 
-interface NewScore {
-  LRN: string;
-  score: number;
-}
-
 const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
   const selectedSubject = useContext(SubjectContext);
   const [students, setStudents] = useState<Student[]>([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const [scoreColumns] = useState([
     {
@@ -83,8 +81,16 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
   return (
     <div>
       <button
-        onClick={() => {
+        onClick={async () => {
           console.table(students);
+
+          await axios.post(`subject/${selectedSubject}/assessments/scores`, {
+            assessment_id: id,
+            grading_period: 1,
+            scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
+          });
+
+          navigate('/t/assessments');
         }}
       >
         Save

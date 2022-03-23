@@ -128,7 +128,7 @@ class SubjectService {
   }
 
   async addNewScores(scores: NewScores) {
-    return this.scoresRepo.addNewScores(scores)
+    return this.scoresRepo.addNewScores(scores);
   }
 }
 

@@ -23,6 +23,12 @@ class SubjectController extends BaseHttpController {
     super();
   }
 
+  // Scores
+  // Assessment
+  // Student
+  // Lecture
+  // Attendance
+
   @httpGet('/:subject_name/students')
   async getEnrolledStudents(
     @request() req: Request,
@@ -253,6 +259,26 @@ class SubjectController extends BaseHttpController {
     const { scores } = req.body;
 
     await this.subjectService.updateAssessmentScores(scores);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/assessments/scores')
+  async addAssessmentScores(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const { assessment_id, grading_period, scores } = req.body;
+
+    const newScores = {
+      assessment_id: parseInt(assessment_id, 10),
+      grading_period,
+      scores,
+    };
+
+    await this.subjectService.addNewScores(newScores);
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);

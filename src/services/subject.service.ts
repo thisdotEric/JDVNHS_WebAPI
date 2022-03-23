@@ -9,6 +9,7 @@ import AttendanceRepository, {
   LectureInfo,
 } from '../repository/attendance.repository';
 import AssessmentScoresRepository, {
+  NewScores,
   UpdatedScore,
 } from '../repository/scores.repository';
 import LectureRepository from '../repository/lecture.repository';
@@ -124,6 +125,10 @@ class SubjectService {
 
   async getAllAssessmentsWithScores(subject_id: string) {
     return this.scoresRepo.getAllAssessmentsWithScores(subject_id);
+  }
+
+  async addNewScores(scores: NewScores) {
+    return this.scoresRepo.addNewScores(scores)
   }
 }
 

@@ -16,6 +16,12 @@ export interface UpdatedScore {
   score: number;
 }
 
+export interface NewScores {
+  assessment_id: number;
+  grading_period: 1 | 2 | 3 | 4;
+  scores: { LRN: string; score: number }[];
+}
+
 @injectable()
 class AssessmentScoresRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
@@ -26,6 +32,25 @@ class AssessmentScoresRepository {
       .where({ assessment_id });
 
     return scores;
+  }
+
+  async addNewScores(scores: NewScores) {
+    // console.log(scores);
+
+    const insertQueries = [];
+
+    for (let { LRN, score } of scores.scores) {
+      insertQueries.push(
+        this.db.getDbInstance()(SCORES).insert({
+          LRN,
+          score,
+          grading_period: scores.grading_period,
+          assessment_id: scores.assessment_id,
+        })
+      );
+    }
+
+    await Promise.all(insertQueries);
   }
 
   async updateAssessmentScores(scores: UpdatedScore[]) {

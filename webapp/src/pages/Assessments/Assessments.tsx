@@ -6,6 +6,9 @@ import { SubjectContext } from '../../context';
 import { useSetPageTitle } from '../../hooks';
 import type { Assessment, LearningComponent } from './types';
 import { AddAssessment } from './AddAssessment';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 interface AssessmentsProps {}
 
@@ -25,12 +28,52 @@ function toLongLearningComponentName(
 }
 
 const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
-  const [assessments, setAssessments] =
-    useState<(Assessment & { assessment_id: number })[]>();
   const [createNewAssessment, setCreateNewAssessment] =
     useState<boolean>(false);
   const [refetchAssessments, setRefectchAssessments] = useState<number>();
   const [assessmentWithScores, setAssessmentWithScores] = useState<number[]>();
+
+  const [assessments, setAssessments] = useState<
+    (Assessment & { assessment_id: number })[]
+  >([
+    {
+      assessment_id: 1,
+      component: 'QA',
+      date: '2022-02-02',
+      items: 100,
+      subject_id: 'PreCal',
+      grading_period: 1,
+    },
+  ]);
+
+  const [assessmentCols] = useState([
+    {
+      field: 'assessment_id',
+      headerName: 'Assessment ID',
+      hide: true,
+    },
+    {
+      field: 'subject_id',
+      headerName: 'Subject ID',
+      hide: true,
+    },
+    {
+      field: 'date',
+      headerName: 'Date',
+    },
+    {
+      field: 'items',
+      headerName: 'Total Items',
+    },
+    {
+      field: 'grading_period',
+      headerName: 'Grading Period',
+    },
+    {
+      field: 'component',
+      headerName: 'Component Type',
+    },
+  ]);
 
   const navigate = useNavigate();
 
@@ -68,7 +111,30 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
         <AddAssessment refetchAssessment={setRefectchAssessments} />
       )}
 
-      <div className="assessment-list">
+      <div
+        className="ag-theme-balham"
+        id="student-table"
+        style={{
+          height: '550px',
+        }}
+      >
+        <AgGridReact
+          rowData={assessments}
+          pagination={true}
+          columnDefs={assessmentCols}
+          rowSelection={'single'}
+          enableCellChangeFlash={true}
+          defaultColDef={{
+            sortable: true,
+            flex: 1,
+            minWidth: 100,
+            filter: true,
+            resizable: true,
+          }}
+        ></AgGridReact>
+      </div>
+
+      {/* <div className="assessment-list">
         {assessments &&
           assessments.map(({ assessment_id, component, items, date }) => {
             return (
@@ -78,9 +144,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                     <tr>
                       <td>Date: {date}</td>
                       <td>Total Items: {items}</td>
-                      <td>
-                        Component Type: {toLongLearningComponentName(component)}
-                      </td>
+                      <td>{toLongLearningComponentName(component)}</td>
                       <td>
                         {assessmentWithScores?.includes(assessment_id) ? (
                           <button
@@ -121,7 +185,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
               </div>
             );
           })}
-      </div>
+      </div> */}
     </div>
   );
 };

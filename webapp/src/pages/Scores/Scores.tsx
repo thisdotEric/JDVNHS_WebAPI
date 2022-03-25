@@ -31,6 +31,7 @@ interface UpdatedScore {
 const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   const [classScores, setScores] = useState<Scores[]>();
   const [updatedScores, setUpdatedScores] = useState<UpdatedScore[]>([]);
+  const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true);
 
   const [scoreColumns] = useState([
     {
@@ -42,6 +43,8 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       headerName: 'Score',
       editable: true,
       onCellValueChanged: (grid: any) => {
+        setDisableSaveButton(false);
+
         console.log(grid.node.data);
 
         const row = grid.node.data;
@@ -98,6 +101,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   return (
     <div className="scores">
       <button
+        disabled={disableSaveButton}
         onClick={async () => {
           console.table(updatedScores);
 

@@ -80,6 +80,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
           <AssessmentActions
             viewScores={params.node.data.withScores}
             assessment_id={params.node.data.assessment_id}
+            refetchAssessments={setRefectchAssessments}
           />
         </>
       ),

@@ -1,17 +1,23 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 // import './AssessmentActions.scss';
 import { useNavigate } from 'react-router-dom';
+import { axios } from '../../utils';
+import { SubjectContext } from '../../context';
 
 interface AssessmentActionsProps {
   assessment_id: number;
   viewScores: boolean;
+  refetchAssessments: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 const AssessmentActions: FC<AssessmentActionsProps> = ({
   viewScores,
   assessment_id,
+  refetchAssessments,
 }: AssessmentActionsProps) => {
   const navigate = useNavigate();
+
+  const selectedSubject = useContext(SubjectContext);
 
   return (
     <div>
@@ -35,9 +41,11 @@ const AssessmentActions: FC<AssessmentActionsProps> = ({
 
       <button
         onClick={async () => {
-          // await axios.delete(
-          //   `subject/${selectedSubject}/assessment/${assessment_id}`,
-          // );
+          await axios.delete(
+            `subject/${selectedSubject}/assessment/${assessment_id}`,
+          );
+
+          refetchAssessments(Math.random());
         }}
       >
         Delete Assessment

@@ -34,6 +34,22 @@ function App({}: AppProps) {
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
             <Route path="lectures" element={<Lectures />} />
+            <Route
+              path="Reports"
+              element={
+                <>
+                  <p>Report Page</p>
+                </>
+              }
+            />
+            <Route
+              path="Grades"
+              element={
+                <>
+                  <p>Grades Page</p>
+                </>
+              }
+            />
           </Route>
         </Route>
         <Route element={<ProtectedRoutes hasAccess="student" />}>

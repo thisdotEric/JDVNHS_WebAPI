@@ -11,6 +11,7 @@ import { AddAttendance } from './pages/Attendance/AddAttendance';
 import { Lectures } from './pages/Lectures';
 import { Assessments } from './pages/Assessments';
 import { AddScores } from './pages/Scores/AddScores';
+import { Grades } from './pages/Grades';
 
 interface AppProps {}
 
@@ -42,14 +43,7 @@ function App({}: AppProps) {
                 </>
               }
             />
-            <Route
-              path="Grades"
-              element={
-                <>
-                  <p>Grades Page</p>
-                </>
-              }
-            />
+            <Route path="Grades" element={<Grades />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoutes hasAccess="student" />}>

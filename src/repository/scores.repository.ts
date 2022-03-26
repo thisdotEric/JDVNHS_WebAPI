@@ -28,10 +28,12 @@ class AssessmentScoresRepository {
 
   async getScoresByAssessmentId(assessment_id: number) {
     const scores = await this.db
-      .getDbInstance()(DbConstants.SCORES_TABLE)
-      .where({ assessment_id });
+      .getDbInstance()
+      .raw(
+        `select s."LRN", u."first_name", u."middle_name", u."last_name", s."score" from scores s join users u on u."user_id" = s."LRN" where s."assessment_id" = ${assessment_id};`
+      );
 
-    return scores;
+    return scores.rows;
   }
 
   async addNewScores(scores: NewScores) {

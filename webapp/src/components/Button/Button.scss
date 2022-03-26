@@ -19,7 +19,8 @@ div {
     height: 15px;
   }
 
-  #save {
+  #save,
+  #select {
     @include button-with-icon();
     background: #4a830c;
 

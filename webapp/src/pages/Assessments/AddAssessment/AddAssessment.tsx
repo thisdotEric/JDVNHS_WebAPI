@@ -3,6 +3,7 @@ import './AddAssessment.scss';
 import type { Assessment } from '../types';
 import { SubjectContext } from '../../../context';
 import { axios } from '../../../utils';
+import { Button } from '../../../components/Button';
 
 interface AddAssessmentProps {
   refetchAssessment: React.Dispatch<React.SetStateAction<number | undefined>>;
@@ -81,19 +82,7 @@ const AddAssessment: FC<AddAssessmentProps> = ({
           }
         }}
       >
-        <input type="submit" value="Add Assessment" name="date" />
-        <input
-          type="number"
-          name="Total Items"
-          id="items"
-          min={0}
-          onChange={e => {
-            dispatch({
-              type: 'items',
-              payload: e.currentTarget.value,
-            });
-          }}
-        />
+        <Button type="submit" value="Add new assessment" buttonType="save" />
 
         <select
           name="component"
@@ -122,18 +111,36 @@ const AddAssessment: FC<AddAssessmentProps> = ({
             <option value={gp}>{gp}</option>
           ))}
         </select>
-      </form>
 
-      <input
-        type="date"
-        name="date"
-        onChange={e => {
-          dispatch({
-            type: 'date',
-            payload: e.currentTarget.value,
-          });
-        }}
-      />
+        <input
+          type="number"
+          name="Total Items"
+          placeholder="Total Items"
+          width={100}
+          id="items"
+          min={0}
+          onChange={e => {
+            dispatch({
+              type: 'items',
+              payload: e.currentTarget.value,
+            });
+          }}
+        />
+
+        <input
+          type="date"
+          name="date"
+          id="date"
+          // Set the default date
+          defaultValue={'2022-03-26'}
+          onChange={e => {
+            dispatch({
+              type: 'date',
+              payload: e.currentTarget.value,
+            });
+          }}
+        />
+      </form>
     </div>
   );
 };

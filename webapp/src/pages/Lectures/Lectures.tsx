@@ -6,6 +6,7 @@ import { useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 import AttendanceAction from '../Attendance/AttendanceAction';
 import { shortenDate } from '../../utils';
+import { Button } from '../../components/Button';
 
 interface LecturesProps {}
 
@@ -58,30 +59,30 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
               <div className="actions">
                 {validAttendance?.includes(lecture_id) ? (
-                  <button
+                  <Button
+                    value="View Update Attendance"
+                    buttonType="select"
                     onClick={() => {
                       navigate(`/t/attendance/${lecture_id}`);
                     }}
-                  >
-                    View/Update Attendance
-                  </button>
+                  />
                 ) : (
-                  <button
+                  <Button
+                    value="Create New Attendance"
+                    buttonType="select"
                     onClick={() => {
                       navigate(`/t/attendance/new/${lecture_id}`);
                     }}
-                  >
-                    Create New Attendance
-                  </button>
+                  />
                 )}
 
-                <button
+                <Button
+                  value="View Assessments"
+                  buttonType="select"
                   onClick={() => {
                     navigate(`/t/assessments`);
                   }}
-                >
-                  View Assessments
-                </button>
+                />
               </div>
             </div>
           );

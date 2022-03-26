@@ -1,3 +1,16 @@
-.add-assessment {
-  color: aqua;
+div {
+  form {
+    #date {
+      padding: 7px 5px;
+      outline: none;
+      margin-right: 5px;
+    }
+
+    input,
+    select {
+      padding: 7px 5px;
+      outline: none;
+      margin-right: 5px;
+    }
+  }
 }

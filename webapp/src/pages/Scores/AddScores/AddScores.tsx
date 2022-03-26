@@ -4,6 +4,7 @@ import './AddScores.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from '../../../components/Button';
 
 interface AddScoresProps {}
 
@@ -80,22 +81,6 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
 
   return (
     <div>
-      <button
-        onClick={async () => {
-          console.table(students);
-
-          await axios.post(`subject/${selectedSubject}/assessments/scores`, {
-            assessment_id: id,
-            grading_period: 1,
-            scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
-          });
-
-          navigate('/t/assessments');
-        }}
-      >
-        Save
-      </button>
-
       <div
         className="ag-theme-balham"
         id="student-table"
@@ -117,6 +102,32 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
             resizable: true,
           }}
         ></AgGridReact>
+      </div>
+
+      <div className="scores-act">
+        <Button
+          buttonType="cancel"
+          value="Cancel"
+          onClick={async () => {
+            navigate('/t/assessments');
+          }}
+        />
+
+        <Button
+          buttonType="save"
+          value="Save new scores"
+          onClick={async () => {
+            console.table(students);
+
+            await axios.post(`subject/${selectedSubject}/assessments/scores`, {
+              assessment_id: id,
+              grading_period: 1,
+              scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
+            });
+
+            navigate('/t/assessments');
+          }}
+        />
       </div>
     </div>
   );

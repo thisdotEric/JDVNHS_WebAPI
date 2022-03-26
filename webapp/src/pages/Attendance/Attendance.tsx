@@ -10,6 +10,7 @@ import { attendanceColumns } from './columns';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
 import { useSetPageTitle } from '../../hooks';
+import { Button } from '../../components/Button';
 
 interface AttendanceProps {}
 
@@ -186,15 +187,6 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
 
       {showMainAttendanceTable ? (
         <div>
-          <button
-            id="change-attendance"
-            onClick={() => {
-              navigate('/t/lectures');
-            }}
-          >
-            Select another attendance
-          </button>
-
           <div
             className="ag-theme-balham"
             id="student-table"
@@ -224,6 +216,14 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       ) : (
         <p>Loading</p>
       )}
+
+      <Button
+        buttonType="select"
+        value="Select another attendance"
+        onClick={() => {
+          navigate('/t/lectures');
+        }}
+      />
     </div>
   );
 };

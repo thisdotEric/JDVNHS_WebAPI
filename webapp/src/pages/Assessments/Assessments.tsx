@@ -10,6 +10,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import AssessmentActions from './AssessmentActions';
+import { Button } from '../../components/Button';
 
 interface AssessmentsProps {}
 
@@ -117,18 +118,20 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
 
   return (
     <div className="assessments">
-      <button
-        onClick={() => {
-          setCreateNewAssessment(!createNewAssessment);
-          console.log(assessmentWithScores);
-        }}
-      >
-        {!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
-      </button>
+      <div className="create-assessments">
+        <Button
+          onClick={() => {
+            setCreateNewAssessment(!createNewAssessment);
+            console.log(assessmentWithScores);
+          }}
+          buttonType={!createNewAssessment ? 'select' : 'cancel'}
+          value={!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
+        />
 
-      {createNewAssessment && (
-        <AddAssessment refetchAssessment={setRefectchAssessments} />
-      )}
+        {createNewAssessment && (
+          <AddAssessment refetchAssessment={setRefectchAssessments} />
+        )}
+      </div>
 
       <div
         className="ag-theme-balham"

@@ -1,3 +1,7 @@
-.s {
-  display: flex;
+div {
+  .scores-act {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+  }
 }

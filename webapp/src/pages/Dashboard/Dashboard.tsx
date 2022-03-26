@@ -24,6 +24,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [headerFlags, setHeaderContextValue] = useState<HeaderFlags>({
     showSubjectDropdown: true,
+    headerStringValue: '',
   });
 
   const headerContextMemo = useMemo(
@@ -87,14 +88,13 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
       ) : (
         <main>
           <div className="top">
-            {headerFlags?.showSubjectDropdown ? (
+            {headerFlags?.showSubjectDropdown && (
               <SubjectDropDown
                 setSelectedSubject={setSelectedSubject}
                 userSubjects={userSubjects}
               />
-            ) : (
-              <p>Hidden</p>
             )}
+            <p>{headerFlags.headerStringValue}</p>
           </div>
           <div className="content">
             <HeaderContext.Provider value={headerContextMemo}>

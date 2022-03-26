@@ -60,7 +60,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
               <div className="actions">
                 {validAttendance?.includes(lecture_id) ? (
                   <Button
-                    value="View Update Attendance"
+                    value="View/Update Attendance"
                     buttonType="select"
                     onClick={() => {
                       navigate(`/t/attendance/${lecture_id}`);

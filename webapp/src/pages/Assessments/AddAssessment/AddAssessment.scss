@@ -1,16 +1,19 @@
-div {
-  form {
-    #date {
-      padding: 7px 5px;
-      outline: none;
-      margin-right: 5px;
-    }
+#add-assessments-form {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
 
-    input,
-    select {
-      padding: 7px 5px;
-      outline: none;
-      margin-right: 5px;
-    }
+  #date {
+    padding: 7px 5px;
+    outline: none;
+    margin-right: 5px;
+  }
+
+  input,
+  select {
+    padding: 7px 5px;
+    outline: none;
+    margin-right: 5px;
   }
 }

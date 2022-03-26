@@ -10,7 +10,8 @@ import { attendanceColumns } from './columns';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
 import { useSetPageTitle } from '../../hooks';
-import { Button } from '../../components/Button';
+import { Button, TableButton } from '../../components/Button';
+import AttendanceAction from './AttendanceAction';
 
 interface AttendanceProps {}
 
@@ -60,7 +61,6 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     Attendance & { lecture_id: number }[]
   >();
   const selectedSubject = useContext(SubjectContext);
-  const [showMainAttendanceTable, setAttendanceTable] = useState<boolean>(true);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
@@ -72,42 +72,48 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   const [columns] = useState([
     ...attendanceColumns,
     {
+      field: 'status',
+      headerName: 'Attendance',
+      cellRendererFramework: (params: any) => (
+        <span id={params.node.data.status}>{params.node.data.status}</span>
+      ),
+    },
+    {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="present"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="present"
         />
       ),
     },
     {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="absent"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="absent"
         />
       ),
     },
     {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="excused"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="excused"
         />
       ),
     },
   ]);
 
   const updateStudentAttendance = async (
-    table: any,
+    LRN: string,
     updatedAttendance: AttendanceStatus,
   ) => {
-    const LRN = table.data.LRN;
     let lecture_id: string | null = params.id!;
 
     if (!lecture_id) {
@@ -185,37 +191,33 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         />
       )}
 
-      {showMainAttendanceTable ? (
-        <div>
-          <div
-            className="ag-theme-balham"
-            id="student-table"
-            style={{
-              height: '550px',
+      <div>
+        <div
+          className="ag-theme-balham"
+          id="student-table"
+          style={{
+            height: '550px',
+          }}
+        >
+          <AgGridReact
+            rowData={attendanceList}
+            columnDefs={columns}
+            pagination={true}
+            // paginationPageSize={15}
+            rowSelection={'single'}
+            enableCellChangeFlash={true}
+            pinnedTopRowData={[]}
+            pinnedBottomRowData={[]}
+            defaultColDef={{
+              sortable: true,
+              flex: 1,
+              minWidth: 100,
+              filter: true,
+              resizable: true,
             }}
-          >
-            <AgGridReact
-              rowData={attendanceList}
-              columnDefs={columns}
-              pagination={true}
-              // paginationPageSize={15}
-              rowSelection={'single'}
-              enableCellChangeFlash={true}
-              pinnedTopRowData={[]}
-              pinnedBottomRowData={[]}
-              defaultColDef={{
-                sortable: true,
-                flex: 1,
-                minWidth: 100,
-                filter: true,
-                resizable: true,
-              }}
-            ></AgGridReact>
-          </div>
+          ></AgGridReact>
         </div>
-      ) : (
-        <p>Loading</p>
-      )}
+      </div>
 
       <Button
         buttonType="select"

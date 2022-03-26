@@ -16,10 +16,6 @@ const attendanceColumns = [
     headerName: 'Middle Name',
   },
   {
-    field: 'status',
-    headerName: 'Attendance',
-  },
-  {
     field: 'lecture_id',
     headerName: 'Lecture_id',
     hide: true,

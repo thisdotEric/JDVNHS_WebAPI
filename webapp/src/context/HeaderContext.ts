@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 export interface HeaderFlags {
   showSubjectDropdown: boolean;
+  headerStringValue: string;
 }
 
 export interface HeaderContextValue {
@@ -12,6 +13,7 @@ export interface HeaderContextValue {
 const HeaderContext = createContext<HeaderContextValue>({
   headerFlags: {
     showSubjectDropdown: true,
+    headerStringValue: '',
   },
   setHeaderContextValue: headerFlags => {},
 });

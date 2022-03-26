@@ -61,7 +61,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 {validAttendance?.includes(lecture_id) ? (
                   <Button
                     value="View/Update Attendance"
-                    buttonType="select"
+                    buttontype="select"
                     onClick={() => {
                       navigate(`/t/attendance/${lecture_id}`);
                     }}
@@ -69,7 +69,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 ) : (
                   <Button
                     value="Create New Attendance"
-                    buttonType="select"
+                    buttontype="select"
                     onClick={() => {
                       navigate(`/t/attendance/new/${lecture_id}`);
                     }}
@@ -78,7 +78,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
                 <Button
                   value="View Assessments"
-                  buttonType="select"
+                  buttontype="select"
                   onClick={() => {
                     navigate(`/t/assessments`);
                   }}

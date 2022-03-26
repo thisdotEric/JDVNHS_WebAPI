@@ -10,15 +10,15 @@ interface ButtonProps
     HTMLButtonElement
   > {
   value: string;
-  buttonType: ButtonType;
+  buttontype: ButtonType;
 }
 
 const Button: FC<ButtonProps> = (props: ButtonProps) => {
   return (
     <div>
-      <button {...props} id={props.disabled ? 'disabled' : props.buttonType}>
-        {props.buttonType === 'save' && <Save id="icon" />}
-        {props.buttonType === 'cancel' && <X id="icon" />}
+      <button {...props} id={props.disabled ? 'disabled' : props.buttontype}>
+        {props.buttontype === 'save' && <Save id="icon" />}
+        {props.buttontype === 'cancel' && <X id="icon" />}
 
         {props.value}
       </button>

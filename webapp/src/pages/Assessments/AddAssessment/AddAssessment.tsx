@@ -82,7 +82,7 @@ const AddAssessment: FC<AddAssessmentProps> = ({
         }
       }}
     >
-      <Button type="submit" value="Add new assessment" buttonType="save" />
+      <Button type="submit" value="Add new assessment" buttontype="save" />
 
       <select
         name="component"

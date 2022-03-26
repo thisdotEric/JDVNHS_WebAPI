@@ -130,14 +130,14 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       <div className="scores-actions">
         <Button
           value="Cancel"
-          buttonType="cancel"
+          buttontype="cancel"
           onClick={() => {
             navigate('/t/assessments');
           }}
         />
         <Button
           value="Save Updated Scores"
-          buttonType="save"
+          buttontype="save"
           disabled={disableSaveButton}
           onClick={async () => {
             await axios.patch(`subject/${selectedSubject}/assessments/scores`, {

@@ -220,7 +220,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       </div>
 
       <Button
-        buttonType="select"
+        buttontype="select"
         value="Select another attendance"
         onClick={() => {
           navigate('/t/lectures');

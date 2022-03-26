@@ -106,7 +106,7 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
 
       <div className="scores-act">
         <Button
-          buttonType="cancel"
+          buttontype="cancel"
           value="Cancel"
           onClick={async () => {
             navigate('/t/assessments');
@@ -114,7 +114,7 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
         />
 
         <Button
-          buttonType="save"
+          buttontype="save"
           value="Save new scores"
           onClick={async () => {
             console.table(students);

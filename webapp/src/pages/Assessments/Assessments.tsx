@@ -124,7 +124,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
             setCreateNewAssessment(!createNewAssessment);
             console.log(assessmentWithScores);
           }}
-          buttonType={!createNewAssessment ? 'select' : 'cancel'}
+          buttontype={!createNewAssessment ? 'select' : 'cancel'}
           value={!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
         />
 

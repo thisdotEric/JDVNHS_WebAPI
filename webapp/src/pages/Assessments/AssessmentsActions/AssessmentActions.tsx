@@ -1,8 +1,9 @@
 import React, { FC, useContext } from 'react';
-// import './AssessmentActions.scss';
+import './AssessmentActions.scss';
 import { useNavigate } from 'react-router-dom';
-import { axios } from '../../utils';
-import { SubjectContext } from '../../context';
+import { axios } from '../../../utils';
+import { SubjectContext } from '../../../context';
+import { TableButton } from '../../../components/Button';
 
 interface AssessmentActionsProps {
   assessment_id: number;
@@ -20,26 +21,25 @@ const AssessmentActions: FC<AssessmentActionsProps> = ({
   const selectedSubject = useContext(SubjectContext);
 
   return (
-    <div>
+    <div id="assessment-actions">
       {viewScores ? (
-        <button
+        <TableButton
+          value="View/Update Scores"
           onClick={() => {
             navigate(`/t/assessments/scores/${assessment_id}`);
           }}
-        >
-          View/Update Scores
-        </button>
+        />
       ) : (
-        <button
+        <TableButton
+          value="Add New Scores"
           onClick={() => {
             navigate(`/t/assessments/scores/new/${assessment_id}`);
           }}
-        >
-          Add New Scores
-        </button>
+        />
       )}
 
-      <button
+      <TableButton
+        value="Delete Assessment"
         onClick={async () => {
           await axios.delete(
             `subject/${selectedSubject}/assessment/${assessment_id}`,
@@ -47,9 +47,7 @@ const AssessmentActions: FC<AssessmentActionsProps> = ({
 
           refetchAssessments(Math.random());
         }}
-      >
-        Delete Assessment
-      </button>
+      />
     </div>
   );
 };

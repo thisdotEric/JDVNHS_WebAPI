@@ -9,16 +9,12 @@ import { useParams } from 'react-router-dom';
 
 interface ScoresProps {}
 
-interface ClassScores {
-  subject_id: string;
-  assessment_id: number;
-  grading_period: 1 | 2 | 3 | 4;
-  total_items: number;
-  scores: Scores[];
-}
-
 interface Scores {
   LRN: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  score_id: number;
   score: number;
   grading_period: 1 | 2 | 3 | 4;
 }
@@ -29,8 +25,7 @@ interface UpdatedScore {
 }
 
 const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
-  const [classScores, setScores] = useState<Scores[]>();
-  const [updatedScores, setUpdatedScores] = useState<UpdatedScore[]>([]);
+  const [classScores, setScores] = useState<Scores[]>([]);
   const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true);
 
   const [scoreColumns] = useState([
@@ -39,39 +34,38 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       headerName: 'LRN',
     },
     {
+      field: 'last_name',
+      headerName: 'Last Name',
+    },
+    {
+      field: 'first_name',
+      headerName: 'First Name',
+    },
+    {
+      field: 'middle_name',
+      headerName: 'Middle Name',
+    },
+    {
+      field: 'score_id',
+      headerName: 'Score ID',
+      hide: true,
+    },
+    {
       field: 'score',
       headerName: 'Score',
       editable: true,
       onCellValueChanged: (grid: any) => {
         setDisableSaveButton(false);
 
-        console.log(grid.node.data);
-
         const row = grid.node.data;
 
-        setUpdatedScores(old => {
-          let needsUpdate = false;
-          let currentIndex: number = 0;
+        setScores(oldScores => {
+          return oldScores.map(studentScore => {
+            if (studentScore.LRN === row.LRN)
+              studentScore.score = parseInt(row.score, 10);
 
-          old.forEach((s, index) => {
-            if (s.score_id === row.score_id) {
-              needsUpdate = true;
-              currentIndex = index;
-              return;
-            }
+            return studentScore;
           });
-
-          if (needsUpdate) {
-            old.splice(currentIndex, 1);
-          }
-
-          return [
-            ...old,
-            {
-              score_id: row.score_id,
-              score: row.score,
-            },
-          ];
         });
       },
     },
@@ -103,10 +97,10 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       <button
         disabled={disableSaveButton}
         onClick={async () => {
-          console.table(updatedScores);
-
           await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
-            scores: updatedScores,
+            scores: classScores.map(({ score, score_id }) => {
+              return { score, score_id };
+            }),
           });
         }}
       >

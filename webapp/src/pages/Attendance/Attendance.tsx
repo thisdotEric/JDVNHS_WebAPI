@@ -9,7 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
-import { useSetPageTitle } from '../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { Button, TableButton } from '../../components/Button';
 import AttendanceAction from './AttendanceAction';
 
@@ -57,17 +57,22 @@ const UpdateAttendance = ({
 };
 
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
+  const selectedSubject = useContext(SubjectContext);
+
+  useSetPageTitle('Attendance');
+  useSetHeader({
+    showSubjectDropdown: false,
+    headerStringValue: `Updating attendance of ${selectedSubject} subject dated 2022-03-12.`,
+  });
+
   const [attendanceList, setAttendanceList] = useState<
     Attendance & { lecture_id: number }[]
   >();
-  const selectedSubject = useContext(SubjectContext);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
   const navigate = useNavigate();
-
-  useSetPageTitle('Attendance');
 
   const [columns] = useState([
     ...attendanceColumns,

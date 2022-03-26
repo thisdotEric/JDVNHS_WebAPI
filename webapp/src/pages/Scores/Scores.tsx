@@ -31,7 +31,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   useSetPageTitle('Scores');
   useSetHeader({
     showSubjectDropdown: false,
-    headerStringValue: 'Hello from the other side',
+    headerStringValue: 'View/Update scores',
   });
 
   const [classScores, setScores] = useState<Scores[]>([]);

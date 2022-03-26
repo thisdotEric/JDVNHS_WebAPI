@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useContext } from 'react';
 import './Lectures.scss';
 import { axios } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import { useSetPageTitle } from '../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 import AttendanceAction from '../Attendance/AttendanceAction';
 import { shortenDate } from '../../utils';
@@ -30,12 +30,16 @@ const AttendanceButton: FC<AttendanceButtonProps> = ({
 };
 
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
+  useSetPageTitle('Lectures');
+  useSetHeader({
+    showSubjectDropdown: true,
+    headerStringValue: 'List of all lecture dates',
+  });
+
   const [lectures, setLectures] = useState<Lectures[]>();
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
   const [validAttendance, setValidAttendance] = useState<number[]>();
-
-  useSetPageTitle('Lectures');
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {

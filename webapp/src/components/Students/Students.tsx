@@ -7,7 +7,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
-import { useSetPageTitle } from '../../hooks';
+import { useSetPageTitle, useSetHeader } from '../../hooks';
 
 interface StudentsProps {}
 
@@ -27,6 +27,12 @@ interface SubjectStats {
 }
 
 const Students: FC<StudentsProps> = ({}: StudentsProps) => {
+  useSetPageTitle('Students');
+  useSetHeader({
+    showSubjectDropdown: true,
+    headerStringValue: 'List of all students',
+  });
+
   const [students, setStudents] = useState<IStudent[]>();
   const [selectedStudent, setSelectedStudent] = useState<IStudent['user_id']>();
 
@@ -35,8 +41,6 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
   const [gridApi, setGridApi] = useState<any>();
   const [updateTable, setUpdateTable] = useState<number>(0);
-
-  useSetPageTitle('Students');
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);
@@ -79,29 +83,6 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         <p>Number of Male: {subjectStats?.maleCount}</p>
         <p>Grade Level: {subjectStats?.gradeLevel}</p>
       </div>
-
-      {/* Disable for now the remove student buttons */}
-      {/* <button
-        disabled={selectedStudent === undefined}
-        onClick={() => {
-          confirmAlert({
-            title: 'Confirm Delete?',
-            message: `${selectedStudent} will be removed from ${selectedSubject} class.`,
-            buttons: [
-              {
-                label: 'Yes',
-                onClick: async () => await removeStudentFromClass(),
-              },
-              {
-                label: 'No',
-                onClick: () => {},
-              },
-            ],
-          });
-        }}
-      >
-        Remove student from class
-      </button> */}
 
       <div
         className="ag-theme-balham"

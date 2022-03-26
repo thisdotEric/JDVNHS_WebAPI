@@ -3,7 +3,7 @@ import './Assessments.scss';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../context';
-import { useSetPageTitle } from '../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../hooks';
 import type { Assessment, LearningComponent } from './types';
 import { AddAssessment } from './AddAssessment';
 import { AgGridReact } from 'ag-grid-react';
@@ -30,6 +30,12 @@ function toLongLearningComponentName(
 }
 
 const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
+  useSetPageTitle('Assessments');
+  useSetHeader({
+    showSubjectDropdown: true,
+    headerStringValue: `List of all assessments`,
+  });
+
   const [createNewAssessment, setCreateNewAssessment] =
     useState<boolean>(false);
   const [refetchAssessments, setRefectchAssessments] = useState<number>();
@@ -91,8 +97,6 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   const navigate = useNavigate();
 
   const selectedSubject = useContext(SubjectContext);
-
-  useSetPageTitle('Assessments');
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {

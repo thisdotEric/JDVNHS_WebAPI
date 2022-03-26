@@ -12,6 +12,7 @@ import { Lectures } from './pages/Lectures';
 import { Assessments } from './pages/Assessments';
 import { AddScores } from './pages/Scores/AddScores';
 import { Grades } from './pages/Grades';
+import { Reports } from './pages/Reports';
 
 interface AppProps {}
 
@@ -35,14 +36,7 @@ function App({}: AppProps) {
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
             <Route path="lectures" element={<Lectures />} />
-            <Route
-              path="Reports"
-              element={
-                <>
-                  <p>Report Page</p>
-                </>
-              }
-            />
+            <Route path="Reports" element={<Reports />} />
             <Route path="Grades" element={<Grades />} />
           </Route>
         </Route>

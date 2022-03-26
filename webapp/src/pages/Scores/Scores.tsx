@@ -2,10 +2,13 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import './Scores.scss';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../../src/context';
-import { AgGridReact, AgGridColumn } from 'ag-grid-react';
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { useParams } from 'react-router-dom';
+import { useSetPageTitle, useSetHeader } from '../../hooks';
+import { Button } from '../../components/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface ScoresProps {}
 
@@ -25,6 +28,12 @@ interface UpdatedScore {
 }
 
 const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
+  useSetPageTitle('Scores');
+  useSetHeader({
+    showSubjectDropdown: false,
+    headerStringValue: 'Hello from the other side',
+  });
+
   const [classScores, setScores] = useState<Scores[]>([]);
   const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true);
 
@@ -77,6 +86,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   ]);
 
   const selectedSubject = useContext(SubjectContext);
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -94,19 +104,6 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
 
   return (
     <div className="scores">
-      <button
-        disabled={disableSaveButton}
-        onClick={async () => {
-          await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
-            scores: classScores.map(({ score, score_id }) => {
-              return { score, score_id };
-            }),
-          });
-        }}
-      >
-        Save Updated Scores
-      </button>
-
       <div
         className="ag-theme-balham"
         id="student-table"
@@ -128,6 +125,28 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
             resizable: true,
           }}
         ></AgGridReact>
+      </div>
+
+      <div className="scores-actions">
+        <Button
+          value="Cancel"
+          buttonType="cancel"
+          onClick={() => {
+            navigate('/t/assessments');
+          }}
+        />
+        <Button
+          value="Save Updated Scores"
+          buttonType="save"
+          disabled={disableSaveButton}
+          onClick={async () => {
+            await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
+              scores: classScores.map(({ score, score_id }) => {
+                return { score, score_id };
+              }),
+            });
+          }}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-// import './AttendanceAction.scss';
+import './AttendanceActionAction.scss';
 import type { AttendanceAction, AttendanceStatus } from './AddAttendance';
 
 interface AttendanceActionProps {
@@ -33,6 +33,8 @@ const AttendanceActionColumn: FC<AttendanceActionProps> = ({
     },
   ]);
 
+  const [lit] = useState([]);
+
   return (
     <div id="add-attendance-actions">
       {actions.map(action => (
@@ -44,7 +46,8 @@ const AttendanceActionColumn: FC<AttendanceActionProps> = ({
             type="radio"
             name={`attendance${index}`}
           />
-          <i>{action.inputName}</i>
+          &nbsp;
+          <p> {action.inputName}</p>
         </label>
       ))}
     </div>

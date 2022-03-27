@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
-import { ASSESSMENT } from '../../src/constant/tables';
+import { ASSESSMENT } from '../constant/tables';
 
 export interface Assessment {
   date: string;

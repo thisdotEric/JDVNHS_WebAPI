@@ -224,13 +224,15 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         </div>
       </div>
 
-      <Button
-        buttontype="select"
-        value="Select another attendance"
-        onClick={() => {
-          navigate('/t/lectures');
-        }}
-      />
+      <div id="attendance-actions">
+        <Button
+          buttontype="select"
+          value="Select another attendance"
+          onClick={() => {
+            navigate('/t/lectures');
+          }}
+        />
+      </div>
     </div>
   );
 };

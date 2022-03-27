@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
 import './Students.scss';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -8,6 +7,9 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
+import { Button } from '../Button';
+import { useNavigate } from 'react-router-dom';
+import { Hash } from 'react-feather';
 
 interface StudentsProps {}
 
@@ -40,19 +42,11 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   const [subjectStats, setSubjectStats] = useState<SubjectStats>();
 
   const [gridApi, setGridApi] = useState<any>();
-  const [updateTable, setUpdateTable] = useState<number>(0);
+  const [studentName, setStudentName] = useState<string>('');
+  const navigate = useNavigate();
 
   const onGridReady = (params: any) => {
     setGridApi(params.api);
-  };
-
-  const removeStudentFromClass = async () => {
-    await axios.delete(
-      `subject/${selectedSubject}/students/${selectedStudent}`,
-    );
-
-    setUpdateTable(updateTable + 1);
-    gridApi.refreshCells();
   };
 
   useEffect(() => {
@@ -72,16 +66,24 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
         gradeLevel: 10,
       });
     });
-  }, [selectedSubject, updateTable]);
+  }, [selectedSubject]);
 
   return (
     <div className="class-students">
       <div className="class-info">
-        <p>Object Oriented Programming</p>
-        <p>Total Number of Students: {subjectStats?.totalStudents}</p>
-        <p>Number of Female: {subjectStats?.femaleCount}</p>
-        <p>Number of Male: {subjectStats?.maleCount}</p>
-        <p>Grade Level: {subjectStats?.gradeLevel}</p>
+        <p>
+          Student count: <span>{subjectStats?.totalStudents}</span>
+        </p>
+        <p>
+          Grade Level: <span>{subjectStats?.gradeLevel}</span>
+        </p>
+        <p> | </p>
+        <p>
+          Females: <span>{subjectStats?.femaleCount}</span>
+        </p>
+        <p>
+          Males: <span>{subjectStats?.maleCount}</span>
+        </p>
       </div>
 
       <div
@@ -101,6 +103,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           pinnedBottomRowData={[]}
           onSelectionChanged={() => {
             setSelectedStudent(gridApi.getSelectedRows()[0].user_id);
+            setStudentName(gridApi.getSelectedRows()[0].first_name);
           }}
           defaultColDef={{
             sortable: true,
@@ -117,6 +120,19 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           <AgGridColumn field="gender" headerName="Gender" />
           <AgGridColumn field="contact_number" headerName="Contact Number" />
         </AgGridReact>
+      </div>
+
+      <div id="student-action-buttons">
+        <Button
+          value={`View ${studentName}${
+            studentName !== '' ? "'s" : ''
+          }  student report`}
+          buttontype={studentName === '' ? 'disabled' : 'select'}
+          disabled={studentName === ''}
+          onClick={() => {
+            navigate(`/t/reports/student/${selectedStudent}`);
+          }}
+        />
       </div>
     </div>
   );

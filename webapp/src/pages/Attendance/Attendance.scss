@@ -34,4 +34,10 @@
       background: rgb(39, 214, 39);
     }
   }
+
+  #attendance-actions {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+  }
 }

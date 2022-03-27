@@ -9,4 +9,10 @@
     border-collapse: collapse;
     width: 100%;
   }
+
+  #add-attendance-actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }

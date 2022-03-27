@@ -34,7 +34,7 @@ const AttendanceActionColumn: FC<AttendanceActionProps> = ({
   ]);
 
   return (
-    <div>
+    <div id="add-attendance-actions">
       {actions.map(action => (
         <label>
           <input

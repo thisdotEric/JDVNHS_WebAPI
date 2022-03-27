@@ -1,8 +1,7 @@
 import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
-import { DbConstants } from '../constant/db.constants';
-import { ASSESSMENT, SCORES } from '../../src/constant/tables';
+import { SCORES } from '../constant/tables';
 
 export interface Score {
   score_id: number;

@@ -1,8 +1,9 @@
-import React, { FC, useState, useReducer } from 'react';
+import React, { FC, useReducer } from 'react';
 import './Login.scss';
-import { wave, user, SchoolLogo } from '../../assets';
+import { wave, user as userImage, SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../utils';
+import { studentHomePage, teacherHomePage } from '../../constants';
 
 interface LoginProps {}
 
@@ -50,16 +51,18 @@ const Login: FC<LoginProps> = ({}: LoginProps) => {
             onSubmit={async e => {
               e.preventDefault();
 
-              console.log(userCredentials);
-
               const result = await axios.post('auth/login', userCredentials);
 
-              console.log(result.status);
-
-              if (result.status === 200) navigate('/students');
+              if (result.status === 200 && result.data.role === 'teacher') {
+                navigate(teacherHomePage);
+              } else if (
+                result.status === 200 &&
+                result.data.role === 'student'
+              )
+                navigate(studentHomePage);
             }}
           >
-            <img src={user} />
+            <img src={userImage} />
             <h2 className="title"> Welcome</h2>
             <div className="input-div one">
               <div className="i">

@@ -1,0 +1,19 @@
+#add-assessments-form {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+
+  #date {
+    padding: 7px 5px;
+    outline: none;
+    margin-right: 5px;
+  }
+
+  input,
+  select {
+    padding: 7px 5px;
+    outline: none;
+    margin-right: 5px;
+  }
+}

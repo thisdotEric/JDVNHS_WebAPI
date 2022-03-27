@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import bindings from './ioc/ioc-container';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import express, { Response } from 'express';
-import exceptionsMiddleware from './middleware/exceptions.middleware';
+import { exceptionsMiddleware } from './middleware';
 import cors from './utils/cors';
 import { Container } from 'inversify';
 import session from './utils/session';

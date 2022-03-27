@@ -12,7 +12,7 @@ import JsonResponse from '../utils/JsonResponse';
 import StudentService from '../services/student.service';
 import TYPES from '../ioc/binding-types';
 
-@controller('/student')
+@controller('/student', TYPES.AuthMiddleware)
 class StudentController extends BaseHttpController {
   constructor(
     @inject(TYPES.StudentService)

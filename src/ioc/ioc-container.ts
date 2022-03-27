@@ -8,6 +8,8 @@ import knex from 'knex';
 import StudentService from '../services/student.service';
 import SubjectService from '../services/subject.service';
 import AuthenticationService from '../services/authentication.service';
+import UserService from '../services/user.service';
+import TeacherService from '../services/teacher.service';
 
 // repositories
 import StudentRepository from '../repository/student.repository';
@@ -15,12 +17,20 @@ import SubjectRepository from '../repository/subject.repository';
 import AttendanceRepository from '../repository/attendance.repository';
 import AuthenticationRepository from '../repository/authentication.repository';
 import AssessmentScoresRepository from '../repository/scores.repository';
+import UserRepository from '../repository/user.repository';
+import LectureRepository from '../repository/lecture.repository';
+import AssessmentRepository from '../repository/assessment.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
 import TeacherRepository from '../repository/teacher.repository';
-import { TYPE } from 'inversify-express-utils';
-import TeacherService from '../services/teacher.service';
+
+// Middlewares
+import {
+  StudentAccessONLY,
+  TeacherAccessONLY,
+  MustBeAuthenticated,
+} from '../middleware';
 
 const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   // async!
@@ -45,9 +55,21 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<AssessmentScoresRepository>(TYPES.AssessmentScoresRepository).to(
     AssessmentScoresRepository
   );
+  bind<AssessmentRepository>(TYPES.AssessmentRepository).to(
+    AssessmentRepository
+  );
 
   bind<TeacherRepository>(TYPES.TeacherRepository).to(TeacherRepository);
   bind<TeacherService>(TYPES.TeacherService).to(TeacherService);
+
+  bind<UserRepository>(TYPES.UserRepository).to(UserRepository);
+  bind<UserService>(TYPES.UserService).to(UserService);
+
+  bind<LectureRepository>(TYPES.LectureRepository).to(LectureRepository);
+
+  bind<MustBeAuthenticated>(TYPES.AuthMiddleware).to(MustBeAuthenticated);
+  bind<StudentAccessONLY>(TYPES.StudentAccessONLY).to(StudentAccessONLY);
+  bind<TeacherAccessONLY>(TYPES.TeacherAccessONLY).to(TeacherAccessONLY);
 });
 
 export default bindings;

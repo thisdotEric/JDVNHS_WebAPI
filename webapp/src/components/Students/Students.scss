@@ -1,12 +1,28 @@
 .class-students {
-  #student-table {
-    margin-right: 20px;
+  .class-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 20px;
+    background: #283659;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    color: white;
 
-    .icon-div {
-      #del-icon {
-        color: red;
-        height: 20px;
+    p {
+      padding-right: 20px;
+      font-size: 12px;
+
+      span {
+        font-weight: bold;
       }
     }
+  }
+
+  #student-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: right;
   }
 }

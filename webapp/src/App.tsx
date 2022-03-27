@@ -11,6 +11,8 @@ import { AddAttendance } from './pages/Attendance/AddAttendance';
 import { Lectures } from './pages/Lectures';
 import { Assessments } from './pages/Assessments';
 import { AddScores } from './pages/Scores/AddScores';
+import { Grades } from './pages/Grades';
+import { Reports, StudentReport } from './pages/Reports';
 
 interface AppProps {}
 
@@ -34,6 +36,11 @@ function App({}: AppProps) {
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
             <Route path="lectures" element={<Lectures />} />
+            <Route path="reports">
+              <Route path="" element={<Reports />} />
+              <Route path="student/:LRN" element={<StudentReport />} />
+            </Route>
+            <Route path="Grades" element={<Grades />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoutes hasAccess="student" />}>

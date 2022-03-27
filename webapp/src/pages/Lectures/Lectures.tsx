@@ -2,10 +2,11 @@ import React, { FC, useState, useEffect, useContext } from 'react';
 import './Lectures.scss';
 import { axios } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import { useSetPageTitle } from '../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 import AttendanceAction from '../Attendance/AttendanceAction';
 import { shortenDate } from '../../utils';
+import { Button } from '../../components/Button';
 
 interface LecturesProps {}
 
@@ -29,12 +30,16 @@ const AttendanceButton: FC<AttendanceButtonProps> = ({
 };
 
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
+  useSetPageTitle('Lectures');
+  useSetHeader({
+    showSubjectDropdown: true,
+    headerStringValue: 'List of all lecture dates',
+  });
+
   const [lectures, setLectures] = useState<Lectures[]>();
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
   const [validAttendance, setValidAttendance] = useState<number[]>();
-
-  useSetPageTitle('Lectures');
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
@@ -58,30 +63,30 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
               <div className="actions">
                 {validAttendance?.includes(lecture_id) ? (
-                  <button
+                  <Button
+                    value="View/Update Attendance"
+                    buttontype="select"
                     onClick={() => {
                       navigate(`/t/attendance/${lecture_id}`);
                     }}
-                  >
-                    View/Update Attendance
-                  </button>
+                  />
                 ) : (
-                  <button
+                  <Button
+                    value="Create New Attendance"
+                    buttontype="select"
                     onClick={() => {
                       navigate(`/t/attendance/new/${lecture_id}`);
                     }}
-                  >
-                    Create New Attendance
-                  </button>
+                  />
                 )}
 
-                <button
+                <Button
+                  value="View Assessments"
+                  buttontype="select"
                   onClick={() => {
                     navigate(`/t/assessments`);
                   }}
-                >
-                  View Assessments
-                </button>
+                />
               </div>
             </div>
           );

@@ -1,19 +1,29 @@
 import React, { FC } from 'react';
 import type { AttendanceStatus } from './Attendance';
+import { TableButton } from '../../components/Button';
 
 interface AttendanceActionProps {
-  setAttendanceActions: React.Dispatch<React.SetStateAction<AttendanceStatus>>;
+  LRN: string;
+  newAttendanceStatus: AttendanceStatus;
+  updateStudentAttendance: (
+    LRN: string,
+    newAttendanceStatus: AttendanceStatus,
+  ) => Promise<void>;
 }
 
 const AttendanceAction: FC<AttendanceActionProps> = ({
-  setAttendanceActions,
+  updateStudentAttendance,
+  LRN,
+  newAttendanceStatus,
 }: AttendanceActionProps) => {
   return (
-    <div>
-      <button onClick={() => setAttendanceActions('present')}>Present</button>
-      <button onClick={() => setAttendanceActions('excused')}>Excused</button>
-      <button onClick={() => setAttendanceActions('absent')}>Absent</button>
-    </div>
+    <TableButton
+      value={newAttendanceStatus}
+      onClick={async () => {
+        await updateStudentAttendance(LRN, newAttendanceStatus);
+        console.log(LRN, newAttendanceStatus);
+      }}
+    />
   );
 };
 

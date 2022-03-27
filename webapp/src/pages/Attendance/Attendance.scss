@@ -1,4 +1,27 @@
+@mixin attendance-status-mixin {
+  font-weight: bold;
+  padding: 5px 20px;
+  width: 100%;
+  color: white;
+  font-size: 12px;
+}
+
 .attendance {
+  #present {
+    @include attendance-status-mixin();
+    background: #4a830c;
+  }
+
+  #absent {
+    @include attendance-status-mixin();
+    background: #c53015;
+  }
+
+  #excused {
+    @include attendance-status-mixin();
+    background: #ed7315;
+  }
+
   #change-attendance {
     padding: 10px;
     background: rgb(46, 220, 46);
@@ -10,5 +33,11 @@
     &:hover {
       background: rgb(39, 214, 39);
     }
+  }
+
+  #attendance-actions {
+    display: flex;
+    align-items: center;
+    justify-content: right;
   }
 }

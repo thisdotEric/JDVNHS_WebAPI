@@ -27,6 +27,14 @@ const teacherNavigations: ILink[] = [
     to: '/t/assessments',
     name: 'Assessments',
   },
+  {
+    to: '/t/grades',
+    name: 'Grades',
+  },
+  {
+    to: '/t/reports',
+    name: 'Reports',
+  },
 ];
 
 export { studentNavigations, teacherNavigations };

@@ -9,7 +9,9 @@ import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
-import { useSetPageTitle } from '../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../hooks';
+import { Button, TableButton } from '../../components/Button';
+import AttendanceAction from './AttendanceAction';
 
 interface AttendanceProps {}
 
@@ -55,58 +57,68 @@ const UpdateAttendance = ({
 };
 
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
+  const selectedSubject = useContext(SubjectContext);
+
+  useSetPageTitle('Attendance');
+  useSetHeader({
+    showSubjectDropdown: false,
+    headerStringValue: `Updating attendance of ${selectedSubject} subject dated 2022-03-12.`,
+  });
+
   const [attendanceList, setAttendanceList] = useState<
     Attendance & { lecture_id: number }[]
   >();
-  const selectedSubject = useContext(SubjectContext);
-  const [showMainAttendanceTable, setAttendanceTable] = useState<boolean>(true);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
   const navigate = useNavigate();
 
-  useSetPageTitle('Attendance');
-
   const [columns] = useState([
     ...attendanceColumns,
     {
+      field: 'status',
+      headerName: 'Attendance',
+      cellRendererFramework: (params: any) => (
+        <span id={params.node.data.status}>{params.node.data.status}</span>
+      ),
+    },
+    {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="present"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="present"
         />
       ),
     },
     {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="absent"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="absent"
         />
       ),
     },
     {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <UpdateAttendance
-          table={params}
+        <AttendanceAction
+          LRN={params.data.LRN}
+          newAttendanceStatus="excused"
           updateStudentAttendance={updateStudentAttendance}
-          updatedAttendance="excused"
         />
       ),
     },
   ]);
 
   const updateStudentAttendance = async (
-    table: any,
+    LRN: string,
     updatedAttendance: AttendanceStatus,
   ) => {
-    const LRN = table.data.LRN;
     let lecture_id: string | null = params.id!;
 
     if (!lecture_id) {
@@ -184,46 +196,43 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         />
       )}
 
-      {showMainAttendanceTable ? (
-        <div>
-          <button
-            id="change-attendance"
-            onClick={() => {
-              navigate('/t/lectures');
+      <div>
+        <div
+          className="ag-theme-balham"
+          id="student-table"
+          style={{
+            height: '550px',
+          }}
+        >
+          <AgGridReact
+            rowData={attendanceList}
+            columnDefs={columns}
+            pagination={true}
+            // paginationPageSize={15}
+            rowSelection={'single'}
+            enableCellChangeFlash={true}
+            pinnedTopRowData={[]}
+            pinnedBottomRowData={[]}
+            defaultColDef={{
+              sortable: true,
+              flex: 1,
+              minWidth: 100,
+              filter: true,
+              resizable: true,
             }}
-          >
-            Select another attendance
-          </button>
-
-          <div
-            className="ag-theme-balham"
-            id="student-table"
-            style={{
-              height: '550px',
-            }}
-          >
-            <AgGridReact
-              rowData={attendanceList}
-              columnDefs={columns}
-              pagination={true}
-              // paginationPageSize={15}
-              rowSelection={'single'}
-              enableCellChangeFlash={true}
-              pinnedTopRowData={[]}
-              pinnedBottomRowData={[]}
-              defaultColDef={{
-                sortable: true,
-                flex: 1,
-                minWidth: 100,
-                filter: true,
-                resizable: true,
-              }}
-            ></AgGridReact>
-          </div>
+          ></AgGridReact>
         </div>
-      ) : (
-        <p>Loading</p>
-      )}
+      </div>
+
+      <div id="attendance-actions">
+        <Button
+          buttontype="select"
+          value="Select another attendance"
+          onClick={() => {
+            navigate('/t/lectures');
+          }}
+        />
+      </div>
     </div>
   );
 };

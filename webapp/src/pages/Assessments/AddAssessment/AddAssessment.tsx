@@ -3,6 +3,7 @@ import './AddAssessment.scss';
 import type { Assessment } from '../types';
 import { SubjectContext } from '../../../context';
 import { axios } from '../../../utils';
+import { Button } from '../../../components/Button';
 
 interface AddAssessmentProps {
   refetchAssessment: React.Dispatch<React.SetStateAction<number | undefined>>;
@@ -64,69 +65,72 @@ const AddAssessment: FC<AddAssessmentProps> = ({
   const [grading_periods] = useState<number[]>([1, 2, 3, 4]);
 
   return (
-    <div>
-      <form
-        onSubmit={async e => {
-          e.preventDefault();
+    <form
+      id="add-assessments-form"
+      onSubmit={async e => {
+        e.preventDefault();
 
-          const response = await axios.post(
-            `subject/${selectedSubject}/assessment`,
-            {
-              assessment,
-            },
-          );
+        const response = await axios.post(
+          `subject/${selectedSubject}/assessment`,
+          {
+            assessment,
+          },
+        );
 
-          if (response.status == 200) {
-            refetchAssessment(Math.random());
-          }
+        if (response.status == 200) {
+          refetchAssessment(Math.random());
+        }
+      }}
+    >
+      <Button type="submit" value="Add new assessment" buttontype="save" />
+
+      <select
+        name="component"
+        onChange={e => {
+          dispatch({
+            type: 'component',
+            payload: e.target.value,
+          });
         }}
       >
-        <input type="submit" value="Add Assessment" name="date" />
-        <input
-          type="number"
-          name="Total Items"
-          id="items"
-          min={0}
-          onChange={e => {
-            dispatch({
-              type: 'items',
-              payload: e.currentTarget.value,
-            });
-          }}
-        />
+        {componentTypes.map(({ abbr, name }) => (
+          <option value={abbr}>{name}</option>
+        ))}
+      </select>
 
-        <select
-          name="component"
-          onChange={e => {
-            dispatch({
-              type: 'component',
-              payload: e.target.value,
-            });
-          }}
-        >
-          {componentTypes.map(({ abbr, name }) => (
-            <option value={abbr}>{name}</option>
-          ))}
-        </select>
+      <select
+        name="grading_period"
+        onChange={e => {
+          dispatch({
+            type: 'grading_period',
+            payload: e.target.value,
+          });
+        }}
+      >
+        {grading_periods.map(gp => (
+          <option value={gp}>{gp}</option>
+        ))}
+      </select>
 
-        <select
-          name="grading_period"
-          onChange={e => {
-            dispatch({
-              type: 'grading_period',
-              payload: e.target.value,
-            });
-          }}
-        >
-          {grading_periods.map(gp => (
-            <option value={gp}>{gp}</option>
-          ))}
-        </select>
-      </form>
+      <input
+        type="number"
+        name="Total Items"
+        placeholder="Total Items"
+        width={100}
+        id="items"
+        min={0}
+        onChange={e => {
+          dispatch({
+            type: 'items',
+            payload: e.currentTarget.value,
+          });
+        }}
+      />
 
       <input
         type="date"
         name="date"
+        id="date"
         onChange={e => {
           dispatch({
             type: 'date',
@@ -134,7 +138,7 @@ const AddAssessment: FC<AddAssessmentProps> = ({
           });
         }}
       />
-    </div>
+    </form>
   );
 };
 

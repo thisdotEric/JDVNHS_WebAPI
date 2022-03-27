@@ -2,28 +2,35 @@ import React, { FC, useEffect, useState, useRef, useMemo } from 'react';
 import './Dashboard.scss';
 import { Outlet } from 'react-router-dom';
 import { SideNav } from '../../components/SideNav';
-import { SchoolLogo, user } from '../../assets';
+import { SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
-import { SubjectContext } from '../../context';
+import { SubjectContext, HeaderContext, HeaderFlags } from '../../context';
 import { axios } from '../../utils';
 import { useCurrentUser } from '../../hooks';
 import { teacherNavigations, studentNavigations } from '../../constants';
+import { SubjectDropDown } from './SubjectDropDown';
 
 interface DashboardProps {}
 
-interface Subject {
+export interface Subject {
   subject_id: string;
   subject_name: string;
 }
 
 const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const navigate = useNavigate();
-  const ref = useRef(null);
-
   const [userSubjects, setUserSubjects] = useState<Subject[]>();
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
-  const [showDropdown, setShowDropdown] = useState<boolean>(true);
+  const [headerFlags, setHeaderContextValue] = useState<HeaderFlags>({
+    showSubjectDropdown: true,
+    headerStringValue: '',
+  });
+
+  const headerContextMemo = useMemo(
+    () => ({ headerFlags, setHeaderContextValue }),
+    [headerFlags, setHeaderContextValue],
+  );
 
   const currentUser = useCurrentUser();
 
@@ -81,23 +88,20 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
       ) : (
         <main>
           <div className="top">
-            <select
-              ref={ref}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                setSelectedSubject(e.target.value);
-                localStorage.setItem('selectedSubject', e.target.value);
-              }}
-            >
-              {userSubjects &&
-                userSubjects.map(({ subject_id, subject_name }, index) => (
-                  <option value={subject_id}>{subject_name}</option>
-                ))}
-            </select>
+            {headerFlags?.showSubjectDropdown && (
+              <SubjectDropDown
+                setSelectedSubject={setSelectedSubject}
+                userSubjects={userSubjects}
+              />
+            )}
+            <p>{headerFlags.headerStringValue}</p>
           </div>
           <div className="content">
-            <SubjectContext.Provider value={selectedSubject}>
-              <Outlet />
-            </SubjectContext.Provider>
+            <HeaderContext.Provider value={headerContextMemo}>
+              <SubjectContext.Provider value={selectedSubject}>
+                <Outlet />
+              </SubjectContext.Provider>
+            </HeaderContext.Provider>
           </div>
         </main>
       )}

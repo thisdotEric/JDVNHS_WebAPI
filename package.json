@@ -14,7 +14,7 @@
         "build": "rm -rf dist &&  tsc -p .",
         "start": "node dist/server.js",
         "knex": "npx knex --knexfile src/database/knexQueryBuilder/knexfile.ts",
-        "prod:knex": "knex --knexfile dist/src/database/knexQueryBuilder/knexfile.js"
+        "prod:knex": "knex --knexfile dist/database/knexQueryBuilder/knexfile.js"
     },
     "keywords": [],
     "author": "John Eric Siguenza",

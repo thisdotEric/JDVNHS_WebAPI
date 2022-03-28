@@ -5,6 +5,9 @@ import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
 import useSetPageTitle from '../../../hooks/useSetPageTitle';
 import AttendanceActionColumn from './AttendanceActionColumn';
+import { AgGridReact } from 'ag-grid-react';
+import { useSetHeader } from '../../../hooks';
+import { Button } from '../../../components/Button';
 
 interface AddAttendanceProps {}
 
@@ -21,87 +24,127 @@ interface Attendance {
 }
 
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
+  useSetPageTitle('Add Attendance');
+  useSetHeader({
+    headerStringValue: 'Create new attendance',
+    showSubjectDropdown: false,
+  });
+
   const [students, setStudents] = useState<any[]>();
-  const [attendance, setAttendance] = useState<Attendance[]>([]);
   const navigate = useNavigate();
+  const selectedSubject = useContext(SubjectContext);
 
   let { lecture_id } = useParams();
   useSetPageTitle('Create New Attendance');
 
+  const [attendanceCols] = useState([
+    {
+      field: 'user_id',
+      headerName: 'LRN',
+    },
+    {
+      field: 'last_name',
+      headerName: 'Last Name',
+    },
+    {
+      field: 'first_name',
+      headerName: 'First Name',
+    },
+    {
+      field: 'middle_name',
+      headerName: 'Middle Name',
+    },
+    {
+      headerName: 'Action',
+      cellRendererFramework: (params: any) => (
+        <>
+          <AttendanceActionColumn
+            index={params.rowIndex}
+            dispatch={updateAttendance}
+            LRN={params.data.user_id}
+          />
+        </>
+      ),
+    },
+  ]);
+
   useEffect(() => {
-    axios.get('subject/PreCal/students').then(({ data }) => {
+    axios.get(`subject/${selectedSubject}/students`).then(({ data }) => {
       // Set table data
-      setStudents(data.data);
-
-      // Setup the initial attendance
-      const a = data.data.map((s: any) => {
-        return {
-          LRN: s.user_id,
-          status: 'present',
-        };
-      });
-
-      setAttendance(a);
+      setStudents(
+        data.data.map((st: any) => {
+          return {
+            ...st,
+            attendance: 'present',
+          };
+        }),
+      );
     });
   }, []);
 
   const updateAttendance = (status: AttendanceStatus, LRN: string) => {
-    setAttendance(
-      attendance.map(at => {
-        if (at.LRN === LRN) at.status = status;
-        return at;
-      }),
-    );
+    console.log(status);
+
+    setStudents(old => {
+      return old?.map(st => {
+        if (st.user_id === LRN) st.attendance = status;
+
+        return st;
+      });
+    });
   };
 
   return (
     <div>
-      <button
-        onClick={async () => {
-          console.log(attendance);
-
-          await axios.post('subject/PreCal/attendance', {
-            attendance,
-            lecture_id: lecture_id,
-          });
-
-          navigate('/t/lectures');
+      <div
+        className="ag-theme-balham"
+        id="student-table"
+        style={{
+          height: '550px',
         }}
       >
-        Save Attendance
-      </button>
+        <AgGridReact
+          rowData={students}
+          pagination={true}
+          columnDefs={attendanceCols}
+          rowSelection={'single'}
+          enableCellChangeFlash={true}
+          defaultColDef={{
+            sortable: true,
+            flex: 1,
+            minWidth: 100,
+            filter: true,
+            resizable: true,
+          }}
+        ></AgGridReact>
+      </div>
 
-      <div className="add-attendance">
-        <table>
-          <thead>
-            <tr>
-              <th>LRN</th>
-              <th>Student Name</th>
-              <th>Attendance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students &&
-              students.map((student, index) => {
-                return (
-                  <tr>
-                    <td>{student.user_id}</td>
-                    <td>
-                      {student.first_name} {student.middle_name}{' '}
-                      {student.last_name}{' '}
-                    </td>
-                    <td>
-                      <AttendanceActionColumn
-                        index={index}
-                        dispatch={updateAttendance}
-                        LRN={student.user_id}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      <div className="scores-act">
+        <Button
+          buttontype="cancel"
+          value="Cancel"
+          onClick={() => {
+            navigate('/t/lectures');
+          }}
+        />
+
+        <Button
+          buttontype="save"
+          value="Save new attendance"
+          onClick={async () => {
+            await axios.post('subject/PreCal/attendance', {
+              attendance: students?.map(s => {
+                return {
+                  LRN: s.user_id,
+                  status: s.attendance,
+                };
+              }),
+              lecture_id: lecture_id,
+            });
+
+            navigate('/t/lectures');
+          }}
+        />
       </div>
     </div>
   );

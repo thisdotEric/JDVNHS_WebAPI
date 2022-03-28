@@ -1,0 +1,17 @@
+#add-attendance-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      padding: 2px 5px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+  }
+}

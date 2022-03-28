@@ -4,7 +4,6 @@ import { axios } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
-import AttendanceAction from '../Attendance/AttendanceAction';
 import { shortenDate } from '../../utils';
 import { Button } from '../../components/Button';
 
@@ -16,18 +15,6 @@ interface Lectures {
   subject_id: string;
   grading_period: number;
 }
-
-interface AttendanceButtonProps {
-  onClick: () => void;
-  value: string;
-}
-
-const AttendanceButton: FC<AttendanceButtonProps> = ({
-  onClick,
-  value,
-}: AttendanceButtonProps) => {
-  return <button onClick={onClick}>{value}</button>;
-};
 
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   useSetPageTitle('Lectures');
@@ -44,12 +31,11 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
       setLectures(data.data);
-
-      // console.table(data.data);
-
-      axios.get(`subject/PreCal/attendance/valid`).then(({ data }) => {
-        setValidAttendance(data.data.map((n: any) => n.lecture_id));
-      });
+      axios
+        .get(`subject/${selectedSubject}/attendance/valid`)
+        .then(({ data }) => {
+          setValidAttendance(data.data.map((n: any) => n.lecture_id));
+        });
     });
   }, [selectedSubject]);
 

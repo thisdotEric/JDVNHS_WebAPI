@@ -14,7 +14,7 @@
         "build": "rm -rf dist &&  tsc -p .",
         "start": "node dist/server.js",
         "knex": "npx knex --knexfile src/database/knexQueryBuilder/knexfile.ts",
-        "prod:knex": "knex --knexfile dist/src/database/knexQueryBuilder/knexfile.js"
+        "prod:knex": "knex --knexfile dist/database/knexQueryBuilder/knexfile.js"
     },
     "keywords": [],
     "author": "John Eric Siguenza",
@@ -26,6 +26,7 @@
         "express": "^4.17.1",
         "express-session": "^1.17.2",
         "faker": "^5.5.3",
+        "hashids": "^2.2.10",
         "inversify": "^6.0.1",
         "inversify-express-utils": "^6.4.3",
         "jsonwebtoken": "^8.5.1",

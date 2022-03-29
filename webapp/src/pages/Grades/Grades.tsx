@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 import './Grades.scss';
 import { useFetch } from '../../hooks';
 import type { AxiosRequestConfig } from 'axios';
+import { Spinner } from '../../components/Spinner';
 
 interface GradesProps {}
 
@@ -18,7 +19,8 @@ const Grades: FC<GradesProps> = ({}: GradesProps) => {
   return (
     <div>
       {console.log(data)}
-      <p>Grades</p>
+
+      <Spinner />
     </div>
   );
 };

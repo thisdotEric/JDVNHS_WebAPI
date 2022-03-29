@@ -1,0 +1,40 @@
+@function spinnerSize($id) {
+  $result: 20;
+  @return $result;
+}
+
+$loadc: rgb(19, 214, 36);
+$square: 20px;
+
+#loader {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  flex-direction: column;
+
+  p {
+    padding-left: 5px;
+    font-size: 10px;
+  }
+
+  .lds-dual-ring {
+    &:after {
+      content: ' ';
+      display: block;
+      width: $square;
+      height: $square;
+      border-radius: 50%;
+      border: 4px solid $loadc;
+      border-color: $loadc transparent $loadc transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

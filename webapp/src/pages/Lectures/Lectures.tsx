@@ -29,14 +29,16 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const [validAttendance, setValidAttendance] = useState<number[]>();
 
   useEffect(() => {
-    axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
-      setLectures(data.data);
-      axios
-        .get(`subject/${selectedSubject}/attendance/valid`)
-        .then(({ data }) => {
-          setValidAttendance(data.data.map((n: any) => n.lecture_id));
-        });
-    });
+    axios
+      .get(`subject/${selectedSubject}/lectures`)
+      .then(({ data: lectures }) => {
+        axios
+          .get(`subject/${selectedSubject}/attendance/valid`)
+          .then(({ data }) => {
+            setValidAttendance(data.data.map((n: any) => n.lecture_id));
+            setLectures(lectures.data);
+          });
+      });
   }, [selectedSubject]);
 
   return (

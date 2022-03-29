@@ -26,6 +26,7 @@
         "express": "^4.17.1",
         "express-session": "^1.17.2",
         "faker": "^5.5.3",
+        "hashids": "^2.2.10",
         "inversify": "^6.0.1",
         "inversify-express-utils": "^6.4.3",
         "jsonwebtoken": "^8.5.1",

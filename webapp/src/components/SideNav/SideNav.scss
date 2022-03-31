@@ -9,6 +9,16 @@ nav {
     text-decoration: none;
     padding: 10px;
     color: black;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    #sidenav-icon {
+      height: 25px;
+      width: 25px;
+      padding-right: 10px;
+    }
   }
 
   .active {

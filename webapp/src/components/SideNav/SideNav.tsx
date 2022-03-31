@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import './SideNav.scss';
 import { NavLink } from 'react-router-dom';
-import type { UserType } from '../../types';
 import type { ILink } from '../../constants';
 
 interface SideNavProps {
@@ -13,7 +12,7 @@ const SideNav: FC<SideNavProps> = ({ links }: SideNavProps) => {
     <nav>
       {links.map((link, index) => (
         <NavLink key={index} className="link" to={link.to}>
-          {link.name}
+          {link.icon} {link.name}
         </NavLink>
       ))}
     </nav>

@@ -14,8 +14,8 @@ const SubjectDropDown: FC<SubjectDropDownProps> = ({
   const [subject, setSubject] = useState<string>();
 
   useEffect(() => {
-    const sub = localStorage.getItem('selectedSubject');
-    setSubject(sub as string);
+    const sub = localStorage.getItem('selectedSubject') as string;
+    setSubject(sub);
   }, []);
 
   return (

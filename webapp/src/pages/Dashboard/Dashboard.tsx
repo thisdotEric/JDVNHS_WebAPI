@@ -47,7 +47,16 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           const subjects = subjectList.data.data;
           setLoading(false);
           setUserSubjects(subjects);
-          setSelectedSubject(subjects[0].subject_id);
+
+          /**
+           * Check first localstorage if there is a currently selected subject and use that
+           */
+          const localSubject = localStorage.getItem(
+            'selectedSubject',
+          ) as string;
+
+          if (localSubject) setSelectedSubject(localSubject);
+          else setSelectedSubject(subjects[0].subject_id);
         });
     }
   }, [currentUser]);

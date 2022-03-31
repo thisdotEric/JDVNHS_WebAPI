@@ -4,11 +4,18 @@ import { Outlet } from 'react-router-dom';
 import { SideNav } from '../../components/SideNav';
 import { SchoolLogo } from '../../assets';
 import { useNavigate } from 'react-router-dom';
-import { SubjectContext, HeaderContext, HeaderFlags } from '../../context';
+import {
+  SubjectContext,
+  HeaderContext,
+  HeaderFlags,
+  NotificationContext,
+  Notification,
+} from '../../context';
 import { axios } from '../../utils';
 import { useCurrentUser } from '../../hooks';
 import { teacherNavigations, studentNavigations } from '../../constants';
 import { SubjectDropDown } from './SubjectDropDown';
+import { XCircle } from 'react-feather';
 
 interface DashboardProps {}
 
@@ -16,6 +23,11 @@ export interface Subject {
   subject_id: string;
   subject_name: string;
 }
+
+const initialNotificationState: Notification = {
+  text: '',
+  type: 'success',
+};
 
 const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const navigate = useNavigate();
@@ -26,13 +38,25 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
     showSubjectDropdown: true,
     headerStringValue: '',
   });
+  const [notification, setNotification] = useState<Notification>(
+    initialNotificationState,
+  );
 
   const headerContextMemo = useMemo(
     () => ({ headerFlags, setHeaderContextValue }),
     [headerFlags, setHeaderContextValue],
   );
 
+  const notificationContextMemo = useMemo(
+    () => ({ notification, setNotification }),
+    [notification, setNotification],
+  );
+
   const currentUser = useCurrentUser();
+
+  useEffect(() => {
+    setNotification(initialNotificationState);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -97,18 +121,36 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
       ) : (
         <main>
           <div className="top">
-            {headerFlags?.showSubjectDropdown && (
-              <SubjectDropDown
-                setSelectedSubject={setSelectedSubject}
-                userSubjects={userSubjects}
-              />
+            <div id="header-left">
+              {headerFlags?.showSubjectDropdown && (
+                <SubjectDropDown
+                  setSelectedSubject={setSelectedSubject}
+                  userSubjects={userSubjects}
+                />
+              )}
+              <p>{headerFlags.headerStringValue}</p>
+            </div>
+            {notification.text !== '' && (
+              <div id="notification" className={notification.type}>
+                <p>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Numquam consequuntur vel veniam ducimus aut expedita.
+                </p>
+                <XCircle
+                  id="notif-close-icon"
+                  onClick={() => {
+                    setNotification(initialNotificationState);
+                  }}
+                />
+              </div>
             )}
-            <p>{headerFlags.headerStringValue}</p>
           </div>
           <div className="content">
             <HeaderContext.Provider value={headerContextMemo}>
               <SubjectContext.Provider value={selectedSubject}>
-                <Outlet />
+                <NotificationContext.Provider value={notificationContextMemo}>
+                  <Outlet />
+                </NotificationContext.Provider>
               </SubjectContext.Provider>
             </HeaderContext.Provider>
           </div>

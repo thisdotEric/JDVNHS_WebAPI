@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './SubjectDropDown.scss';
 import type { Subject } from '../Dashboard';
 
@@ -11,13 +11,22 @@ const SubjectDropDown: FC<SubjectDropDownProps> = ({
   setSelectedSubject,
   userSubjects,
 }: SubjectDropDownProps) => {
+  const [subject, setSubject] = useState<string>();
+
+  useEffect(() => {
+    const sub = localStorage.getItem('selectedSubject');
+    setSubject(sub as string);
+  }, []);
+
   return (
     <div>
       <select
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           setSelectedSubject(e.target.value);
+          setSubject(e.target.value);
           localStorage.setItem('selectedSubject', e.target.value);
         }}
+        value={subject}
       >
         {userSubjects &&
           userSubjects.map(({ subject_id, subject_name }) => (

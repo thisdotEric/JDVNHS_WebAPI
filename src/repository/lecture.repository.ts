@@ -27,6 +27,7 @@ class LectureRepository {
     const lectures = await this.db
       .getDbInstance()(LECTURES)
       .where({ subject_id })
+      .orderBy('lecture_date', 'desc')
       .select('*');
 
     return lectures;

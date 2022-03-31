@@ -130,6 +130,14 @@ class SubjectService {
   async addNewScores(scores: NewScores) {
     return this.scoresRepo.addNewScores(scores);
   }
+
+  async getClassGrades(subject_id: string) {
+    const scores = await this.scoresRepo.getAllAssessmentsWithScores(
+      subject_id
+    );
+
+    console.log(scores);
+  }
 }
 
 export default SubjectService;

@@ -258,7 +258,10 @@ class SubjectController extends BaseHttpController {
     const subject_id = `${req.params.subject_name}`;
     const { scores } = req.body;
 
-    await this.subjectService.updateAssessmentScores(scores);
+    console.log(scores);
+    
+
+    // await this.subjectService.updateAssessmentScores(scores);
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);

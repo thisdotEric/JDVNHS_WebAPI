@@ -11,6 +11,7 @@ const SCORES = 'scores';
 const ASSESSMENT = 'assessments';
 const LECTURES = 'lectures';
 const LESSONS = 'lessons';
+const COMPONENTS = 'components';
 
 export {
   STUDENT,
@@ -26,4 +27,5 @@ export {
   ASSESSMENT,
   LECTURES,
   LESSONS,
+  COMPONENTS,
 };

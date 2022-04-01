@@ -6,12 +6,12 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(DbConstants.ASSESSMENT_TABLE).del();
 
   const assessments = [
-    { date: '2021-12-15', subject_id: 'PreCal', items: 50, component: 'WW' },
-    { date: '2022-01-10', subject_id: 'PreCal', items: 20, component: 'QA' },
-    { date: '2022-01-15', subject_id: 'PreCal', items: 5, component: 'PT' },
-    { date: '2022-02-15', subject_id: 'PreCal', items: 15, component: 'WW' },
-    { date: '2022-03-05', subject_id: 'PreCal', items: 30, component: 'WW' },
-    { date: '2021-12-15', subject_id: 'MMW1', items: 100, component: 'PT' },
+    { date: '2021-12-15', subject_id: 'Math10', items: 50, component: 'WW' },
+    { date: '2022-01-10', subject_id: 'Math10', items: 20, component: 'QA' },
+    { date: '2022-01-15', subject_id: 'Math10', items: 5, component: 'PT' },
+    { date: '2022-02-15', subject_id: 'Math10', items: 15, component: 'WW' },
+    { date: '2022-03-05', subject_id: 'Math10', items: 30, component: 'WW' },
+    { date: '2021-12-15', subject_id: 'Math10', items: 100, component: 'PT' },
   ];
 
   await knex(DbConstants.ASSESSMENT_TABLE).insert(assessments);

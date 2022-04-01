@@ -8,9 +8,9 @@ export async function seed(knex: Knex): Promise<void> {
   // Inserts seed entries
   await knex(COMPONENTS).insert([
     {
-      subject_id: 'PreCal',
-      written_work: 0.3,
-      performance_task: 0.5,
+      subject_id: 'Math10',
+      written_work: 0.4,
+      performance_task: 0.4,
       quarterly_assessment: 0.2,
     },
   ]);

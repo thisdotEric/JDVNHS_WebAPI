@@ -12,6 +12,7 @@ const ASSESSMENT = 'assessments';
 const LECTURES = 'lectures';
 const LESSONS = 'lessons';
 const COMPONENTS = 'components';
+const TRANSMUTATION = 'transmutation';
 
 export {
   STUDENT,
@@ -28,4 +29,5 @@ export {
   LECTURES,
   LESSONS,
   COMPONENTS,
+  TRANSMUTATION,
 };

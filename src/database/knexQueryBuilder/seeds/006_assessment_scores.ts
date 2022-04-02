@@ -1,24 +1,70 @@
 import * as Knex from 'knex';
 import { DbConstants } from '../../../constant/db.constants';
 
+function addDays(date: Date, days: number) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function randomize(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+interface Assessment {
+  grading_period: number;
+  subject_id: string;
+  items: number;
+  component: string;
+  date: string | Date;
+}
+
 export async function seed(knex: Knex): Promise<void> {
   await knex(DbConstants.SCORES_TABLE).del();
   await knex(DbConstants.ASSESSMENT_TABLE).del();
 
-  const assessments = [
-    { date: '2021-12-15', subject_id: 'Math10', items: 50, component: 'WW' },
-    { date: '2022-01-10', subject_id: 'Math10', items: 20, component: 'QA' },
-    { date: '2022-01-15', subject_id: 'Math10', items: 5, component: 'PT' },
-    { date: '2022-02-15', subject_id: 'Math10', items: 15, component: 'WW' },
-    { date: '2022-03-05', subject_id: 'Math10', items: 30, component: 'WW' },
-    { date: '2021-12-15', subject_id: 'Math10', items: 100, component: 'PT' },
-  ];
+  const grading_periods = [1, 2, 3, 4];
 
-  await knex(DbConstants.ASSESSMENT_TABLE).insert(assessments);
+  let assessmentList: Assessment[] = [];
 
-  const assessment_ids = await knex(DbConstants.ASSESSMENT_TABLE).select(
-    'assessment_id'
-  );
+  let date = new Date();
+
+  for (let grading_period of grading_periods) {
+    for (let i = 0; i < 7; i++) {
+      date = addDays(date, randomize(3, 7));
+      assessmentList.push({
+        date,
+        subject_id: 'Math10',
+        items: randomize(20, 35),
+        component: 'WW',
+        grading_period,
+      });
+    }
+
+    for (let i = 0; i < 6; i++) {
+      date = addDays(date, randomize(3, 7));
+      assessmentList.push({
+        date,
+        subject_id: 'Math10',
+        items: randomize(20, 35),
+        component: 'PT',
+        grading_period,
+      });
+    }
+
+    date = addDays(date, randomize(3, 7));
+    assessmentList.push({
+      date,
+      subject_id: 'Math10',
+      items: 50,
+      component: 'QA',
+      grading_period,
+    });
+  }
+
+  await knex(DbConstants.ASSESSMENT_TABLE).insert(assessmentList);
+
+  const assessments = await knex(DbConstants.ASSESSMENT_TABLE).select('*');
 
   let studentScores = [];
 
@@ -26,51 +72,26 @@ export async function seed(knex: Knex): Promise<void> {
   const start = 10;
   const end = 50;
 
-  let LRN: string = '';
+  let LRN;
 
-  for (let count = start; count <= end; count++) {
-    LRN = `1234567891${count}`;
-    studentScores.push({
-      assessment_id: assessment_ids[0].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[0].items) + 1,
-    });
+  let score: number = 20;
 
-    studentScores.push({
-      assessment_id: assessment_ids[1].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[1].items) + 1,
-    });
+  for (let assessment of assessments) {
+    for (let count = start; count <= end; count++) {
+      LRN = `1234567891${count}`;
 
-    studentScores.push({
-      assessment_id: assessment_ids[2].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[2].items) + 1,
-    });
+      score = randomize(
+        assessment.component === 'QA' ? 20 : 1,
+        assessment.items as number
+      );
 
-    studentScores.push({
-      assessment_id: assessment_ids[3].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[3].items) + 1,
-    });
-
-    studentScores.push({
-      assessment_id: assessment_ids[4].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[4].items) + 1,
-    });
-
-    studentScores.push({
-      assessment_id: assessment_ids[5].assessment_id,
-      grading_period: 1,
-      LRN,
-      score: Math.floor(Math.random() * assessments[5].items) + 1,
-    });
+      studentScores.push({
+        assessment_id: assessment.assessment_id,
+        grading_period: assessment.grading_period,
+        LRN,
+        score,
+      });
+    }
   }
 
   await knex(DbConstants.SCORES_TABLE).insert(studentScores);

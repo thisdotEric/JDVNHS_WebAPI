@@ -4,11 +4,19 @@ import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
 import { IStudent } from './student.repository';
 import { SubjectNotFoundException } from '../exceptions';
+import { COMPONENTS } from '../constant/tables';
 
 export type EnrolledStudents = Pick<
   IStudent,
   'user_id' | 'first_name' | 'middle_name' | 'last_name'
 >;
+
+export interface SubjectComponentWeights {
+  subject_id: string;
+  performance_task: number;
+  quarterly_assessment: number;
+  written_work: number;
+}
 
 @injectable()
 class SubjectRepository {
@@ -107,6 +115,20 @@ class SubjectRepository {
       );
 
     return attendance;
+  }
+
+  async getSubjectComponentWeights(
+    subject_id: string
+  ): Promise<SubjectComponentWeights | null> {
+    const componentWeights = await this.db
+      .getDbInstance()(COMPONENTS)
+      .where({ subject_id })
+      .select<SubjectComponentWeights>('*')
+      .first();
+
+    if (!componentWeights) return null;
+
+    return componentWeights;
   }
 }
 

@@ -82,7 +82,7 @@ class AssessmentScoresRepository {
     subject_id: string,
     component: string,
     grading_period: number
-  ) {
+  ): Promise<number> {
     const totalScore = await this.db
       .getDbInstance()(ASSESSMENT)
       .where({
@@ -93,7 +93,7 @@ class AssessmentScoresRepository {
       .sum('items as total_items')
       .first();
 
-    return totalScore;
+    return totalScore ? parseInt(totalScore.total_items, 10) : 0;
   }
 
   async getScores(
@@ -108,6 +108,32 @@ class AssessmentScoresRepository {
 
     return totalScores.rows;
   }
+
+  async getTotalStudentRawScore(
+    subject_id: string,
+    grading_period: number,
+    component: string,
+    LRN: string
+  ) {
+    const totalStudentRawScore = await this.db
+      .getDbInstance()
+      .raw(
+        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT'`
+      );
+
+    return totalStudentRawScore.rows;
+  }
+
+  /// Sum select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';
+
+  /**
+ * 
+ * 
+ * select s."LRN", s."score" from assessments a join scores s on s."assessment_id" = a."assessment_id" where a."subject_id" = 'Math10' and a."grading_period" = '1' and s."LRN" = '123456789110' and a."component" = 'QA' group by s."LRN", s."score";
+
+/// Sum
+select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';
+ */
 }
 
 export default AssessmentScoresRepository;

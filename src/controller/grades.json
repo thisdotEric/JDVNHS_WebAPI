@@ -1,0 +1,2983 @@
+{
+  "statusCode": 200,
+  "message": "",
+  "data": [
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "69",
+        "percentageScore": 43.95,
+        "weightedScore": 17.58
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "71",
+        "percentageScore": 45.22,
+        "weightedScore": 18.09
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "70",
+        "percentageScore": 44.59,
+        "weightedScore": 17.84
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "86",
+        "percentageScore": 54.78,
+        "weightedScore": 21.91
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "79",
+        "percentageScore": 50.32,
+        "weightedScore": 20.13
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "66",
+        "percentageScore": 42.04,
+        "weightedScore": 16.82
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "68",
+        "percentageScore": 43.31,
+        "weightedScore": 17.32
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "79",
+        "percentageScore": 50.32,
+        "weightedScore": 20.13
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "95",
+        "percentageScore": 60.51,
+        "weightedScore": 24.2
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "82",
+        "percentageScore": 52.23,
+        "weightedScore": 20.89
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "56",
+        "percentageScore": 35.67,
+        "weightedScore": 14.27
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "88",
+        "percentageScore": 56.05,
+        "weightedScore": 22.42
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "60",
+        "percentageScore": 38.22,
+        "weightedScore": 15.29
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "97",
+        "percentageScore": 61.78,
+        "weightedScore": 24.71
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "76",
+        "percentageScore": 48.41,
+        "weightedScore": 19.36
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "91",
+        "percentageScore": 57.96,
+        "weightedScore": 23.18
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "63",
+        "percentageScore": 40.13,
+        "weightedScore": 16.05
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "64",
+        "percentageScore": 40.76,
+        "weightedScore": 16.3
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "54",
+        "percentageScore": 34.39,
+        "weightedScore": 13.76
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "58",
+        "percentageScore": 36.94,
+        "weightedScore": 14.78
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "110",
+        "percentageScore": 70.06,
+        "weightedScore": 28.02
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "107",
+        "percentageScore": 68.15,
+        "weightedScore": 27.26
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "71",
+        "percentageScore": 45.22,
+        "weightedScore": 18.09
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "59",
+        "percentageScore": 37.58,
+        "weightedScore": 15.03
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "110",
+        "percentageScore": 70.06,
+        "weightedScore": 28.02
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "74",
+        "percentageScore": 47.13,
+        "weightedScore": 18.85
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "112",
+        "percentageScore": 71.34,
+        "weightedScore": 28.54
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "112",
+        "percentageScore": 71.34,
+        "weightedScore": 28.54
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "75",
+        "percentageScore": 47.77,
+        "weightedScore": 19.11
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "105",
+        "percentageScore": 66.88,
+        "weightedScore": 26.75
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "94",
+        "percentageScore": 59.87,
+        "weightedScore": 23.95
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "74",
+        "percentageScore": 47.13,
+        "weightedScore": 18.85
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "98",
+        "percentageScore": 62.42,
+        "weightedScore": 24.97
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "78",
+        "percentageScore": 49.68,
+        "weightedScore": 19.87
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "96",
+        "percentageScore": 61.15,
+        "weightedScore": 24.46
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "77",
+        "percentageScore": 49.04,
+        "weightedScore": 19.62
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "70",
+        "percentageScore": 44.59,
+        "weightedScore": 17.84
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "62",
+        "percentageScore": 39.49,
+        "weightedScore": 15.8
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "79",
+        "percentageScore": 50.32,
+        "weightedScore": 20.13
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "117",
+        "percentageScore": 74.52,
+        "weightedScore": 29.81
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "92",
+        "percentageScore": 58.6,
+        "weightedScore": 23.44
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "105",
+        "percentageScore": 48.84,
+        "weightedScore": 19.54
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "84",
+        "percentageScore": 39.07,
+        "weightedScore": 15.63
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "99",
+        "percentageScore": 46.05,
+        "weightedScore": 18.42
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "99",
+        "percentageScore": 46.05,
+        "weightedScore": 18.42
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "119",
+        "percentageScore": 55.35,
+        "weightedScore": 22.14
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "104",
+        "percentageScore": 48.37,
+        "weightedScore": 19.35
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "92",
+        "percentageScore": 42.79,
+        "weightedScore": 17.12
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "101",
+        "percentageScore": 46.98,
+        "weightedScore": 18.79
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "139",
+        "percentageScore": 64.65,
+        "weightedScore": 25.86
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "155",
+        "percentageScore": 72.09,
+        "weightedScore": 28.84
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "132",
+        "percentageScore": 61.4,
+        "weightedScore": 24.56
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "111",
+        "percentageScore": 51.63,
+        "weightedScore": 20.65
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "92",
+        "percentageScore": 42.79,
+        "weightedScore": 17.12
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "108",
+        "percentageScore": 50.23,
+        "weightedScore": 20.09
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "86",
+        "percentageScore": 40,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "142",
+        "percentageScore": 66.05,
+        "weightedScore": 26.42
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "95",
+        "percentageScore": 44.19,
+        "weightedScore": 17.68
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "96",
+        "percentageScore": 44.65,
+        "weightedScore": 17.86
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "152",
+        "percentageScore": 70.7,
+        "weightedScore": 28.28
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "69",
+        "percentageScore": 32.09,
+        "weightedScore": 12.84
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "104",
+        "percentageScore": 48.37,
+        "weightedScore": 19.35
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "139",
+        "percentageScore": 64.65,
+        "weightedScore": 25.86
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "93",
+        "percentageScore": 43.26,
+        "weightedScore": 17.3
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "140",
+        "percentageScore": 65.12,
+        "weightedScore": 26.05
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "148",
+        "percentageScore": 68.84,
+        "weightedScore": 27.54
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "98",
+        "percentageScore": 45.58,
+        "weightedScore": 18.23
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "102",
+        "percentageScore": 47.44,
+        "weightedScore": 18.98
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "118",
+        "percentageScore": 54.88,
+        "weightedScore": 21.95
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "97",
+        "percentageScore": 45.12,
+        "weightedScore": 18.05
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "97",
+        "percentageScore": 45.12,
+        "weightedScore": 18.05
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "121",
+        "percentageScore": 56.28,
+        "weightedScore": 22.51
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "122",
+        "percentageScore": 56.74,
+        "weightedScore": 22.7
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "82",
+        "percentageScore": 38.14,
+        "weightedScore": 15.26
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "130",
+        "percentageScore": 60.47,
+        "weightedScore": 24.19
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "96",
+        "percentageScore": 44.65,
+        "weightedScore": 17.86
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "121",
+        "percentageScore": 56.28,
+        "weightedScore": 22.51
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "142",
+        "percentageScore": 66.05,
+        "weightedScore": 26.42
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "132",
+        "percentageScore": 61.4,
+        "weightedScore": 24.56
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "98",
+        "percentageScore": 45.58,
+        "weightedScore": 18.23
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "107",
+        "percentageScore": 49.77,
+        "weightedScore": 19.91
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "61",
+        "percentageScore": 28.37,
+        "weightedScore": 11.35
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "21",
+        "percentageScore": 42,
+        "weightedScore": 8.4
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "37",
+        "percentageScore": 74,
+        "weightedScore": 14.8
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "34",
+        "percentageScore": 68,
+        "weightedScore": 13.6
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "38",
+        "percentageScore": 76,
+        "weightedScore": 15.2
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "32",
+        "percentageScore": 64,
+        "weightedScore": 12.8
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "33",
+        "percentageScore": 66,
+        "weightedScore": 13.2
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "48",
+        "percentageScore": 96,
+        "weightedScore": 19.2
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "35",
+        "percentageScore": 70,
+        "weightedScore": 14
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "46",
+        "percentageScore": 92,
+        "weightedScore": 18.4
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "39",
+        "percentageScore": 78,
+        "weightedScore": 15.6
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "37",
+        "percentageScore": 74,
+        "weightedScore": 14.8
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "39",
+        "percentageScore": 78,
+        "weightedScore": 15.6
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "43",
+        "percentageScore": 86,
+        "weightedScore": 17.2
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "33",
+        "percentageScore": 66,
+        "weightedScore": 13.2
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "20",
+        "percentageScore": 40,
+        "weightedScore": 8
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "35",
+        "percentageScore": 70,
+        "weightedScore": 14
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "68",
+        "percentageScore": 39.31,
+        "weightedScore": 15.72
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "98",
+        "percentageScore": 56.65,
+        "weightedScore": 22.66
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "106",
+        "percentageScore": 61.27,
+        "weightedScore": 24.51
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "130",
+        "percentageScore": 75.14,
+        "weightedScore": 30.06
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "70",
+        "percentageScore": 40.46,
+        "weightedScore": 16.18
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "68",
+        "percentageScore": 39.31,
+        "weightedScore": 15.72
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "143",
+        "percentageScore": 82.66,
+        "weightedScore": 33.06
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "63",
+        "percentageScore": 36.42,
+        "weightedScore": 14.57
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "83",
+        "percentageScore": 47.98,
+        "weightedScore": 19.19
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "65",
+        "percentageScore": 37.57,
+        "weightedScore": 15.03
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "88",
+        "percentageScore": 50.87,
+        "weightedScore": 20.35
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "97",
+        "percentageScore": 56.07,
+        "weightedScore": 22.43
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "115",
+        "percentageScore": 66.47,
+        "weightedScore": 26.59
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "113",
+        "percentageScore": 65.32,
+        "weightedScore": 26.13
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "89",
+        "percentageScore": 51.45,
+        "weightedScore": 20.58
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "112",
+        "percentageScore": 64.74,
+        "weightedScore": 25.9
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "118",
+        "percentageScore": 68.21,
+        "weightedScore": 27.28
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "75",
+        "percentageScore": 43.35,
+        "weightedScore": 17.34
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "56",
+        "percentageScore": 32.37,
+        "weightedScore": 12.95
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "103",
+        "percentageScore": 59.54,
+        "weightedScore": 23.82
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "87",
+        "percentageScore": 50.29,
+        "weightedScore": 20.12
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "87",
+        "percentageScore": 50.29,
+        "weightedScore": 20.12
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "80",
+        "percentageScore": 46.24,
+        "weightedScore": 18.5
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "136",
+        "percentageScore": 78.61,
+        "weightedScore": 31.44
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "98",
+        "percentageScore": 56.65,
+        "weightedScore": 22.66
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "78",
+        "percentageScore": 45.09,
+        "weightedScore": 18.04
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "98",
+        "percentageScore": 56.65,
+        "weightedScore": 22.66
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "63",
+        "percentageScore": 36.42,
+        "weightedScore": 14.57
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "86",
+        "percentageScore": 49.71,
+        "weightedScore": 19.88
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "73",
+        "percentageScore": 42.2,
+        "weightedScore": 16.88
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "123",
+        "percentageScore": 71.1,
+        "weightedScore": 28.44
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "60",
+        "percentageScore": 34.68,
+        "weightedScore": 13.87
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "108",
+        "percentageScore": 62.43,
+        "weightedScore": 24.97
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "49",
+        "percentageScore": 28.32,
+        "weightedScore": 11.33
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "85",
+        "percentageScore": 49.13,
+        "weightedScore": 19.65
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "102",
+        "percentageScore": 58.96,
+        "weightedScore": 23.58
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "121",
+        "percentageScore": 69.94,
+        "weightedScore": 27.98
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "75",
+        "percentageScore": 43.35,
+        "weightedScore": 17.34
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "71",
+        "percentageScore": 41.04,
+        "weightedScore": 16.42
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "136",
+        "percentageScore": 78.61,
+        "weightedScore": 31.44
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "83",
+        "percentageScore": 47.98,
+        "weightedScore": 19.19
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "146",
+        "percentageScore": 67.28,
+        "weightedScore": 26.91
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "114",
+        "percentageScore": 52.53,
+        "weightedScore": 21.01
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "104",
+        "percentageScore": 47.93,
+        "weightedScore": 19.17
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "110",
+        "percentageScore": 50.69,
+        "weightedScore": 20.28
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "118",
+        "percentageScore": 54.38,
+        "weightedScore": 21.75
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "97",
+        "percentageScore": 44.7,
+        "weightedScore": 17.88
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "130",
+        "percentageScore": 59.91,
+        "weightedScore": 23.96
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "118",
+        "percentageScore": 54.38,
+        "weightedScore": 21.75
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "74",
+        "percentageScore": 34.1,
+        "weightedScore": 13.64
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "104",
+        "percentageScore": 47.93,
+        "weightedScore": 19.17
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "103",
+        "percentageScore": 47.47,
+        "weightedScore": 18.99
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "95",
+        "percentageScore": 43.78,
+        "weightedScore": 17.51
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "128",
+        "percentageScore": 58.99,
+        "weightedScore": 23.6
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "139",
+        "percentageScore": 64.06,
+        "weightedScore": 25.62
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "115",
+        "percentageScore": 53,
+        "weightedScore": 21.2
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "127",
+        "percentageScore": 58.53,
+        "weightedScore": 23.41
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "90",
+        "percentageScore": 41.47,
+        "weightedScore": 16.59
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "107",
+        "percentageScore": 49.31,
+        "weightedScore": 19.72
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "123",
+        "percentageScore": 56.68,
+        "weightedScore": 22.67
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "156",
+        "percentageScore": 71.89,
+        "weightedScore": 28.76
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "117",
+        "percentageScore": 53.92,
+        "weightedScore": 21.57
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "116",
+        "percentageScore": 53.46,
+        "weightedScore": 21.38
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "106",
+        "percentageScore": 48.85,
+        "weightedScore": 19.54
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "133",
+        "percentageScore": 61.29,
+        "weightedScore": 24.52
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "152",
+        "percentageScore": 70.05,
+        "weightedScore": 28.02
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "113",
+        "percentageScore": 52.07,
+        "weightedScore": 20.83
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "107",
+        "percentageScore": 49.31,
+        "weightedScore": 19.72
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "100",
+        "percentageScore": 46.08,
+        "weightedScore": 18.43
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "137",
+        "percentageScore": 63.13,
+        "weightedScore": 25.25
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "142",
+        "percentageScore": 65.44,
+        "weightedScore": 26.18
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "97",
+        "percentageScore": 44.7,
+        "weightedScore": 17.88
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "116",
+        "percentageScore": 53.46,
+        "weightedScore": 21.38
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "110",
+        "percentageScore": 50.69,
+        "weightedScore": 20.28
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "135",
+        "percentageScore": 62.21,
+        "weightedScore": 24.88
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "151",
+        "percentageScore": 69.59,
+        "weightedScore": 27.84
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "44",
+        "percentageScore": 20.28,
+        "weightedScore": 8.11
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "96",
+        "percentageScore": 44.24,
+        "weightedScore": 17.7
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "106",
+        "percentageScore": 48.85,
+        "weightedScore": 19.54
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "95",
+        "percentageScore": 43.78,
+        "weightedScore": 17.51
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "119",
+        "percentageScore": 54.84,
+        "weightedScore": 21.94
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "112",
+        "percentageScore": 51.61,
+        "weightedScore": 20.64
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "26",
+        "percentageScore": 52,
+        "weightedScore": 10.4
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "34",
+        "percentageScore": 68,
+        "weightedScore": 13.6
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "34",
+        "percentageScore": 68,
+        "weightedScore": 13.6
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "38",
+        "percentageScore": 76,
+        "weightedScore": 15.2
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "23",
+        "percentageScore": 46,
+        "weightedScore": 9.2
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "20",
+        "percentageScore": 40,
+        "weightedScore": 8
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "21",
+        "percentageScore": 42,
+        "weightedScore": 8.4
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "35",
+        "percentageScore": 70,
+        "weightedScore": 14
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "33",
+        "percentageScore": 66,
+        "weightedScore": 13.2
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "48",
+        "percentageScore": 96,
+        "weightedScore": 19.2
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "26",
+        "percentageScore": 52,
+        "weightedScore": 10.4
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "21",
+        "percentageScore": 42,
+        "weightedScore": 8.4
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "39",
+        "percentageScore": 78,
+        "weightedScore": 15.6
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "37",
+        "percentageScore": 74,
+        "weightedScore": 14.8
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "46",
+        "percentageScore": 92,
+        "weightedScore": 18.4
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "88",
+        "percentageScore": 49.72,
+        "weightedScore": 19.89
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "100",
+        "percentageScore": 56.5,
+        "weightedScore": 22.6
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "78",
+        "percentageScore": 44.07,
+        "weightedScore": 17.63
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "128",
+        "percentageScore": 72.32,
+        "weightedScore": 28.93
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "124",
+        "percentageScore": 70.06,
+        "weightedScore": 28.02
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "110",
+        "percentageScore": 62.15,
+        "weightedScore": 24.86
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "104",
+        "percentageScore": 58.76,
+        "weightedScore": 23.5
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "84",
+        "percentageScore": 47.46,
+        "weightedScore": 18.98
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "77",
+        "percentageScore": 43.5,
+        "weightedScore": 17.4
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "97",
+        "percentageScore": 54.8,
+        "weightedScore": 21.92
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "133",
+        "percentageScore": 75.14,
+        "weightedScore": 30.06
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "88",
+        "percentageScore": 49.72,
+        "weightedScore": 19.89
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "119",
+        "percentageScore": 67.23,
+        "weightedScore": 26.89
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "123",
+        "percentageScore": 69.49,
+        "weightedScore": 27.8
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "95",
+        "percentageScore": 53.67,
+        "weightedScore": 21.47
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "84",
+        "percentageScore": 47.46,
+        "weightedScore": 18.98
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "97",
+        "percentageScore": 54.8,
+        "weightedScore": 21.92
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "118",
+        "percentageScore": 66.67,
+        "weightedScore": 26.67
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "122",
+        "percentageScore": 68.93,
+        "weightedScore": 27.57
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "116",
+        "percentageScore": 65.54,
+        "weightedScore": 26.22
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "72",
+        "percentageScore": 40.68,
+        "weightedScore": 16.27
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "100",
+        "percentageScore": 56.5,
+        "weightedScore": 22.6
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "121",
+        "percentageScore": 68.36,
+        "weightedScore": 27.34
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "138",
+        "percentageScore": 77.97,
+        "weightedScore": 31.19
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "90",
+        "percentageScore": 50.85,
+        "weightedScore": 20.34
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "73",
+        "percentageScore": 41.24,
+        "weightedScore": 16.5
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "113",
+        "percentageScore": 63.84,
+        "weightedScore": 25.54
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "110",
+        "percentageScore": 62.15,
+        "weightedScore": 24.86
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "83",
+        "percentageScore": 46.89,
+        "weightedScore": 18.76
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "85",
+        "percentageScore": 48.02,
+        "weightedScore": 19.21
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "95",
+        "percentageScore": 53.67,
+        "weightedScore": 21.47
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "86",
+        "percentageScore": 48.59,
+        "weightedScore": 19.44
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "82",
+        "percentageScore": 46.33,
+        "weightedScore": 18.53
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "43",
+        "percentageScore": 24.29,
+        "weightedScore": 9.72
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "81",
+        "percentageScore": 45.76,
+        "weightedScore": 18.3
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "119",
+        "percentageScore": 67.23,
+        "weightedScore": 26.89
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "96",
+        "percentageScore": 54.24,
+        "weightedScore": 21.7
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "86",
+        "percentageScore": 48.59,
+        "weightedScore": 19.44
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "65",
+        "percentageScore": 36.72,
+        "weightedScore": 14.69
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "77",
+        "percentageScore": 43.5,
+        "weightedScore": 17.4
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "73",
+        "percentageScore": 41.24,
+        "weightedScore": 16.5
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "123",
+        "percentageScore": 62.44,
+        "weightedScore": 24.98
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "98",
+        "percentageScore": 49.75,
+        "weightedScore": 19.9
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "124",
+        "percentageScore": 62.94,
+        "weightedScore": 25.18
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "92",
+        "percentageScore": 46.7,
+        "weightedScore": 18.68
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "135",
+        "percentageScore": 68.53,
+        "weightedScore": 27.41
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "83",
+        "percentageScore": 42.13,
+        "weightedScore": 16.85
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "87",
+        "percentageScore": 44.16,
+        "weightedScore": 17.66
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "110",
+        "percentageScore": 55.84,
+        "weightedScore": 22.34
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "125",
+        "percentageScore": 63.45,
+        "weightedScore": 25.38
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "111",
+        "percentageScore": 56.35,
+        "weightedScore": 22.54
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "115",
+        "percentageScore": 58.38,
+        "weightedScore": 23.35
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "94",
+        "percentageScore": 47.72,
+        "weightedScore": 19.09
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "104",
+        "percentageScore": 52.79,
+        "weightedScore": 21.12
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "94",
+        "percentageScore": 47.72,
+        "weightedScore": 19.09
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "86",
+        "percentageScore": 43.65,
+        "weightedScore": 17.46
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "49",
+        "percentageScore": 24.87,
+        "weightedScore": 9.95
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "137",
+        "percentageScore": 69.54,
+        "weightedScore": 27.82
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "83",
+        "percentageScore": 42.13,
+        "weightedScore": 16.85
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "86",
+        "percentageScore": 43.65,
+        "weightedScore": 17.46
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "78",
+        "percentageScore": 39.59,
+        "weightedScore": 15.84
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "68",
+        "percentageScore": 34.52,
+        "weightedScore": 13.81
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "71",
+        "percentageScore": 36.04,
+        "weightedScore": 14.42
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "92",
+        "percentageScore": 46.7,
+        "weightedScore": 18.68
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "116",
+        "percentageScore": 58.88,
+        "weightedScore": 23.55
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "89",
+        "percentageScore": 45.18,
+        "weightedScore": 18.07
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "96",
+        "percentageScore": 48.73,
+        "weightedScore": 19.49
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "119",
+        "percentageScore": 60.41,
+        "weightedScore": 24.16
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "101",
+        "percentageScore": 51.27,
+        "weightedScore": 20.51
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "88",
+        "percentageScore": 44.67,
+        "weightedScore": 17.87
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "115",
+        "percentageScore": 58.38,
+        "weightedScore": 23.35
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "117",
+        "percentageScore": 59.39,
+        "weightedScore": 23.76
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "99",
+        "percentageScore": 50.25,
+        "weightedScore": 20.1
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "111",
+        "percentageScore": 56.35,
+        "weightedScore": 22.54
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "102",
+        "percentageScore": 51.78,
+        "weightedScore": 20.71
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "92",
+        "percentageScore": 46.7,
+        "weightedScore": 18.68
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "96",
+        "percentageScore": 48.73,
+        "weightedScore": 19.49
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "164",
+        "percentageScore": 83.25,
+        "weightedScore": 33.3
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "73",
+        "percentageScore": 37.06,
+        "weightedScore": 14.82
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "134",
+        "percentageScore": 68.02,
+        "weightedScore": 27.21
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "119",
+        "percentageScore": 60.41,
+        "weightedScore": 24.16
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "85",
+        "percentageScore": 43.15,
+        "weightedScore": 17.26
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "38",
+        "percentageScore": 76,
+        "weightedScore": 15.2
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "31",
+        "percentageScore": 62,
+        "weightedScore": 12.4
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "48",
+        "percentageScore": 96,
+        "weightedScore": 19.2
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "50",
+        "percentageScore": 100,
+        "weightedScore": 20
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "46",
+        "percentageScore": 92,
+        "weightedScore": 18.4
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "28",
+        "percentageScore": 56,
+        "weightedScore": 11.2
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "29",
+        "percentageScore": 58,
+        "weightedScore": 11.6
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "48",
+        "percentageScore": 96,
+        "weightedScore": 19.2
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "34",
+        "percentageScore": 68,
+        "weightedScore": 13.6
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "23",
+        "percentageScore": 46,
+        "weightedScore": 9.2
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "50",
+        "percentageScore": 100,
+        "weightedScore": 20
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "46",
+        "percentageScore": 92,
+        "weightedScore": 18.4
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "28",
+        "percentageScore": 56,
+        "weightedScore": 11.2
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "22",
+        "percentageScore": 44,
+        "weightedScore": 8.8
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "37",
+        "percentageScore": 74,
+        "weightedScore": 14.8
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "48",
+        "percentageScore": 96,
+        "weightedScore": 19.2
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "46",
+        "percentageScore": 92,
+        "weightedScore": 18.4
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "82",
+        "percentageScore": 46.86,
+        "weightedScore": 18.74
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "124",
+        "percentageScore": 70.86,
+        "weightedScore": 28.34
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "56",
+        "percentageScore": 32,
+        "weightedScore": 12.8
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "130",
+        "percentageScore": 74.29,
+        "weightedScore": 29.72
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "71",
+        "percentageScore": 40.57,
+        "weightedScore": 16.23
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "99",
+        "percentageScore": 56.57,
+        "weightedScore": 22.63
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "103",
+        "percentageScore": 58.86,
+        "weightedScore": 23.54
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "97",
+        "percentageScore": 55.43,
+        "weightedScore": 22.17
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "118",
+        "percentageScore": 67.43,
+        "weightedScore": 26.97
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "92",
+        "percentageScore": 52.57,
+        "weightedScore": 21.03
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "118",
+        "percentageScore": 67.43,
+        "weightedScore": 26.97
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "100",
+        "percentageScore": 57.14,
+        "weightedScore": 22.86
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "63",
+        "percentageScore": 36,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "49",
+        "percentageScore": 28,
+        "weightedScore": 11.2
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "70",
+        "percentageScore": 40,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "98",
+        "percentageScore": 56,
+        "weightedScore": 22.4
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "71",
+        "percentageScore": 40.57,
+        "weightedScore": 16.23
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "92",
+        "percentageScore": 52.57,
+        "weightedScore": 21.03
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "85",
+        "percentageScore": 48.57,
+        "weightedScore": 19.43
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "115",
+        "percentageScore": 65.71,
+        "weightedScore": 26.28
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "60",
+        "percentageScore": 34.29,
+        "weightedScore": 13.72
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "101",
+        "percentageScore": 57.71,
+        "weightedScore": 23.08
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "78",
+        "percentageScore": 44.57,
+        "weightedScore": 17.83
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "98",
+        "percentageScore": 56,
+        "weightedScore": 22.4
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "63",
+        "percentageScore": 36,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "93",
+        "percentageScore": 53.14,
+        "weightedScore": 21.26
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "120",
+        "percentageScore": 68.57,
+        "weightedScore": 27.43
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "63",
+        "percentageScore": 36,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "72",
+        "percentageScore": 41.14,
+        "weightedScore": 16.46
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "86",
+        "percentageScore": 49.14,
+        "weightedScore": 19.66
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "74",
+        "percentageScore": 42.29,
+        "weightedScore": 16.92
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "98",
+        "percentageScore": 56,
+        "weightedScore": 22.4
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "115",
+        "percentageScore": 65.71,
+        "weightedScore": 26.28
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "99",
+        "percentageScore": 56.57,
+        "weightedScore": 22.63
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "108",
+        "percentageScore": 61.71,
+        "weightedScore": 24.68
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "107",
+        "percentageScore": 61.14,
+        "weightedScore": 24.46
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "94",
+        "percentageScore": 53.71,
+        "weightedScore": 21.48
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "99",
+        "percentageScore": 56.57,
+        "weightedScore": 22.63
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "110",
+        "percentageScore": 62.86,
+        "weightedScore": 25.14
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "99",
+        "percentageScore": 56.57,
+        "weightedScore": 22.63
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "53",
+        "percentageScore": 30.29,
+        "weightedScore": 12.12
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "69",
+        "percentageScore": 36.7,
+        "weightedScore": 14.68
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "58",
+        "percentageScore": 30.85,
+        "weightedScore": 12.34
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "65",
+        "percentageScore": 34.57,
+        "weightedScore": 13.83
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "94",
+        "percentageScore": 50,
+        "weightedScore": 20
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "108",
+        "percentageScore": 57.45,
+        "weightedScore": 22.98
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "74",
+        "percentageScore": 39.36,
+        "weightedScore": 15.74
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "61",
+        "percentageScore": 32.45,
+        "weightedScore": 12.98
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "102",
+        "percentageScore": 54.26,
+        "weightedScore": 21.7
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "98",
+        "percentageScore": 52.13,
+        "weightedScore": 20.85
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "87",
+        "percentageScore": 46.28,
+        "weightedScore": 18.51
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "104",
+        "percentageScore": 55.32,
+        "weightedScore": 22.13
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "111",
+        "percentageScore": 59.04,
+        "weightedScore": 23.62
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "110",
+        "percentageScore": 58.51,
+        "weightedScore": 23.4
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "142",
+        "percentageScore": 75.53,
+        "weightedScore": 30.21
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "86",
+        "percentageScore": 45.74,
+        "weightedScore": 18.3
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "116",
+        "percentageScore": 61.7,
+        "weightedScore": 24.68
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "102",
+        "percentageScore": 54.26,
+        "weightedScore": 21.7
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "51",
+        "percentageScore": 27.13,
+        "weightedScore": 10.85
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "93",
+        "percentageScore": 49.47,
+        "weightedScore": 19.79
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "99",
+        "percentageScore": 52.66,
+        "weightedScore": 21.06
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "87",
+        "percentageScore": 46.28,
+        "weightedScore": 18.51
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "103",
+        "percentageScore": 54.79,
+        "weightedScore": 21.92
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "108",
+        "percentageScore": 57.45,
+        "weightedScore": 22.98
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "126",
+        "percentageScore": 67.02,
+        "weightedScore": 26.81
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "75",
+        "percentageScore": 39.89,
+        "weightedScore": 15.96
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "107",
+        "percentageScore": 56.91,
+        "weightedScore": 22.76
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "107",
+        "percentageScore": 56.91,
+        "weightedScore": 22.76
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "103",
+        "percentageScore": 54.79,
+        "weightedScore": 21.92
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "110",
+        "percentageScore": 58.51,
+        "weightedScore": 23.4
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "117",
+        "percentageScore": 62.23,
+        "weightedScore": 24.89
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "82",
+        "percentageScore": 43.62,
+        "weightedScore": 17.45
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "52",
+        "percentageScore": 27.66,
+        "weightedScore": 11.06
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "82",
+        "percentageScore": 43.62,
+        "weightedScore": 17.45
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "84",
+        "percentageScore": 44.68,
+        "weightedScore": 17.87
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "88",
+        "percentageScore": 46.81,
+        "weightedScore": 18.72
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "63",
+        "percentageScore": 33.51,
+        "weightedScore": 13.4
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "106",
+        "percentageScore": 56.38,
+        "weightedScore": 22.55
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "95",
+        "percentageScore": 50.53,
+        "weightedScore": 20.21
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "127",
+        "percentageScore": 67.55,
+        "weightedScore": 27.02
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "110",
+        "percentageScore": 58.51,
+        "weightedScore": 23.4
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "98",
+        "percentageScore": 52.13,
+        "weightedScore": 20.85
+      }
+    ],
+    [
+      {
+        "LRN": "123456789143",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789136",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789149",
+        "total_score": "47",
+        "percentageScore": 94,
+        "weightedScore": 18.8
+      },
+      {
+        "LRN": "123456789147",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789134",
+        "total_score": "37",
+        "percentageScore": 74,
+        "weightedScore": 14.8
+      },
+      {
+        "LRN": "123456789132",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789112",
+        "total_score": "23",
+        "percentageScore": 46,
+        "weightedScore": 9.2
+      },
+      {
+        "LRN": "123456789113",
+        "total_score": "32",
+        "percentageScore": 64,
+        "weightedScore": 12.8
+      },
+      {
+        "LRN": "123456789126",
+        "total_score": "50",
+        "percentageScore": 100,
+        "weightedScore": 20
+      },
+      {
+        "LRN": "123456789120",
+        "total_score": "26",
+        "percentageScore": 52,
+        "weightedScore": 10.4
+      },
+      {
+        "LRN": "123456789140",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789121",
+        "total_score": "30",
+        "percentageScore": 60,
+        "weightedScore": 12
+      },
+      {
+        "LRN": "123456789119",
+        "total_score": "50",
+        "percentageScore": 100,
+        "weightedScore": 20
+      },
+      {
+        "LRN": "123456789148",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789124",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789122",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789117",
+        "total_score": "45",
+        "percentageScore": 90,
+        "weightedScore": 18
+      },
+      {
+        "LRN": "123456789144",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789135",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789130",
+        "total_score": "42",
+        "percentageScore": 84,
+        "weightedScore": 16.8
+      },
+      {
+        "LRN": "123456789110",
+        "total_score": "25",
+        "percentageScore": 50,
+        "weightedScore": 10
+      },
+      {
+        "LRN": "123456789142",
+        "total_score": "35",
+        "percentageScore": 70,
+        "weightedScore": 14
+      },
+      {
+        "LRN": "123456789150",
+        "total_score": "33",
+        "percentageScore": 66,
+        "weightedScore": 13.2
+      },
+      {
+        "LRN": "123456789139",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789137",
+        "total_score": "40",
+        "percentageScore": 80,
+        "weightedScore": 16
+      },
+      {
+        "LRN": "123456789118",
+        "total_score": "44",
+        "percentageScore": 88,
+        "weightedScore": 17.6
+      },
+      {
+        "LRN": "123456789125",
+        "total_score": "33",
+        "percentageScore": 66,
+        "weightedScore": 13.2
+      },
+      {
+        "LRN": "123456789127",
+        "total_score": "26",
+        "percentageScore": 52,
+        "weightedScore": 10.4
+      },
+      {
+        "LRN": "123456789133",
+        "total_score": "21",
+        "percentageScore": 42,
+        "weightedScore": 8.4
+      },
+      {
+        "LRN": "123456789129",
+        "total_score": "38",
+        "percentageScore": 76,
+        "weightedScore": 15.2
+      },
+      {
+        "LRN": "123456789123",
+        "total_score": "38",
+        "percentageScore": 76,
+        "weightedScore": 15.2
+      },
+      {
+        "LRN": "123456789128",
+        "total_score": "28",
+        "percentageScore": 56,
+        "weightedScore": 11.2
+      },
+      {
+        "LRN": "123456789141",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789145",
+        "total_score": "36",
+        "percentageScore": 72,
+        "weightedScore": 14.4
+      },
+      {
+        "LRN": "123456789116",
+        "total_score": "49",
+        "percentageScore": 98,
+        "weightedScore": 19.6
+      },
+      {
+        "LRN": "123456789146",
+        "total_score": "24",
+        "percentageScore": 48,
+        "weightedScore": 9.6
+      },
+      {
+        "LRN": "123456789111",
+        "total_score": "22",
+        "percentageScore": 44,
+        "weightedScore": 8.8
+      },
+      {
+        "LRN": "123456789115",
+        "total_score": "26",
+        "percentageScore": 52,
+        "weightedScore": 10.4
+      },
+      {
+        "LRN": "123456789114",
+        "total_score": "41",
+        "percentageScore": 82,
+        "weightedScore": 16.4
+      },
+      {
+        "LRN": "123456789138",
+        "total_score": "39",
+        "percentageScore": 78,
+        "weightedScore": 15.6
+      },
+      {
+        "LRN": "123456789131",
+        "total_score": "27",
+        "percentageScore": 54,
+        "weightedScore": 10.8
+      }
+    ]
+  ],
+  "error": null
+}

@@ -145,6 +145,8 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
                 return { score, score_id };
               }),
             });
+
+            navigate('/t/assessments');
           }}
         />
       </div>

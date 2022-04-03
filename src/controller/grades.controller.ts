@@ -17,7 +17,7 @@ export class GradesController {
 
     const computedScores = await this.gradesService.getAllGrades(subject_id);
 
-    const response = JsonResponse.success(computedScores.length, 200);
+    const response = JsonResponse.success(computedScores, 200);
     res.status(response.statusCode).send(response);
   }
 }

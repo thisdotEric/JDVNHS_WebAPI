@@ -114,14 +114,16 @@ class AssessmentScoresRepository {
     grading_period: number,
     component: string,
     LRN: string
-  ) {
+  ): Promise<number> {
     const totalStudentRawScore = await this.db
       .getDbInstance()
       .raw(
-        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT'`
+        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}'`
       );
 
-    return totalStudentRawScore.rows;
+    if (totalStudentRawScore.rows.length == 0) return 0;
+
+    return parseInt(totalStudentRawScore.rows[0].sum, 10);
   }
 
   /// Sum select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';

@@ -31,3 +31,10 @@ export const computeWeightedScore = (
 
   return roundOff(decimalWeightedScore);
 };
+
+export const computeFinalGrade = (quarterlyGrades: number[]): number => {
+  const finalGrade =
+    quarterlyGrades.reduce((prev: number, curr: number) => prev + curr) / 4;
+
+  return roundOff(finalGrade);
+};

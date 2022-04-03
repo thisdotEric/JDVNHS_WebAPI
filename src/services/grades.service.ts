@@ -3,23 +3,18 @@ import SubjectRepository, {
   SubjectComponentWeights,
 } from '../repository/subject.repository';
 import {
+  computeFinalGrade,
   computePercentageScore,
   computeWeightedScore,
 } from '../algorithms/grades';
 import TYPES from '../ioc/binding-types';
 import AssessmentScoresRepository from '../repository/scores.repository';
-
-interface ComputedScores {
-  percentage_score: number;
-  weighted_score: number;
-}
+import { roundOff } from '../algorithms/grades/utils';
 
 interface StudentGrade {
   LRN: string;
-  grading_period: number;
-  written_work: ComputedScores;
-  performance_task: ComputedScores;
-  quarterly_assessment: ComputedScores;
+  grades: number[];
+  finalGrade: number;
 }
 
 type ComponentType = 'PT' | 'QA' | 'WW';
@@ -32,70 +27,6 @@ class GradesService {
     @inject(TYPES.SubjectRepository)
     private readonly subjectRepo: SubjectRepository
   ) {}
-
-  /**
-   * Helper function to compute for students percentage and weighted score based
-   * on the given subject id, grading period and subject component
-   * @param subject_id
-   * @param component
-   * @param grading_period
-   * @param componentWeight
-   * @returns
-   */
-  private async helper(
-    subject_id: string,
-    component: string,
-    grading_period: number,
-    componentWeight: number
-  ) {
-    /**
-     * Get the highest possible of a given subject component based on the
-     * given subject and grading period.
-     */
-    const subjectComponentHighestPossibleScore: number =
-      await this.scoresRepo.getComponentsTotalItem(
-        subject_id,
-        component,
-        grading_period
-      );
-
-    /**
-     * Get all the total raw scores of the students based on the
-     * given subject and grading period.
-     */
-    const studentsRawScores = await this.scoresRepo.getScores(
-      subject_id,
-      component,
-      grading_period
-    );
-
-    /**
-     * Iterate through the students raw scores and compute for percentage score
-     * and weighted score.
-     */
-    const studentsComputedAndWeightedScores = studentsRawScores.map(
-      (rawScore: any) => {
-        let studentRawScore = parseInt(rawScore.total_score, 10);
-
-        let percentageScore = computePercentageScore(
-          studentRawScore,
-          subjectComponentHighestPossibleScore
-        );
-        let weightedScore = computeWeightedScore(
-          percentageScore,
-          componentWeight
-        );
-
-        return {
-          ...rawScore,
-          percentageScore,
-          weightedScore,
-        };
-      }
-    );
-
-    return studentsComputedAndWeightedScores;
-  }
 
   private setComponentWeight(
     componentWeights: SubjectComponentWeights,
@@ -113,41 +44,146 @@ class GradesService {
     }
   }
 
-  async getAllGrades(subject_id: string) {
-    const components: ComponentType[] = ['PT', 'WW', 'QA'];
+  private async computeForComponentWeightedScore(
+    subject_id: string,
+    component: ComponentType,
+    grading_period: number,
+    LRN: string,
+    componentWeight: SubjectComponentWeights
+  ) {
+    const totalStudentRawScore = await this.scoresRepo.getTotalStudentRawScore(
+      subject_id,
+      grading_period,
+      component,
+      LRN
+    );
+
+    /**
+     * Get the highest possible of a given subject component based on the
+     * given subject and grading period.
+     */
+    const subjectComponentHighestPossibleScore: number =
+      await this.scoresRepo.getComponentsTotalItem(
+        subject_id,
+        component,
+        grading_period
+      );
+
+    /**
+     * Compute for the percentage score
+     */
+    const percentage_score = computePercentageScore(
+      totalStudentRawScore,
+      subjectComponentHighestPossibleScore
+    );
+
+    /**
+     * Compute for the weighted score
+     */
+    const weighted_score = computeWeightedScore(
+      percentage_score,
+      this.setComponentWeight(componentWeight, component)
+    );
+
+    return weighted_score;
+  }
+
+  private async computeForInitialGrade(
+    subject_id: string,
+    componentWeights: SubjectComponentWeights,
+    grading_period: number,
+    LRN: string
+  ) {
+    // Do not re-arrange
+    const components: ComponentType[] = ['WW', 'PT', 'QA'];
+
+    /**
+     * Compute for the weighted scores per subject component
+     */
+    const studentsGrade_Promise = components.map(component => {
+      return this.computeForComponentWeightedScore(
+        subject_id,
+        component,
+        grading_period,
+        LRN,
+        componentWeights
+      );
+    });
+
+    /**
+     * Resolve all promise objects
+     */
+    const studentGrades = await Promise.all(studentsGrade_Promise);
+
+    /**
+     * Add all weighted score to derive the initial grade for a given grading period
+     */
+    const initialGrade = studentGrades.reduce((prev, curr) => {
+      return prev + curr;
+    });
+
+    return initialGrade;
+  }
+
+  async computeGradesPerGradingPeriod(subject_id: string, LRN: string) {
+    // Do not re-arrange
+    const grading_periods = [1, 2, 3, 4];
 
     const componentWeights: SubjectComponentWeights | null =
       await this.subjectRepo.getSubjectComponentWeights(subject_id);
 
-    const grading_periods = [1, 2, 3, 4];
+    const pg = grading_periods.map(gp => {
+      return this.computeForInitialGrade(
+        subject_id,
+        componentWeights!,
+        gp,
+        LRN
+      );
+    });
 
-    let computedScoresPromises = [];
+    const gradesPerGradingPeriod = await Promise.all(pg);
 
-    for (let gp of grading_periods) {
-      for (let component of components) {
-        computedScoresPromises.push(
-          this.helper(
-            subject_id,
-            component,
-            gp,
-            this.setComponentWeight(componentWeights!, component)
-          )
-        );
-      }
-    }
+    return gradesPerGradingPeriod.map(grade => roundOff(grade));
+  }
 
-    const computedScores = await Promise.all(computedScoresPromises);
+  async getAllGrades(subject_id: string) {
+    /**
+     * Load all students enrolled on the give subject_id
+     */
+    const students = await this.subjectRepo.getEnrolledStudents(subject_id);
 
-    const total = await this.scoresRepo.getTotalStudentRawScore(
-      subject_id,
-      1,
-      'PT',
-      '123456789110'
+    /**
+     * Iterate on the students list and compute for the grades per grading period
+     */
+    let studentGrades_Promises: any[] = students.map(async student => {
+      return {
+        LRN: student.user_id,
+        fullName: `${student.last_name}, ${student.first_name} ${student.middle_name}`,
+        grades: await this.computeGradesPerGradingPeriod(
+          subject_id,
+          student.user_id
+        ),
+      };
+    });
+
+    /**
+     * Resolve promises
+     */
+    let studentGrades: StudentGrade[] = await Promise.all(
+      studentGrades_Promises
     );
 
-    console.log(total);
+    /**
+     * Compute for the final grade
+     */
+    studentGrades = studentGrades.map(sg => {
+      return {
+        ...sg,
+        finalGrade: computeFinalGrade(sg.grades),
+      };
+    });
 
-    return computedScores;
+    return studentGrades;
   }
 }
 

@@ -81,7 +81,7 @@ export async function seed(knex: Knex): Promise<void> {
       LRN = `1234567891${count}`;
 
       score = randomize(
-        assessment.component === 'QA' ? 20 : 1,
+        assessment.component === 'QA' ? 20 : 10,
         assessment.items as number
       );
 

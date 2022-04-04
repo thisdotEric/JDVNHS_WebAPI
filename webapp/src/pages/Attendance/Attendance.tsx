@@ -1,9 +1,16 @@
-import React, { FC, useEffect, useState, useContext } from 'react';
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useContext,
+  useRef,
+  memo,
+} from 'react';
 import './Attendance.scss';
 import { axios } from '../../utils';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
 import 'react-calendar/dist/Calendar.css';
 import { attendanceColumns } from './columns';
@@ -79,9 +86,9 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     {
       field: 'status',
       headerName: 'Attendance',
-      cellRendererFramework: (params: any) => (
+      cellRendererFramework: memo((params: any) => (
         <span id={params.node.data.status}>{params.node.data.status}</span>
-      ),
+      )),
     },
     {
       headerName: 'Action',
@@ -184,6 +191,10 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     if (!params.id) isLatest = true;
 
     fetchStudentsAttendance(isLatest);
+
+    return () => {
+      console.log('After');
+    };
   }, []);
 
   return (
@@ -198,7 +209,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
 
       <div>
         <div
-          className="ag-theme-balham"
+          className="ag-theme-balham-dark"
           id="student-table"
           style={{
             height: '550px',
@@ -208,11 +219,11 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
             rowData={attendanceList}
             columnDefs={columns}
             pagination={true}
-            // paginationPageSize={15}
             rowSelection={'single'}
             enableCellChangeFlash={true}
             pinnedTopRowData={[]}
             pinnedBottomRowData={[]}
+            animateRows={true}
             defaultColDef={{
               sortable: true,
               flex: 1,
@@ -238,3 +249,29 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
 };
 
 export default Attendance;
+
+/**
+ * 
+ * 
+ * 
+ *  onClick={() => {
+              console.log(params.rowIndex);
+
+              setGrades(old => {
+                return old.map((o, index) => {
+                  if (index == params.rowIndex) {
+                    console.log('Clicked');
+                    o.fourth_g = Math.random() * 100;
+                  }
+                  return o;
+                });
+              });
+
+              setTimeout(() => {
+                ref.current.api.refreshCells({
+                  force: false,
+                  suppressFlash: false,
+                });
+              }, 0);
+            }}
+ */

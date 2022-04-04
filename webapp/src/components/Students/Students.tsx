@@ -3,7 +3,7 @@ import './Students.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
@@ -87,7 +87,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
       </div>
 
       <div
-        className="ag-theme-balham"
+        className="ag-theme-balham-dark"
         id="student-table"
         style={{
           height: '550px',
@@ -99,6 +99,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           pagination={true}
           rowSelection={'single'}
           enableCellChangeFlash={true}
+          animateRows={true}
           pinnedTopRowData={[]}
           pinnedBottomRowData={[]}
           onSelectionChanged={() => {

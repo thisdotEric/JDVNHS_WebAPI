@@ -8,7 +8,7 @@ import type { Assessment, LearningComponent } from './types';
 import { AddAssessment } from './AddAssessment';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import AssessmentActions from './AssessmentsActions/AssessmentActions';
 import { Button } from '../../components/Button';
 
@@ -138,7 +138,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
       </div>
 
       <div
-        className="ag-theme-balham"
+        className="ag-theme-balham-dark"
         id="student-table"
         style={{
           height: '550px',

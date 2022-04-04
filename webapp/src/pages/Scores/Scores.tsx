@@ -4,7 +4,7 @@ import { axios } from '../../utils';
 import { SubjectContext } from '../../../src/context';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { useParams } from 'react-router-dom';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
 import { Button } from '../../components/Button';
@@ -105,7 +105,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   return (
     <div className="scores">
       <div
-        className="ag-theme-balham"
+        className="ag-theme-balham-dark"
         id="student-table"
         style={{
           height: '550px',
@@ -117,6 +117,7 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
           columnDefs={scoreColumns}
           rowSelection={'single'}
           enableCellChangeFlash={true}
+          animateRows={true}
           defaultColDef={{
             sortable: true,
             flex: 1,

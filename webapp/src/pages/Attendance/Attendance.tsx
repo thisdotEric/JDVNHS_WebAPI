@@ -19,6 +19,7 @@ import { AttendanceDetails } from './AttendanceDetails';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { Button, TableButton } from '../../components/Button';
 import AttendanceAction from './AttendanceAction';
+import type { ICellRendererParams } from 'ag-grid-community';
 
 interface AttendanceProps {}
 
@@ -72,73 +73,63 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     headerStringValue: `Updating attendance of ${selectedSubject} subject dated 2022-03-12.`,
   });
 
-  const [attendanceList, setAttendanceList] = useState<
-    Attendance & { lecture_id: number }[]
-  >();
+  const [attendanceList, setAttendanceList] = useState<Attendance[]>([]);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
   const navigate = useNavigate();
 
+  const [attendanceStatus] = useState<AttendanceStatus[]>([
+    'present',
+    'absent',
+    'excused',
+  ]);
+
+  const ref = useRef<any>(null);
+
   const [columns] = useState([
     ...attendanceColumns,
     {
       field: 'status',
       headerName: 'Attendance',
-      cellRendererFramework: memo((params: any) => (
-        <span id={params.node.data.status}>{params.node.data.status}</span>
-      )),
-    },
-    {
-      headerName: 'Action',
-      cellRendererFramework: (params: any) => (
-        <AttendanceAction
-          LRN={params.data.LRN}
-          newAttendanceStatus="present"
-          updateStudentAttendance={updateStudentAttendance}
-        />
+      cellRendererFramework: (params: ICellRendererParams) => (
+        <span id={params.data.status}>{params.data.status}</span>
       ),
     },
     {
       headerName: 'Action',
       cellRendererFramework: (params: any) => (
-        <AttendanceAction
-          LRN={params.data.LRN}
-          newAttendanceStatus="absent"
-          updateStudentAttendance={updateStudentAttendance}
-        />
-      ),
-    },
-    {
-      headerName: 'Action',
-      cellRendererFramework: (params: any) => (
-        <AttendanceAction
-          LRN={params.data.LRN}
-          newAttendanceStatus="excused"
-          updateStudentAttendance={updateStudentAttendance}
-        />
+        <>
+          {attendanceStatus.map(at => (
+            <AttendanceAction
+              key={at}
+              LRN={params.data.LRN}
+              newAttendanceStatus={at}
+              updateStudentAttendance={() => {
+                updateStudentAttendance(params.data.LRN, at);
+              }}
+            />
+          ))}{' '}
+        </>
       ),
     },
   ]);
 
-  const updateStudentAttendance = async (
+  const updateStudentAttendance = (
     LRN: string,
     updatedAttendance: AttendanceStatus,
   ) => {
-    let lecture_id: string | null = params.id!;
-
-    if (!lecture_id) {
-      lecture_id = localStorage.getItem('lecture_id');
-    }
-
-    await axios.patch(`subject/${selectedSubject}/attendance/${lecture_id}`, {
-      LRN,
-      newStatus: updatedAttendance,
+    setAttendanceList(old => {
+      // return [];
+      return old?.map(o => {
+        if (LRN === o.LRN) {
+          o.status = updatedAttendance;
+        }
+        console.log(o);
+        return o;
+      });
     });
-
-    // Set new value to re-fetch updated attendance list
-    setAttendanceUpdate(Math.random());
   };
 
   const fetchStudentsAttendance = (isLatest: boolean = false) => {
@@ -216,6 +207,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
           }}
         >
           <AgGridReact
+            ref={ref}
             rowData={attendanceList}
             columnDefs={columns}
             pagination={true}
@@ -243,35 +235,17 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
             navigate('/t/lectures');
           }}
         />
+
+        <Button
+          buttontype="save"
+          value="Save updated attendance"
+          onClick={() => {
+            navigate('/t/lectures');
+          }}
+        />
       </div>
     </div>
   );
 };
 
 export default Attendance;
-
-/**
- * 
- * 
- * 
- *  onClick={() => {
-              console.log(params.rowIndex);
-
-              setGrades(old => {
-                return old.map((o, index) => {
-                  if (index == params.rowIndex) {
-                    console.log('Clicked');
-                    o.fourth_g = Math.random() * 100;
-                  }
-                  return o;
-                });
-              });
-
-              setTimeout(() => {
-                ref.current.api.refreshCells({
-                  force: false,
-                  suppressFlash: false,
-                });
-              }, 0);
-            }}
- */

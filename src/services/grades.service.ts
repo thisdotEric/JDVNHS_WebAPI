@@ -143,7 +143,13 @@ class GradesService {
 
     const gradesPerGradingPeriod = await Promise.all(pg);
 
-    return gradesPerGradingPeriod.map(grade => roundOff(grade));
+    const transmutatedGrades_Promise = gradesPerGradingPeriod.map(grade => {
+      return this.scoresRepo.getTransmutatedGradeValue(roundOff(grade));
+    });
+
+    const transmutated_grades = await Promise.all(transmutatedGrades_Promise);
+
+    return transmutated_grades;
   }
 
   async getAllGrades(subject_id: string) {

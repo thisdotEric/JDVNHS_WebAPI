@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
-import { ASSESSMENT, SCORES } from '../constant/tables';
+import { ASSESSMENT, SCORES, TRANSMUTATION } from '../constant/tables';
 
 export interface Score {
   score_id: number;
@@ -124,6 +124,16 @@ class AssessmentScoresRepository {
     if (totalStudentRawScore.rows.length == 0) return 0;
 
     return parseInt(totalStudentRawScore.rows[0].sum, 10);
+  }
+
+  async getTransmutatedGradeValue(grade: number) {
+    const transmutatedValue = await this.db
+      .getDbInstance()
+      .raw(
+        `select transmutated_grade from transmutation where '${grade}' BETWEEN initial_grade_low and initial_grade_high;`
+      );
+
+    return transmutatedValue.rows[0].transmutated_grade;
   }
 
   /// Sum select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';

@@ -25,17 +25,21 @@ function App({}: AppProps) {
         <Route element={<ProtectedRoutes hasAccess="teacher" />}>
           <Route path="/t" element={<Dashboard />}>
             <Route path="students" element={<Students />} />
-            <Route path="attendance">
-              <Route path="" element={<Attendance />} />
-              <Route path=":id" element={<Attendance />} />
-              <Route path="new/:lecture_id" element={<AddAttendance />} />
-            </Route>
+
             <Route path="assessments">
               <Route path="" element={<Assessments />} />
               <Route path="scores/:id" element={<Scores />} />
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
-            <Route path="lectures" element={<Lectures />} />
+            <Route path="lectures">
+              <Route path="" element={<Lectures />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="attendance/:id" element={<Attendance />} />
+              <Route
+                path="attendance/new/:lecture_id"
+                element={<AddAttendance />}
+              />
+            </Route>
             <Route path="reports">
               <Route path="" element={<Reports />} />
               <Route path="student/:LRN" element={<StudentReport />} />

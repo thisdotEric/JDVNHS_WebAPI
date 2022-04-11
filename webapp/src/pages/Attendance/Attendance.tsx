@@ -5,6 +5,7 @@ import React, {
   useContext,
   useRef,
   memo,
+  useCallback,
 } from 'react';
 import './Attendance.scss';
 import { axios } from '../../utils';
@@ -88,6 +89,15 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
 
   const ref = useRef<any>(null);
 
+  const Sample = memo((params: ICellRendererParams) => {
+    return (
+      <label htmlFor="">
+        <input type="radio" name="Absent" id={params.data} />
+        <p>Absent</p>
+      </label>
+    );
+  });
+
   const [columns] = useState([
     ...attendanceColumns,
     {
@@ -96,23 +106,25 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       cellRendererFramework: (params: ICellRendererParams) => (
         <span id={params.data.status}>{params.data.status}</span>
       ),
+      // cellRenderer: 'agAnimateShowChangeCellRenderer',
     },
     {
       headerName: 'Action',
-      cellRendererFramework: (params: any) => (
+      // cellRenderer: 'actionRender',
+      cellRendererFramework: memo((params: any) => (
         <>
           {attendanceStatus.map(at => (
             <AttendanceAction
-              key={at}
+              key={'absent'}
               LRN={params.data.LRN}
-              newAttendanceStatus={at}
+              newAttendanceStatus={'absent'}
               updateStudentAttendance={() => {
-                updateStudentAttendance(params.data.LRN, at);
+                all(params.data.LRN, 'absent');
               }}
             />
           ))}{' '}
         </>
-      ),
+      )),
     },
   ]);
 
@@ -123,14 +135,21 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     setAttendanceList(old => {
       // return [];
       return old?.map(o => {
-        if (LRN === o.LRN) {
-          o.status = updatedAttendance;
-        }
-        console.log(o);
-        return o;
+        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
+        else return o;
       });
     });
   };
+
+  const all = useCallback((LRN, updatedAttendance) => {
+    setAttendanceList(old => {
+      // return [];
+      return old?.map(o => {
+        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
+        else return o;
+      });
+    });
+  }, []);
 
   const fetchStudentsAttendance = (isLatest: boolean = false) => {
     const id = isLatest ? 'latest' : params.id;
@@ -210,11 +229,14 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
             ref={ref}
             rowData={attendanceList}
             columnDefs={columns}
+            getRowNodeId={data => data.row}
             pagination={true}
             rowSelection={'single'}
             enableCellChangeFlash={true}
-            pinnedTopRowData={[]}
-            pinnedBottomRowData={[]}
+            immutableData={true}
+            frameworkComponents={{
+              actionRender: Sample,
+            }}
             animateRows={true}
             defaultColDef={{
               sortable: true,

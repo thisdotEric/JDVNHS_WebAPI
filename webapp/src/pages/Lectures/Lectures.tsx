@@ -55,7 +55,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     value="View/Update Attendance"
                     buttontype="select"
                     onClick={() => {
-                      navigate(`/t/attendance/${lecture_id}`);
+                      navigate(`/t/lectures/attendance/${lecture_id}`);
                     }}
                   />
                 ) : (
@@ -63,7 +63,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     value="Create New Attendance"
                     buttontype="select"
                     onClick={() => {
-                      navigate(`/t/attendance/new/${lecture_id}`);
+                      navigate(`/t/lectures/attendance/new/${lecture_id}`);
                     }}
                   />
                 )}

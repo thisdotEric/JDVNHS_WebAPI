@@ -33,11 +33,11 @@ const teacherNavigations: ILink[] = [
     name: 'Lectures',
     icon: <BookOpen id="sidenav-icon" />,
   },
-  {
-    to: '/t/attendance',
-    name: 'Attendance',
-    icon: <CheckSquare id="sidenav-icon" />,
-  },
+  // {
+  //   to: '/t/attendance',
+  //   name: 'Attendance',
+  //   icon: <CheckSquare id="sidenav-icon" />,
+  // },
   {
     to: '/t/assessments',
     name: 'Assessments',

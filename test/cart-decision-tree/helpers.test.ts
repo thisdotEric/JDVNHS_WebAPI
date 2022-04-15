@@ -3,6 +3,8 @@ import {
   ClassCount,
   computeGiniImpurity,
   StudentAttributes,
+  computeInformationGain,
+  getColumnUniqueValues,
 } from '../../src/algorithms/cart-decision-tree';
 
 const testData: StudentAttributes[] = [
@@ -57,5 +59,26 @@ describe('CART helper methods', () => {
     const actual = computeGiniImpurity(testData);
 
     expect(actual).toBe(gini_impurity);
+  });
+
+  // it('should return the information gain value of a given dataset rows', () => {
+  //   const gini_impurity = 0;
+
+  //   const current_uncertainty = computeGiniImpurity(testData);
+  //   const actual = computeInformationGain(
+  //     testData,
+  //     testData,
+  //     current_uncertainty
+  //   );
+
+  //   expect(actual).toBe(gini_impurity);
+  // });
+
+  it('should return all the unique values of a given row dataset', () => {
+    // There are only two types of gender in the dataset
+    const expected_size = 2;
+    const actual = getColumnUniqueValues(testData, 'gender').size;
+
+    expect(actual).toBe(expected_size);
   });
 });

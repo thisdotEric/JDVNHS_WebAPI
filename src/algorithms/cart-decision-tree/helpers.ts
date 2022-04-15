@@ -1,5 +1,7 @@
 import { StudentAttributes } from './types';
 
+type attribute = keyof StudentAttributes;
+
 export interface ClassCount {
   trueCount: number;
   falseCount: number;
@@ -40,4 +42,33 @@ export const computeGiniImpurity = (rows: StudentAttributes[]): number => {
     1 - Math.pow(true_lbl_probability, 2) - Math.pow(false_lbl_probability, 2);
 
   return gini_impurity;
+};
+
+export const getColumnUniqueValues = (
+  rows: StudentAttributes[],
+  key: attribute
+): Set<any> => {
+  return new Set<any>(rows.map(row => row[key]));
+};
+
+export const computeInformationGain = (
+  left: StudentAttributes[],
+  right: StudentAttributes[],
+  currentInfoGain: number
+): number => {
+  const leftRowsCount = left.length;
+  const rightRowsCount = right.length;
+
+  /**
+   *    p = float(len(left)) / (len(left) + len(right))
+    return current_uncertainty - p * gini(left) - (1 - p) * gini(right)
+    */
+
+  let p = leftRowsCount / leftRowsCount + rightRowsCount;
+  const information_gain =
+    currentInfoGain -
+    p * computeGiniImpurity(left) -
+    (1 - p) * computeGiniImpurity(right);
+
+  return information_gain;
 };

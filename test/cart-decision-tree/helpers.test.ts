@@ -5,7 +5,13 @@ import {
   StudentAttributes,
   computeInformationGain,
   getColumnUniqueValues,
+  findBestSplit,
+  partitionDataset,
 } from '../../src/algorithms/cart-decision-tree';
+
+import csv from 'csvtojson';
+import { mapData } from './helper';
+import { Question } from '../../src/algorithms/cart-decision-tree/cart.algorithm';
 
 const testData: StudentAttributes[] = [
   {
@@ -80,5 +86,92 @@ describe('CART helper methods', () => {
     const actual = getColumnUniqueValues(testData, 'gender').size;
 
     expect(actual).toBe(expected_size);
+  });
+
+  it('should find the best criteria (best gain and question to be asked) of a given row dataset', () => {
+    const bestSplit = findBestSplit(testData);
+
+    // There are only two types of gender in the dataset
+    const expected_size = 2;
+    const actual = getColumnUniqueValues(testData, 'gender').size;
+
+    expect(actual).toBe(expected_size);
+  });
+
+  it('should find the best criteria (best gain and question to be asked) of a given row dataset', () => {
+    const bestSplit = findBestSplit(testData);
+
+    // There are only two types of gender in the dataset
+    const expected_size = 2;
+    const actual = getColumnUniqueValues(testData, 'gender').size;
+
+    expect(actual).toBe(expected_size);
+  });
+
+  it('should partition the dataset into two sub dataset (true and false rows)', async () => {
+    const t_data: StudentAttributes[] = [
+      {
+        gender: 'female',
+        grading_period: 1,
+        passedPreTest: false,
+        pt_wScore: 50,
+        qa_wScore: 55,
+        ww_wScore: 56,
+        conduct_intervention: false,
+      },
+      {
+        gender: 'male',
+        grading_period: 1,
+        passedPreTest: false,
+        pt_wScore: 50,
+        qa_wScore: 55,
+        ww_wScore: 56,
+        conduct_intervention: false,
+      },
+    ];
+
+    // Partition the dataset by the question
+    // Is gender == female?
+    const partition = partitionDataset(
+      t_data,
+      new Question('gender', 'female')
+    );
+
+    expect(partition.trueDataset).toStrictEqual([
+      {
+        gender: 'female',
+        grading_period: 1,
+        passedPreTest: false,
+        pt_wScore: 50,
+        qa_wScore: 55,
+        ww_wScore: 56,
+        conduct_intervention: false,
+      },
+    ]);
+
+    expect(partition.falseDataset).toStrictEqual([
+      {
+        gender: 'male',
+        grading_period: 1,
+        passedPreTest: false,
+        pt_wScore: 50,
+        qa_wScore: 55,
+        ww_wScore: 56,
+        conduct_intervention: false,
+      },
+    ]);
+  });
+
+  it('should find the best split of a given dataset', async () => {
+    const testdata_path = __dirname + '/testdata.csv';
+    let data = await csv().fromFile(testdata_path);
+    data = mapData(data);
+
+    const { best_gain, best_question } = findBestSplit(data);
+
+    console.log(best_gain);
+    console.log(best_question.questionToString());
+
+    expect(true).toBe(true);
   });
 });

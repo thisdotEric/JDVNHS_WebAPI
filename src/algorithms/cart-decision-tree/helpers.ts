@@ -1,10 +1,29 @@
+import { Question } from './cart.algorithm';
 import { StudentAttributes } from './types';
 
-type attribute = keyof StudentAttributes;
+export type StudentAttributeKey = keyof StudentAttributes;
+const AllKeys: StudentAttributeKey[] = [
+  'gender',
+  'grading_period',
+  'passedPreTest',
+  'pt_wScore',
+  'qa_wScore',
+  'ww_wScore',
+];
 
 export interface ClassCount {
   trueCount: number;
   falseCount: number;
+}
+
+export interface BestSplitCriteria {
+  best_gain: number;
+  best_question: Question;
+}
+
+export interface PartitionedDataset {
+  trueDataset: StudentAttributes[];
+  falseDataset: StudentAttributes[];
 }
 
 /**
@@ -46,7 +65,7 @@ export const computeGiniImpurity = (rows: StudentAttributes[]): number => {
 
 export const getColumnUniqueValues = (
   rows: StudentAttributes[],
-  key: attribute
+  key: StudentAttributeKey
 ): Set<any> => {
   return new Set<any>(rows.map(row => row[key]));
 };
@@ -59,11 +78,6 @@ export const computeInformationGain = (
   const leftRowsCount = left.length;
   const rightRowsCount = right.length;
 
-  /**
-   *    p = float(len(left)) / (len(left) + len(right))
-    return current_uncertainty - p * gini(left) - (1 - p) * gini(right)
-    */
-
   let p = leftRowsCount / leftRowsCount + rightRowsCount;
   const information_gain =
     currentInfoGain -
@@ -71,4 +85,70 @@ export const computeInformationGain = (
     (1 - p) * computeGiniImpurity(right);
 
   return information_gain;
+};
+
+export const partitionDataset = (
+  rows: StudentAttributes[],
+  question: Question
+): PartitionedDataset => {
+  let trueDataset: StudentAttributes[] = [];
+  let falseDataset: StudentAttributes[] = [];
+
+  for (let row of rows) {
+    /**
+     * True rows does not correspond to the label of the current row
+     * `trueDataset` name just corresponds to the fact the its row that matches a given question
+     * This is same for `falseDataset`
+     */
+    if (question.checkMatch(row)) trueDataset.push(row);
+    else falseDataset.push(row);
+  }
+
+  return {
+    trueDataset,
+    falseDataset,
+  };
+};
+
+/**
+ * This will be a recursive function to find the best question and best gain of a given dataset
+ * @param rows
+ * @returns
+ */
+export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
+  let best_gain = 0;
+
+  // TODO: Watchout for side effect
+  let best_question: Question = new Question('gender', 'male');
+
+  // Compute the gini impurity index of the given row
+  const current_uncertainty = computeGiniImpurity(rows);
+
+  for (let key of AllKeys) {
+    let unique_values = getColumnUniqueValues(rows, key);
+
+    for (let val of unique_values) {
+      let question = new Question(key, val);
+
+      const { trueDataset, falseDataset } = partitionDataset(rows, question);
+
+      if (trueDataset.length == 0 || falseDataset.length == 0) continue;
+
+      let gain = computeInformationGain(
+        trueDataset,
+        falseDataset,
+        current_uncertainty
+      );
+
+      if (gain >= best_gain) {
+        best_gain = gain;
+        best_question = question;
+      }
+    }
+  }
+
+  return {
+    best_gain,
+    best_question,
+  };
 };

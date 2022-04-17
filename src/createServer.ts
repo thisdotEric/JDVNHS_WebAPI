@@ -17,6 +17,7 @@ import './controller/subject.controller';
 import './controller/authentication.controller';
 import './controller/teacher.controller';
 import './controller/grades.controller';
+import './controller/intervention.controller';
 
 const FRONTEND_BUILD_FILES_PATH = '../webapp/build';
 

@@ -1,0 +1,6 @@
+gender,grading_period,passedPreTest,pt_wScore,qa_wScore,ww_wScore,conduct_intervention
+male,1,false,56,55,23,true
+male,1,true,80,90,90,false
+male,1,true,56,55,23,true
+male,1,true,56,40,23,true
+male,1,false,80,80,80,false

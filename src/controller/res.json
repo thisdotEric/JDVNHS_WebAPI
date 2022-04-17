@@ -1,0 +1,13 @@
+{
+  "question": { "value": 90, "objectKey": "ww_wScore" },
+  "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+  "falseBranch": {
+    "question": { "value": true, "objectKey": "passedPreTest" },
+    "trueBranch": { "classCounts": { "falseCount": 0, "trueCount": 2 } },
+    "falseBranch": {
+      "question": { "value": 80, "objectKey": "ww_wScore" },
+      "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+      "falseBranch": { "classCounts": { "falseCount": 0, "trueCount": 1 } }
+    }
+  }
+}

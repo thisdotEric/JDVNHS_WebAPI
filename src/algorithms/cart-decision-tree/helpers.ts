@@ -1,4 +1,9 @@
-import { Question } from './cart.algorithm';
+import {
+  DecisionNode,
+  DecisionTreeNode,
+  LeafNode,
+  Question,
+} from './cart.algorithm';
 import { StudentAttributes } from './types';
 
 export type StudentAttributeKey = keyof StudentAttributes;
@@ -151,4 +156,44 @@ export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
     best_gain,
     best_question,
   };
+};
+
+export const buildTree = (
+  rows: StudentAttributes[]
+): LeafNode | DecisionNode => {
+  const { best_gain, best_question } = findBestSplit(rows);
+
+  if (best_gain == 0) return new LeafNode(rows);
+
+  const { trueDataset, falseDataset } = partitionDataset(rows, best_question);
+
+  const trueBranch = buildTree(trueDataset);
+
+  const falseBranch = buildTree(falseDataset);
+
+  return new DecisionNode(best_question, trueBranch, falseBranch);
+};
+
+export const classify = (
+  row: StudentAttributes,
+  node: LeafNode | DecisionNode
+): any => {
+  if (node instanceof LeafNode) return node.classCounts;
+
+  if (node.question.checkMatch(row)) return classify(row, node.trueBranch);
+  else return classify(row, node.falseBranch);
+};
+
+export const printTree = (node: any, spacing: string = ' ') => {
+  if (node instanceof LeafNode) {
+    console.log(`${spacing} Predict ${node.classCounts}`);
+    return;
+  }
+
+  console.log(`${spacing} Predict ${node.question.questionToString()}`);
+  console.log(`${spacing} --> True: `);
+  printTree(node.trueBranch, spacing + '  ');
+
+  console.log(`${spacing} --> False: `);
+  printTree(node.trueBranch, spacing + '  ');
 };

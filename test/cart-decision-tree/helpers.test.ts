@@ -7,6 +7,9 @@ import {
   getColumnUniqueValues,
   findBestSplit,
   partitionDataset,
+  buildTree,
+  classify,
+  printTree,
 } from '../../src/algorithms/cart-decision-tree';
 
 import csv from 'csvtojson';
@@ -171,6 +174,32 @@ describe('CART helper methods', () => {
 
     console.log(best_gain);
     console.log(best_question.questionToString());
+
+    expect(true).toBe(true);
+  });
+
+  it('should build the decision tree from the given dataset', async () => {
+    const testdata_path = __dirname + '/testdata.csv';
+    let data = await csv().fromFile(testdata_path);
+    data = mapData(data);
+
+    const node = buildTree(data);
+    console.log(node);
+
+    const studentData: StudentAttributes = {
+      gender: 'male',
+      grading_period: 1,
+      passedPreTest: true,
+      pt_wScore: 80,
+      qa_wScore: 60,
+      ww_wScore: 90,
+      conduct_intervention: false,
+    };
+
+    const prediction = classify(studentData, node);
+    console.log(prediction);
+
+    printTree(node);
 
     expect(true).toBe(true);
   });

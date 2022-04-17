@@ -37,16 +37,13 @@ export class InterventionController {
       gender: 'male',
       grading_period: 1,
       passedPreTest: true,
-      pt_wScore: 80,
-      qa_wScore: 60,
-      ww_wScore: 90,
-      conduct_intervention: false,
+      pt_wScore: 75,
+      qa_wScore: 90,
+      ww_wScore: 80,
     };
 
     const prediction = classify(studentData, node);
     console.log(prediction);
-
-    printTree(node);
 
     res.status(200).send(node);
   }

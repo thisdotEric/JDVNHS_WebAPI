@@ -5,5 +5,5 @@ export interface StudentAttributes {
   pt_wScore: number;
   ww_wScore: number;
   qa_wScore: number;
-  conduct_intervention: boolean;
+  conduct_intervention?: boolean;
 }

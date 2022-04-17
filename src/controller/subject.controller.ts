@@ -13,6 +13,11 @@ import { Request, Response } from 'express';
 import JsonResponse from '../utils/JsonResponse';
 import SubjectService from '../services/subject.service';
 import TYPES from '../ioc/binding-types';
+import {
+  buildTree,
+  classify,
+  StudentAttributes,
+} from '../algorithms/cart-decision-tree';
 
 @controller('/subject', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 class SubjectController extends BaseHttpController {
@@ -330,6 +335,36 @@ class SubjectController extends BaseHttpController {
       subject_id
     );
     const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/performance')
+  async getPerformance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+    let prediction;
+
+    try {
+      const training_data = await this.subjectService.getStudentPerformance(
+        subject_id,
+        1
+      );
+
+      const node = buildTree(training_data);
+
+      const studentData: StudentAttributes = {
+        gender: 'male',
+        grading_period: 1,
+        passedPreTest: false,
+        pt_wScore: 90,
+        qa_wScore: 80,
+        ww_wScore: 100,
+      };
+
+      prediction = classify(studentData, node);
+    } catch (error) {
+      console.log(error);
+    }
+    const response = JsonResponse.success(prediction, 200);
     res.status(response.statusCode).send(response);
   }
 }

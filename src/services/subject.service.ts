@@ -17,6 +17,7 @@ import AssessmentRepository, {
   Assessment,
 } from '../repository/assessment.repository';
 import { computePercentageScore } from '../algorithms/grades';
+import TrainingDataRepository from '../repository/training_data.repository';
 
 @injectable()
 class SubjectService {
@@ -30,7 +31,9 @@ class SubjectService {
     @inject(TYPES.LectureRepository)
     private readonly lectureRepo: LectureRepository,
     @inject(TYPES.AssessmentRepository)
-    private readonly assessmentRepo: AssessmentRepository
+    private readonly assessmentRepo: AssessmentRepository,
+    @inject(TYPES.TrainingDataRepository)
+    private readonly trainingDataRepository: TrainingDataRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -130,6 +133,13 @@ class SubjectService {
 
   async addNewScores(scores: NewScores) {
     return this.scoresRepo.addNewScores(scores);
+  }
+
+  async getStudentPerformance(subject_id: string, grading_period: number) {
+    return this.trainingDataRepository.getTrainingData(
+      subject_id,
+      grading_period
+    );
   }
 
   async getClassGrades(subject_id: string) {

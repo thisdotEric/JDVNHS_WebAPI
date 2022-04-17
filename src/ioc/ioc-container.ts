@@ -21,6 +21,7 @@ import AssessmentScoresRepository from '../repository/scores.repository';
 import UserRepository from '../repository/user.repository';
 import LectureRepository from '../repository/lecture.repository';
 import AssessmentRepository from '../repository/assessment.repository';
+import TrainingDataRepository from '../repository/training_data.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -69,6 +70,9 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<GradesService>(TYPES.GradesService).to(GradesService);
 
   bind<LectureRepository>(TYPES.LectureRepository).to(LectureRepository);
+  bind<TrainingDataRepository>(TYPES.TrainingDataRepository).to(
+    TrainingDataRepository
+  );
 
   bind<MustBeAuthenticated>(TYPES.AuthMiddleware).to(MustBeAuthenticated);
   bind<StudentAccessONLY>(TYPES.StudentAccessONLY).to(StudentAccessONLY);

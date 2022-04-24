@@ -12,7 +12,6 @@ export const mapData = (data: any[]) => {
   return data.map(d => {
     return {
       gender: 'female',
-      grading_period: parseInt(d.grading_period),
       passedPreTest: d.passedPreTest === 'true' ? true : false,
       pt_wScore: parseInt(d.pt_wScore),
       qa_wScore: parseInt(d.qa_wScore),
@@ -26,7 +25,7 @@ export const mapData = (data: any[]) => {
 export class InterventionController {
   @httpGet('/')
   async index(req: Request, res: Response) {
-    const testdata_path = __dirname + '/testdata.csv';
+    const testdata_path = __dirname + '/sample.csv';
     let data = await csv().fromFile(testdata_path);
     data = mapData(data);
 
@@ -36,15 +35,15 @@ export class InterventionController {
     const studentData: StudentAttributes = {
       gender: 'male',
       grading_period: 1,
-      passedPreTest: true,
-      pt_wScore: 75,
+      passedPreTest: false,
+      pt_wScore: 60,
       qa_wScore: 90,
-      ww_wScore: 80,
+      ww_wScore: 88,
     };
 
     const prediction = classify(studentData, node);
     console.log(prediction);
 
-    res.status(200).send(node);
+    res.status(200).send({ prediction, node });
   }
 }

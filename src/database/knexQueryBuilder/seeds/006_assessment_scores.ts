@@ -24,6 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(DbConstants.ASSESSMENT_TABLE).del();
 
   const grading_periods = [1, 2, 3, 4];
+  const subject_id = 'Math7';
 
   let assessmentList: Assessment[] = [];
 
@@ -34,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
       date = addDays(date, randomize(3, 7));
       assessmentList.push({
         date,
-        subject_id: 'Math10',
+        subject_id,
         items: randomize(20, 35),
         component: 'WW',
         grading_period,
@@ -45,7 +46,7 @@ export async function seed(knex: Knex): Promise<void> {
       date = addDays(date, randomize(3, 7));
       assessmentList.push({
         date,
-        subject_id: 'Math10',
+        subject_id,
         items: randomize(20, 35),
         component: 'PT',
         grading_period,
@@ -55,7 +56,7 @@ export async function seed(knex: Knex): Promise<void> {
     date = addDays(date, randomize(3, 7));
     assessmentList.push({
       date,
-      subject_id: 'Math10',
+      subject_id,
       items: 50,
       component: 'QA',
       grading_period,

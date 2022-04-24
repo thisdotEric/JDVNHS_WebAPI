@@ -9,7 +9,6 @@ import { StudentAttributes } from './types';
 export type StudentAttributeKey = keyof StudentAttributes;
 const AllKeys: StudentAttributeKey[] = [
   'gender',
-  'grading_period',
   'passedPreTest',
   'pt_wScore',
   'qa_wScore',
@@ -148,6 +147,11 @@ export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
       if (gain >= best_gain) {
         best_gain = gain;
         best_question = question;
+
+        console.log('-----------');
+        console.log(key, val);
+        console.log(best_gain, best_question.questionToString());
+        console.log('-----------');
       }
     }
   }

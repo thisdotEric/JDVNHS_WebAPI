@@ -77,7 +77,7 @@ const Grades: FC<GradesProps> = ({}: GradesProps) => {
   ]);
 
   useEffect(() => {
-    axios.get('grades/Math10').then(({ data }) => {
+    axios.get('grades/Math7').then(({ data }) => {
       setGrades(() => {
         return data.data.map((grade: any) => {
           return {

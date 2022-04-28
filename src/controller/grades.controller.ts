@@ -15,7 +15,13 @@ export class GradesController {
   async index(req: Request, res: Response) {
     const subject_id = `${req.params.subject_id}`;
 
-    const computedScores = await this.gradesService.getAllGrades(subject_id);
+    let computedScores;
+
+    try {
+      computedScores = await this.gradesService.getAllGrades(subject_id);
+    } catch (error) {
+      console.log(error);
+    }
 
     const response = JsonResponse.success(computedScores, 200);
     res.status(response.statusCode).send(response);

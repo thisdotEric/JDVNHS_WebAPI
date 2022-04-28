@@ -158,6 +158,8 @@ class GradesService {
      */
     const students = await this.subjectRepo.getEnrolledStudents(subject_id);
 
+    console.log('Student Length: ', students.length);
+
     /**
      * Iterate on the students list and compute for the grades per grading period
      */

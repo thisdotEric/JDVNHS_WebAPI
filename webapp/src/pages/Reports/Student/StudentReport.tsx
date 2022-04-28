@@ -10,7 +10,9 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   const { LRN } = useParams();
 
-  const [{ data }, { runFetch: getStudent }] = useFetch(`student/${LRN}`);
+  const [{ data }, { runFetch: getStudent }] = useFetch(
+    `reports/${LRN}?subject_id=Math7`,
+  );
   useSetHeader({
     headerStringValue: `Individual performance report`,
     showSubjectDropdown: true,
@@ -27,8 +29,9 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
       {data ? (
         <>
           <p id="name">
-            {data.data.last_name}, {data.data.first_name}{' '}
-            {data.data.middle_name}
+            {console.log(data)}
+            {data.data.student.last_name}, {data.data.student.first_name}{' '}
+            {data.data.student.middle_name}
           </p>
         </>
       ) : (

@@ -6,7 +6,7 @@ import {
   LEARNING_COMPETENCY,
   LEARNING_MATERIAL,
 } from '../../../constant/tables';
-import { learning_materials } from './learninMaterials';
+import { learning_materials } from '../learninMaterials';
 
 interface LearningCompetency {
   code: string;

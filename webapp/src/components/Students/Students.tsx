@@ -63,7 +63,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           return curr.gender === 'male' ? prev + 1 : prev + 0;
         }, 0),
         totalStudents: students.length,
-        gradeLevel: 10,
+        gradeLevel: 7,
       });
     });
   }, [selectedSubject]);

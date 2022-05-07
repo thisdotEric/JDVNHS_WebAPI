@@ -1,14 +1,15 @@
 import { controller, httpGet } from 'inversify-express-utils';
 import { Request, Response } from 'express';
 import TYPES from '../ioc/binding-types';
-import GradesService from '../services/grades.service';
 import { inject } from 'inversify';
 import JsonResponse from '../utils/JsonResponse';
+import ReportsService from '../services/reports.service';
 
 @controller('/reports')
 export class ReportsController {
   constructor(
-    @inject(TYPES.GradesService) private readonly gradesService: GradesService
+    @inject(TYPES.ReportsService)
+    private readonly reportsService: ReportsService
   ) {}
 
   @httpGet('/:LRN', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
@@ -23,6 +24,23 @@ export class ReportsController {
     };
 
     const response = JsonResponse.success({ student, LRN, subject_id }, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet(
+    '/subject/:subject_id',
+    TYPES.AuthMiddleware,
+    TYPES.TeacherAccessONLY
+  )
+  async getStudentReporst(req: Request, res: Response) {
+    const subject_id = `${req.params.subject_id}`;
+
+    const reports = await this.reportsService.getStudentPerformanceReport(
+      subject_id,
+      1
+    );
+
+    const response = JsonResponse.success(reports, 200);
     res.status(response.statusCode).send(response);
   }
 }

@@ -17,7 +17,7 @@ interface StudentGrade {
   finalGrade: number;
 }
 
-type ComponentType = 'PT' | 'QA' | 'WW';
+export type ComponentType = 'PT' | 'QA' | 'WW';
 
 @injectable()
 class GradesService {
@@ -44,7 +44,7 @@ class GradesService {
     }
   }
 
-  private async computeForComponentWeightedScore(
+  public async computeForComponentWeightedScore(
     subject_id: string,
     component: ComponentType,
     grading_period: number,

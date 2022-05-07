@@ -1,3 +1,12 @@
 #reports {
-  display: block;
+  #grading_period {
+    display: flex;
+    padding: 10px;
+  }
+
+  table {
+    button {
+      padding: 5px;
+    }
+  }
 }

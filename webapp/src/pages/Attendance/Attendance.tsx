@@ -115,11 +115,11 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         <>
           {attendanceStatus.map(at => (
             <AttendanceAction
-              key={'absent'}
+              key={at}
               LRN={params.data.LRN}
-              newAttendanceStatus={'absent'}
+              newAttendanceStatus={at}
               updateStudentAttendance={() => {
-                all(params.data.LRN, 'absent');
+                all(params.data.LRN, at);
               }}
             />
           ))}{' '}

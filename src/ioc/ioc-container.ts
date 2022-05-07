@@ -11,6 +11,7 @@ import AuthenticationService from '../services/authentication.service';
 import UserService from '../services/user.service';
 import TeacherService from '../services/teacher.service';
 import GradesService from '../services/grades.service';
+import ReportsService from '../services/reports.service';
 
 // repositories
 import StudentRepository from '../repository/student.repository';
@@ -68,6 +69,7 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<UserService>(TYPES.UserService).to(UserService);
 
   bind<GradesService>(TYPES.GradesService).to(GradesService);
+  bind<ReportsService>(TYPES.ReportsService).to(ReportsService);
 
   bind<LectureRepository>(TYPES.LectureRepository).to(LectureRepository);
   bind<TrainingDataRepository>(TYPES.TrainingDataRepository).to(

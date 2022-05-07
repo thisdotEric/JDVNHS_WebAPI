@@ -18,6 +18,7 @@ const types = {
   LectureRepository: Symbol.for('LectureRepository'),
   AssessmentRepository: Symbol.for('AssessmentRepository'),
   GradesService: Symbol.for('GradesService'),
+  ReportsService: Symbol.for('ReportsService'),
   TrainingDataRepository: Symbol.for('TrainingDataRepository'),
 };
 

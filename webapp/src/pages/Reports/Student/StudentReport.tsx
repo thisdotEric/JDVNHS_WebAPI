@@ -28,10 +28,14 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
     <div id="student-report">
       {data ? (
         <>
-          <p id="name">
+          {/* <p id="name">
             {console.log(data)}
             {data.data.student.last_name}, {data.data.student.first_name}{' '}
             {data.data.student.middle_name}
+          </p> */}
+
+          <p>
+            Personalized Remediation and Intervention Strategy for Student A
           </p>
         </>
       ) : (

@@ -1,3 +1,4 @@
+import { unique } from 'faker';
 import {
   DecisionNode,
   DecisionTreeNode,
@@ -8,11 +9,10 @@ import { StudentAttributes } from './types';
 
 export type StudentAttributeKey = keyof StudentAttributes;
 const AllKeys: StudentAttributeKey[] = [
-  'gender',
   'passedPreTest',
   'pt_wScore',
-  'qa_wScore',
   'ww_wScore',
+  'qa_wScore',
 ];
 
 export interface ClassCount {
@@ -22,7 +22,7 @@ export interface ClassCount {
 
 export interface BestSplitCriteria {
   best_gain: number;
-  best_question: Question;
+  best_question: Question | null;
 }
 
 export interface PartitionedDataset {
@@ -70,8 +70,9 @@ export const computeGiniImpurity = (rows: StudentAttributes[]): number => {
 export const getColumnUniqueValues = (
   rows: StudentAttributes[],
   key: StudentAttributeKey
-): Set<any> => {
-  return new Set<any>(rows.map(row => row[key]));
+): any[] => {
+  const uniques = [...new Set<any>(rows.map(row => row[key]))].sort();
+  return uniques;
 };
 
 export const computeInformationGain = (
@@ -93,7 +94,7 @@ export const computeInformationGain = (
 
 export const partitionDataset = (
   rows: StudentAttributes[],
-  question: Question
+  question: Question | null
 ): PartitionedDataset => {
   let trueDataset: StudentAttributes[] = [];
   let falseDataset: StudentAttributes[] = [];
@@ -104,6 +105,9 @@ export const partitionDataset = (
      * `trueDataset` name just corresponds to the fact the its row that matches a given question
      * This is same for `falseDataset`
      */
+
+    if (!question) continue;
+
     if (question.checkMatch(row)) trueDataset.push(row);
     else falseDataset.push(row);
   }
@@ -123,7 +127,7 @@ export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
   let best_gain = 0;
 
   // TODO: Watchout for side effect
-  let best_question: Question = new Question('gender', 'male');
+  let best_question: Question | null = null;
 
   // Compute the gini impurity index of the given row
   const current_uncertainty = computeGiniImpurity(rows);
@@ -135,6 +139,7 @@ export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
       let question = new Question(key, val);
 
       const { trueDataset, falseDataset } = partitionDataset(rows, question);
+      console.log(trueDataset);
 
       if (trueDataset.length == 0 || falseDataset.length == 0) continue;
 
@@ -147,11 +152,6 @@ export const findBestSplit = (rows: StudentAttributes[]): BestSplitCriteria => {
       if (gain >= best_gain) {
         best_gain = gain;
         best_question = question;
-
-        console.log('-----------');
-        console.log(key, val);
-        console.log(best_gain, best_question.questionToString());
-        console.log('-----------');
       }
     }
   }
@@ -183,6 +183,8 @@ export const classify = (
   node: LeafNode | DecisionNode
 ): any => {
   if (node instanceof LeafNode) return node.classCounts;
+
+  if (!node.question) return;
 
   if (node.question.checkMatch(row)) return classify(row, node.trueBranch);
   else return classify(row, node.falseBranch);

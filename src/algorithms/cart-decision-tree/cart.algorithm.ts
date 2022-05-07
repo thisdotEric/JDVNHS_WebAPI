@@ -15,6 +15,8 @@ export class Question {
   checkMatch(rowValue: StudentAttributes): boolean {
     let attrValue = rowValue[this.objectKey];
 
+    if (!attrValue) return false;
+
     return Number.isInteger(attrValue)
       ? attrValue >= this.value
       : attrValue === this.value;
@@ -30,7 +32,7 @@ export type DecisionTreeNode = DecisionNode | LeafNode;
 
 export class DecisionNode {
   constructor(
-    public readonly question: Question,
+    public readonly question: Question | null,
     public readonly trueBranch: DecisionTreeNode,
     public readonly falseBranch: DecisionTreeNode
   ) {}

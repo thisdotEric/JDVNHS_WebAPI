@@ -33,16 +33,19 @@ export class InterventionController {
     console.log(node);
 
     const studentData: StudentAttributes = {
-      gender: 'male',
+      gender: 'female',
       grading_period: 1,
       passedPreTest: false,
-      pt_wScore: 60,
-      qa_wScore: 90,
-      ww_wScore: 88,
+      pt_wScore: 45,
+      qa_wScore: 15,
+      ww_wScore: 25,
     };
 
     const prediction = classify(studentData, node);
-    console.log(prediction);
+
+    if (prediction.trueCount >= prediction.falseCount)
+      console.log('Undergo remediation');
+    else console.log('Does not undergo remediation');
 
     res.status(200).send({ prediction, node });
   }

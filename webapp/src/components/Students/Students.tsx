@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState, useContext } from 'react';
+import React, { FC, useEffect, useState, useContext, useMemo } from 'react';
 import './Students.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
@@ -9,14 +8,18 @@ import { axios } from '../../utils';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
 import { Button } from '../Button';
 import { useNavigate } from 'react-router-dom';
-import { Hash } from 'react-feather';
+import { Table } from '@mantine/core';
+import { useTable, useSortBy, useGlobalFilter } from 'react-table';
+import { studentTableColumns } from './student.table';
+import { ArrowNarrowDown, ArrowNarrowUp } from 'tabler-icons-react';
+import GlobalFilter from './GlobalFilter';
 
 interface StudentsProps {}
 
 export interface IStudent {
+  LRN: string;
   user_id: string;
-  first_name: string;
-  middle_name: string;
+  fullname: string;
   gender: string;
   contact_number: string;
 }
@@ -35,92 +38,91 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
     headerStringValue: 'List of all students',
   });
 
-  const [students, setStudents] = useState<IStudent[]>();
+  const [students, setStudents] = useState<IStudent[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<IStudent['user_id']>();
 
   const selectedSubject = useContext(SubjectContext);
   const [subjectStats, setSubjectStats] = useState<SubjectStats>();
 
-  const [gridApi, setGridApi] = useState<any>();
   const [studentName, setStudentName] = useState<string>('');
   const navigate = useNavigate();
 
-  const onGridReady = (params: any) => {
-    setGridApi(params.api);
-  };
+  const columns = useMemo(() => studentTableColumns, []);
+  const data = useMemo<readonly IStudent[]>(
+    () => (!students ? [] : students.map(s => s)),
+    [students, setStudents],
+  );
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state,
+    setGlobalFilter,
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+
+  const { globalFilter } = state;
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/students`).then(response => {
-      const students = response.data.data;
+      const students_data = response.data.data;
 
-      setStudents(students);
-
-      setSubjectStats({
-        femaleCount: students.reduce((prev: number, curr: IStudent) => {
-          return curr.gender === 'female' ? prev + 1 : prev + 0;
-        }, 0),
-        maleCount: students.reduce((prev: number, curr: IStudent) => {
-          return curr.gender === 'male' ? prev + 1 : prev + 0;
-        }, 0),
-        totalStudents: students.length,
-        gradeLevel: 7,
-      });
+      setStudents(
+        students_data.map((s: any) => ({
+          user_id: s.user_id,
+          LRN: s.user_id,
+          fullname: `${s.last_name}, ${s.first_name} ${s.middle_name[0]}.`,
+          gender: s.gender,
+          contact_number: s.contact_number,
+        })),
+      );
     });
-  }, [selectedSubject]);
+  }, []);
 
   return (
     <div className="class-students">
-      <div className="class-info">
-        <p>
-          Student count: <span>{subjectStats?.totalStudents}</span>
-        </p>
-        <p>
-          Grade Level: <span>{subjectStats?.gradeLevel}</span>
-        </p>
-        <p> | </p>
-        <p>
-          Females: <span>{subjectStats?.femaleCount}</span>
-        </p>
-        <p>
-          Males: <span>{subjectStats?.maleCount}</span>
-        </p>
-      </div>
-
-      <div
-        className="ag-theme-balham-dark"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={students}
-          onGridReady={onGridReady}
-          pagination={true}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          animateRows={true}
-          pinnedTopRowData={[]}
-          pinnedBottomRowData={[]}
-          onSelectionChanged={() => {
-            setSelectedStudent(gridApi.getSelectedRows()[0].user_id);
-            setStudentName(gridApi.getSelectedRows()[0].first_name);
-          }}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        >
-          <AgGridColumn field="user_id" headerName="LRN" />
-          <AgGridColumn field="first_name" headerName="First Name" />
-          <AgGridColumn field="middle_name" headerName="Middle Name" />
-          <AgGridColumn field="last_name" headerName="Last Name" />
-          <AgGridColumn field="gender" headerName="Gender" />
-          <AgGridColumn field="contact_number" headerName="Contact Number" />
-        </AgGridReact>
+      <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+      <div>
+        <Table {...getTableProps()} fontSize={'xs'}>
+          <thead>
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <ArrowNarrowDown size={15} />
+                        ) : (
+                          <ArrowNarrowUp size={15} />
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map(row => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
       </div>
 
       <div id="student-action-buttons">

@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from 'react';
+import React, { FC, useState, useContext, useEffect, useMemo } from 'react';
 import './Assessments.scss';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '../../utils';
@@ -10,9 +10,20 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import AssessmentActions from './AssessmentsActions/AssessmentActions';
-import { Button } from '../../components/Button';
+// import { Button } from '../../components/Button';
+import { TableComponent } from '../../components/Table';
+import type { Column } from 'react-table';
+import { Button } from '@mantine/core';
 
 interface AssessmentsProps {}
+
+interface AssessmentTable {
+  LRN: string;
+  date: string;
+  component: string;
+  items: number;
+  grading_period: number;
+}
 
 function toLongLearningComponentName(
   learningComponent: LearningComponent,
@@ -45,58 +56,75 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     (Assessment & { assessment_id: number; withScores: boolean })[]
   >([]);
 
-  const [assessmentCols] = useState([
-    {
-      field: 'assessment_id',
-      headerName: 'Assessment ID',
-      hide: true,
-    },
-    {
-      field: 'subject_id',
-      headerName: 'Subject ID',
-      hide: true,
-    },
-    {
-      field: 'date',
-      headerName: 'Date',
-    },
-    {
-      field: 'component',
-      headerName: 'Component Type',
-      cellRendererFramework: (props: any) => (
-        <span>{toLongLearningComponentName(props.node.data.component)}</span>
-      ),
-    },
-    {
-      field: 'items',
-      headerName: 'Total Items',
-    },
-    {
-      field: 'grading_period',
-      headerName: 'Grading Period',
-    },
-    {
-      field: 'withScores',
-      headerName: 'With Scores',
-      hide: true,
-    },
-    {
-      headerName: 'Action',
-      cellRendererFramework: (params: any) => (
-        <>
-          <AssessmentActions
-            viewScores={params.node.data.withScores}
-            assessment_id={params.node.data.assessment_id}
-            refetchAssessments={setRefectchAssessments}
-          />
-        </>
-      ),
-    },
-  ]);
+  const data = useMemo(() => assessments, [assessments, setAssessments]);
+
+  const columns = useMemo(
+    () =>
+      [
+        {
+          Header: 'DATE',
+          accessor: 'date',
+        },
+        {
+          Header: 'COMPONENT TYPE',
+          accessor: 'component',
+          Cell: (row: any) => (
+            <span>{toLongLearningComponentName(row.value)}</span>
+          ),
+        },
+        {
+          Header: 'ITEMS',
+          accessor: 'items',
+        },
+        {
+          Header: 'GRADING PERIOD',
+          accessor: 'grading_period',
+        },
+        {
+          Header: 'ACTIONS',
+          accessor: 'assessment_id',
+          Cell: (row: any) => {
+            return (
+              <Button
+                size="xs"
+                onClick={() => {
+                  navigate(`/t/assessments/scores/${row.value}`);
+                }}
+              >
+                View Score
+              </Button>
+            );
+          },
+        },
+      ] as Column<AssessmentTable>[],
+    [],
+  );
 
   const navigate = useNavigate();
 
   const selectedSubject = useContext(SubjectContext);
+
+  useEffect(() => {
+    axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
+      setAssessments(data.data);
+      console.table(data.data);
+    });
+
+    axios
+      .get(`subject/${selectedSubject}/assessments/scores/valid`)
+      .then(({ data }) => {
+        const valid = data.data.map((a: any) => a.assessment_id);
+
+        setAssessments(old => {
+          return old.map(o => {
+            o.withScores = valid.includes(o.assessment_id);
+            return o;
+          });
+        });
+      });
+
+    if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
+  }, []);
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
@@ -123,42 +151,25 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   return (
     <div className="assessments">
       <div className="create-assessments">
-        <Button
+        {/* <Button
           onClick={() => {
             setCreateNewAssessment(!createNewAssessment);
             console.log(assessmentWithScores);
           }}
           buttontype={!createNewAssessment ? 'select' : 'cancel'}
           value={!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
-        />
+        /> */}
 
         {createNewAssessment && (
           <AddAssessment refetchAssessment={setRefectchAssessments} />
         )}
       </div>
 
-      <div
-        className="ag-theme-balham-dark"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={assessments}
-          pagination={true}
-          columnDefs={assessmentCols}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
-      </div>
+      <TableComponent
+        columns={columns}
+        data={data}
+        globalFilterPlaceholder="Search Assessment"
+      />
     </div>
   );
 };

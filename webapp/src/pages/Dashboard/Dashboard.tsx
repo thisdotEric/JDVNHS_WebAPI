@@ -16,6 +16,7 @@ import { useCurrentUser } from '../../hooks';
 import { teacherNavigations, studentNavigations } from '../../constants';
 import { SubjectDropDown } from './SubjectDropDown';
 import { XCircle } from 'react-feather';
+import { Select } from '@mantine/core';
 
 interface DashboardProps {}
 
@@ -89,7 +90,10 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
     <div className="dashboard">
       <div className="side">
         <div>
-          <img src={SchoolLogo} alt="School Logo" height={170} width={170} />
+          <div id="school">
+            <img src={SchoolLogo} alt="School Logo" height={150} width={150} />
+            <p>Jose de Villa National High School</p>
+          </div>
           <SideNav
             links={
               currentUser?.role === 'student'

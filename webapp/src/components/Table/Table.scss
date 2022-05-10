@@ -1,0 +1,30 @@
+#table-component {
+  table {
+    thead {
+      background-color: #d3ced3;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: flex-end;
+    justify-content: right;
+    margin: 20px;
+
+    button {
+      margin-left: 10px;
+    }
+
+    #page-pagination-info {
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+#filter-searchbox {
+  margin: 10px 0;
+  width: 250px;
+  font-size: medium;
+}

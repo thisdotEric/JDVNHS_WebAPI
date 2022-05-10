@@ -5,7 +5,7 @@
 
   .side {
     width: 200px;
-    background-color: #fc7519;
+    background-color: #d3ced3;
     height: 100%;
     width: 210px;
     position: fixed;
@@ -18,8 +18,21 @@
     align-items: center;
     flex-direction: column;
 
-    img {
-      padding: 10px;
+    #school {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+
+      img {
+        padding: 10px;
+      }
+
+      p {
+        padding: 10px;
+        text-align: center;
+      }
     }
 
     .user {
@@ -50,17 +63,16 @@
   }
 
   main {
-    background-color: #e8eaec;
+    background-color: #f3f1f5;
     height: 100vh;
     width: 100vw;
     padding-right: 10px;
 
     .top {
-      background: #283659;
       position: fixed;
       top: 0;
       width: 100%;
-      color: white;
+      color: black;
       display: flex;
       justify-content: space-between;
       align-items: center;

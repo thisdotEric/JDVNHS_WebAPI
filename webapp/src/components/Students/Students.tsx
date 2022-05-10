@@ -6,13 +6,11 @@ import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
 import { axios } from '../../utils';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
-import { Button } from '../Button';
+import { Button } from '@mantine/core';
+import { TableComponent } from '../Table';
 import { useNavigate } from 'react-router-dom';
-import { Table } from '@mantine/core';
-import { useTable, useSortBy, useGlobalFilter } from 'react-table';
-import { studentTableColumns } from './student.table';
-import { ArrowNarrowDown, ArrowNarrowUp } from 'tabler-icons-react';
-import GlobalFilter from './GlobalFilter';
+import type { Column } from 'react-table';
+import { Report } from 'tabler-icons-react';
 
 interface StudentsProps {}
 
@@ -39,31 +37,57 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   });
 
   const [students, setStudents] = useState<IStudent[]>([]);
-  const [selectedStudent, setSelectedStudent] = useState<IStudent['user_id']>();
 
   const selectedSubject = useContext(SubjectContext);
-  const [subjectStats, setSubjectStats] = useState<SubjectStats>();
-
-  const [studentName, setStudentName] = useState<string>('');
   const navigate = useNavigate();
 
-  const columns = useMemo(() => studentTableColumns, []);
+  const columns = useMemo(
+    () =>
+      [
+        {
+          Header: 'LRN',
+          accessor: 'LRN',
+        },
+        {
+          Header: 'FULL NAME',
+          accessor: 'fullname',
+          Cell: row => <p id="name">{row.value}</p>,
+        },
+        {
+          Header: 'GENDER',
+          accessor: 'gender',
+        },
+        {
+          Header: 'CONTACT NUMBER',
+          accessor: 'contact_number',
+        },
+        {
+          Header: 'ACTION',
+          accessor: 'user_id',
+          Cell: row => {
+            return (
+              <>
+                <Button
+                  size="xs"
+                  leftIcon={<Report size={20} />}
+                  onClick={() => {
+                    navigate(`/t/reports/student/${row.value}`);
+                  }}
+                  color={'green'}
+                >
+                  View report
+                </Button>
+              </>
+            );
+          },
+        },
+      ] as Column<IStudent>[],
+    [],
+  );
   const data = useMemo<readonly IStudent[]>(
     () => (!students ? [] : students.map(s => s)),
     [students, setStudents],
   );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    setGlobalFilter,
-  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
-
-  const { globalFilter } = state;
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/students`).then(response => {
@@ -83,60 +107,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
 
   return (
     <div className="class-students">
-      <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-      <div>
-        <Table {...getTableProps()} fontSize={'xs'}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
-                    <span>
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <ArrowNarrowDown size={15} />
-                        ) : (
-                          <ArrowNarrowUp size={15} />
-                        )
-                      ) : (
-                        ''
-                      )}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </div>
-
-      <div id="student-action-buttons">
-        <Button
-          value={`View ${studentName}${
-            studentName !== '' ? "'s" : ''
-          }  student report`}
-          buttontype={studentName === '' ? 'disabled' : 'select'}
-          disabled={studentName === ''}
-          onClick={() => {
-            navigate(`/t/reports/student/${selectedStudent}`);
-          }}
-        />
-      </div>
+      <TableComponent columns={columns} data={data} />
     </div>
   );
 };

@@ -119,6 +119,10 @@ class SubjectService {
     return this.scoresRepo.updateAssessmentScores(scores);
   }
 
+  async updateSingleAssessmentScore(score: UpdatedScore) {
+    return this.scoresRepo.updateSingleAssessmentScore(score);
+  }
+
   async addNewAssessment(assessment: Assessment) {
     return this.assessmentRepo.addNewAssessment(assessment);
   }

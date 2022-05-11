@@ -69,14 +69,13 @@
 
   main {
     background-color: #f3f1f5;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     padding-right: 10px;
 
     .top {
-      position: fixed;
-      top: 0;
-      width: 100%;
+      // position: fixed;
+      // top: 0;
       color: black;
       display: flex;
       justify-content: space-between;
@@ -126,7 +125,6 @@
 
     .content {
       margin-left: 220px;
-      margin-top: 45px;
     }
   }
 }

@@ -269,6 +269,24 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
+  @httpPatch('/:subject_name/assessments/score')
+  async updateSingleAssessmentScore(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const { score } = req.body;
+
+    try {
+      await this.subjectService.updateSingleAssessmentScore(score);
+    } catch (error) {
+      console.log(error);
+    }
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
   @httpPost('/:subject_name/assessments/scores')
   async addAssessmentScores(
     @request() req: Request,

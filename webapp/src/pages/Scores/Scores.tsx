@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import './Scores.scss';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../../src/context';
@@ -7,8 +7,12 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { useParams } from 'react-router-dom';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
-import { Button } from '../../components/Button';
+// import { Button } from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
+import type { Column } from 'react-table';
+import { TableComponent } from '../../components/Table';
+import { NumberInput, Button } from '@mantine/core';
+import { Refresh } from 'tabler-icons-react';
 
 interface ScoresProps {}
 
@@ -18,6 +22,14 @@ interface Scores {
   middle_name: string;
   last_name: string;
   score_id: number;
+  score: number;
+  grading_period: 1 | 2 | 3 | 4;
+}
+
+interface AssessmentScore {
+  score_id: number;
+  LRN: string;
+  fullname: string;
   score: number;
   grading_period: 1 | 2 | 3 | 4;
 }
@@ -34,56 +46,64 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
     headerStringValue: 'View/Update scores',
   });
 
-  const [classScores, setScores] = useState<Scores[]>([]);
-  const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true);
+  const [scores, setStudentScores] = useState<Scores[]>([]);
 
-  const [scoreColumns] = useState([
-    {
-      field: 'LRN',
-      headerName: 'LRN',
-    },
-    {
-      field: 'last_name',
-      headerName: 'Last Name',
-    },
-    {
-      field: 'first_name',
-      headerName: 'First Name',
-    },
-    {
-      field: 'middle_name',
-      headerName: 'Middle Name',
-    },
-    {
-      field: 'score_id',
-      headerName: 'Score ID',
-      hide: true,
-    },
-    {
-      field: 'score',
-      headerName: 'Score',
-      editable: true,
-      onCellValueChanged: (grid: any) => {
-        setDisableSaveButton(false);
+  const scoreColumns2 = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        { Header: 'STUDENT', accessor: 'fullname' },
+        {
+          Header: 'SCORE',
+          accessor: 'score_id',
+          Cell: row => {
+            const [studentScore, setStudentScore] = useState<number>(0);
 
-        const row = grid.node.data;
+            useEffect(() => {
+              row.data.forEach((r: any) => {
+                if (r.score_id === row.value) setStudentScore(r.score);
+              });
+              console.log(id);
+            }, []);
 
-        setScores(oldScores => {
-          return oldScores.map(studentScore => {
-            if (studentScore.LRN === row.LRN)
-              studentScore.score = parseInt(row.score, 10);
+            return (
+              <div className="scores-actions">
+                <NumberInput
+                  id="score-input"
+                  value={studentScore}
+                  size="md"
+                  min={0}
+                  onChange={e => {
+                    setStudentScore(parseInt(`${e}`));
+                  }}
+                  hideControls
+                />
+                <Button
+                  leftIcon={<Refresh size={20} />}
+                  onClick={async () => {
+                    await axios.patch(
+                      `subject/${selectedSubject}/assessments/score`,
+                      {
+                        score: {
+                          score: studentScore,
+                          score_id: row.value,
+                        },
+                      },
+                    );
+                  }}
+                  size="xs"
+                >
+                  Update Score
+                </Button>
+              </div>
+            );
+          },
+        },
+      ] as Column<AssessmentScore>[],
+    [],
+  );
 
-            return studentScore;
-          });
-        });
-      },
-    },
-    {
-      field: 'score_id',
-      headerName: 'Score_id',
-      hide: true,
-    },
-  ]);
+  const data = useMemo(() => scores, [scores]);
 
   const selectedSubject = useContext(SubjectContext);
   const navigate = useNavigate();
@@ -95,62 +115,29 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       `subject/${selectedSubject}/scores/${assessment_id}`,
     );
 
-    setScores(res.data.data);
+    setStudentScores(
+      res.data.data.map((s: any) => {
+        return {
+          score_id: s.score_id,
+          LRN: s.LRN,
+          fullname: `${s.last_name}, ${s.first_name} ${s.middle_name[0]} `,
+          score: s.score,
+        };
+      }),
+    );
   };
 
   useEffect(() => {
     if (id != undefined) fetchAssessmentScores(id);
   }, [selectedSubject]);
 
+  useEffect(() => {
+    if (id != undefined) fetchAssessmentScores(id);
+  }, []);
+
   return (
     <div className="scores">
-      <div
-        className="ag-theme-balham-dark"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={classScores}
-          pagination={true}
-          columnDefs={scoreColumns}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
-      </div>
-
-      <div className="scores-actions">
-        <Button
-          value="Cancel"
-          buttontype="cancel"
-          onClick={() => {
-            navigate('/t/assessments');
-          }}
-        />
-        <Button
-          value="Save Updated Scores"
-          buttontype="save"
-          disabled={disableSaveButton}
-          onClick={async () => {
-            await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
-              scores: classScores.map(({ score, score_id }) => {
-                return { score, score_id };
-              }),
-            });
-
-            navigate('/t/assessments');
-          }}
-        />
-      </div>
+      <TableComponent columns={scoreColumns2} data={data} />
     </div>
   );
 };

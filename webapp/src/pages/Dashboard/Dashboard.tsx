@@ -33,7 +33,7 @@ const initialNotificationState: Notification = {
 const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const navigate = useNavigate();
   const [userSubjects, setUserSubjects] = useState<Subject[]>();
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('Math7');
   const [loading, setLoading] = useState<boolean>(true);
   const [headerFlags, setHeaderContextValue] = useState<HeaderFlags>({
     showSubjectDropdown: true,

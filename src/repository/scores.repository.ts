@@ -29,7 +29,7 @@ class AssessmentScoresRepository {
     const scores = await this.db
       .getDbInstance()
       .raw(
-        `select s."score_id", s."LRN", u."first_name", u."middle_name", u."last_name", s."score" from scores s join users u on u."user_id" = s."LRN" where s."assessment_id" = ${assessment_id};`
+        `select s."score_id", s."LRN", u."first_name", u."middle_name", u."last_name", s."score" from scores s join users u on u."user_id" = s."LRN" where s."assessment_id" = ${assessment_id} order by s."LRN" asc`
       );
 
     return scores.rows;
@@ -66,6 +66,12 @@ class AssessmentScoresRepository {
     }
 
     await Promise.all(updates);
+  }
+
+  async updateSingleAssessmentScore({ score, score_id }: UpdatedScore) {
+    await this.db.getDbInstance()(SCORES).update({ score }).where({
+      score_id,
+    });
   }
 
   async getAllAssessmentsWithScores(subject_id: string) {

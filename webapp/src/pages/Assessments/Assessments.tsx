@@ -10,10 +10,10 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import AssessmentActions from './AssessmentsActions/AssessmentActions';
-// import { Button } from '../../components/Button';
 import { TableComponent } from '../../components/Table';
 import type { Column } from 'react-table';
 import { Button } from '@mantine/core';
+import dateformat from 'dateformat';
 
 interface AssessmentsProps {}
 
@@ -68,9 +68,6 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
         {
           Header: 'COMPONENT TYPE',
           accessor: 'component',
-          Cell: (row: any) => (
-            <span>{toLongLearningComponentName(row.value)}</span>
-          ),
         },
         {
           Header: 'ITEMS',
@@ -91,7 +88,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                   navigate(`/t/assessments/scores/${row.value}`);
                 }}
               >
-                View Score
+                View Scores
               </Button>
             );
           },
@@ -106,7 +103,11 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
-      setAssessments(data.data);
+      setAssessments(
+        data.data.map((a: any) => {
+          return { ...a, date: dateformat('Jun 9 2007', 'fullDate') };
+        }),
+      );
       console.table(data.data);
     });
 
@@ -128,7 +129,11 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
-      setAssessments(data.data);
+      setAssessments(
+        data.data.map((a: any) => {
+          return { ...a, date: dateformat(a.date, ' yyyy mmmm d, dddd') };
+        }),
+      );
       console.table(data.data);
     });
 

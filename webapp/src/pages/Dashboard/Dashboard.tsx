@@ -94,6 +94,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
             <img src={SchoolLogo} alt="School Logo" height={150} width={150} />
             <p>Jose de Villa National High School</p>
           </div>
+
           <SideNav
             links={
               currentUser?.role === 'student'
@@ -127,9 +128,15 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
           <div className="top">
             <div id="header-left">
               {headerFlags?.showSubjectDropdown && (
-                <SubjectDropDown
-                  setSelectedSubject={setSelectedSubject}
-                  userSubjects={userSubjects}
+                <Select
+                  id="subject-dropdown"
+                  placeholder="Select Subject"
+                  data={[
+                    { value: 'react', label: 'React' },
+                    { value: 'ng', label: 'Angular' },
+                    { value: 'svelte', label: 'Svelte' },
+                    { value: 'vue', label: 'Vue' },
+                  ]}
                 />
               )}
               <p>{headerFlags.headerStringValue}</p>

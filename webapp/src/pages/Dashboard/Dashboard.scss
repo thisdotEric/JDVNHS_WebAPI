@@ -18,6 +18,11 @@
     align-items: center;
     flex-direction: column;
 
+    #subject-dropdown {
+      margin-bottom: 50px;
+      margin-left: 20px;
+    }
+
     #school {
       display: flex;
       justify-content: center;

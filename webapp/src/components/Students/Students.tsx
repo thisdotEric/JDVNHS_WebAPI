@@ -75,7 +75,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
                   }}
                   color={'green'}
                 >
-                  View report
+                  View individual report
                 </Button>
               </>
             );

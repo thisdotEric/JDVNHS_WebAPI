@@ -352,8 +352,6 @@ class SubjectController extends BaseHttpController {
       const node = buildTree(training_data);
 
       const studentData: StudentAttributes = {
-        gender: 'male',
-        grading_period: 1,
         passedPreTest: false,
         pt_wScore: 90,
         qa_wScore: 80,

@@ -1,0 +1,32 @@
+{
+  "statusCode": 200,
+  "message": "",
+  "data": [
+    {
+      "question_id": 7,
+      "question": {
+        "type": "standard",
+        "description": "\n        Consider the sets:\n          A= {1, 3, 5,}                                           \n          B= {2,4,6, }\n          C= {0,1,2,3,4,……}\n          D= the odd numbers less than 7                                            \n          E= the whole numbers less than 7\n        ",
+        "questions": [
+          "Name the elements of set A",
+          "Name the elements of set C",
+          "Is set D a subset of set C? Why?",
+          "Is set C a subset of set D? Why?"
+        ]
+      },
+      "code": "M7NS-Ia-1",
+      "question_type": "easy"
+    },
+    {
+      "question_id": 8,
+      "question": {
+        "type": "multiple",
+        "questions": "What is true?",
+        "choices": ["true", "false"]
+      },
+      "code": "M7NS-Ia-1",
+      "question_type": "easy"
+    }
+  ],
+  "error": null
+}

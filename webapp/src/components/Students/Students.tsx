@@ -11,6 +11,8 @@ import { TableComponent } from '../Table';
 import { useNavigate } from 'react-router-dom';
 import type { Column } from 'react-table';
 import { Report } from 'tabler-icons-react';
+import { showNotification } from '@mantine/notifications';
+import { getNotificationProps } from '../Notifications';
 
 interface StudentsProps {}
 
@@ -66,18 +68,14 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           accessor: 'user_id',
           Cell: row => {
             return (
-              <>
-                <Button
-                  size="xs"
-                  leftIcon={<Report size={20} />}
-                  onClick={() => {
-                    navigate(`/t/reports/student/${row.value}`);
-                  }}
-                  color={'green'}
-                >
-                  View individual report
-                </Button>
-              </>
+              <p
+                id="student-action-btn"
+                onClick={() => {
+                  navigate(`/t/reports/student/${row.value}`);
+                }}
+              >
+                View individual report
+              </p>
             );
           },
         },

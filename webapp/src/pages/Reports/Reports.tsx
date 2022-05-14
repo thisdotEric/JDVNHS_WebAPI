@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import './Reports.scss';
-import { Table } from '@mantine/core';
+import { Code, Table } from '@mantine/core';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { TableComponent } from '../../components/Table';
@@ -44,11 +44,12 @@ const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
           accessor: 'conductRemediation',
           Cell: row => {
             return (
-              <p>
+              <span id={`${row.value}-val`}>
+                {' '}
                 {row.value
                   ? 'Conduct Remediation'
                   : 'Does not undergo remediation'}
-              </p>
+              </span>
             );
           },
         },
@@ -63,20 +64,16 @@ const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
             });
 
             return (
-              <div>
-                <Button
-                  onClick={() => {
-                    navigate(`/t/reports/student/${row.value}`);
-                  }}
-                  leftIcon={<Notes size={20} />}
-                  size="xs"
-                  color={!conduct && 'teal'}
-                >
-                  {conduct
-                    ? ' View Personalized Remediation'
-                    : 'View Additional Learning Materials'}
-                </Button>
-              </div>
+              <p
+                id="reports-action-btn"
+                onClick={() => {
+                  navigate(`/t/reports/student/${row.value}`);
+                }}
+              >
+                {conduct
+                  ? ' View Personalized Remediation'
+                  : 'View Additional Learning Materials'}
+              </p>
             );
           },
         },

@@ -1,11 +1,11 @@
 .dashboard {
-  min-height: 100%;
   display: flex;
   font-size: 16px;
+  margin: 0;
+  height: 100%;
 
   .side {
-    width: 200px;
-    background-color: #d3ced3;
+    background-color: #2d4b65;
     height: 100%;
     width: 210px;
     position: fixed;
@@ -29,6 +29,7 @@
       align-items: center;
       flex-direction: column;
       margin-bottom: 20px;
+      color: white;
 
       img {
         padding: 10px;
@@ -48,9 +49,12 @@
       align-items: center;
 
       p {
-        font-weight: bold;
-        color: black;
+        color: white;
         text-align: center;
+      }
+
+      #signout-btn {
+        margin-top: 10px;
       }
 
       input {

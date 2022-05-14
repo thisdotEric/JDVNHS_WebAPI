@@ -1,45 +1,107 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useFetch, useSetHeader, useSetPageTitle } from '../../../hooks';
+import { useSetHeader, useSetPageTitle } from '../../../hooks';
 import './StudentReport.scss';
+import { Accordion, Code } from '@mantine/core';
+import { axios } from '../../../utils';
 
 interface StudentReportProps {}
 
+type QuestionType = 'introductory' | 'enabling' | 'demonstrative';
+
+export interface QuestionItem {
+  questions: string[];
+  choices?: string[];
+  description?: string;
+}
+
+interface Question {
+  question_type: QuestionType;
+  question: QuestionItem;
+}
+
+interface PersonalizedRemediation {
+  learning_competency: string;
+  learning_materials: string[];
+  evaluationQuestions: Question[];
+}
+
 const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
   useSetPageTitle('Student Report');
-
-  const { LRN } = useParams();
-
-  const [{ data }, { runFetch: getStudent }] = useFetch(
-    `reports/${LRN}?subject_id=Math7`,
-  );
   useSetHeader({
     headerStringValue: `Individual performance report`,
     showSubjectDropdown: true,
   });
 
-  useEffect(() => {
-    getStudent();
+  const { LRN } = useParams();
 
-    console.log('Current data');
-  }, []);
+  const [personalizedRemediation, setPersonalizedRemediation] = useState<
+    PersonalizedRemediation[]
+  >([
+    {
+      learning_competency:
+        'Describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
+      learning_materials: [
+        'NFE Accreditation and Equivalency Learning Material. Sets, Sets and Sets. 2001. pp. 5-18',
+        'NFE Accreditation and Equivalency Learning Material. Sets, Sets and Sets. 2001. pp. 20-25',
+      ],
+      evaluationQuestions: [
+        {
+          question_type: 'introductory',
+          question: {
+            questions: ['What is your name?'],
+          },
+        },
+        {
+          question_type: 'enabling',
+          question: {
+            questions: ['What is your name in enabling?'],
+          },
+        },
+        {
+          question_type: 'demonstrative',
+          question: {
+            questions: ['What is your name in demonstrative?'],
+          },
+        },
+      ],
+    },
+  ]);
 
   return (
     <div id="student-report">
-      {data ? (
-        <>
-          {/* <p id="name">
-            {console.log(data)}
-            {data.data.student.last_name}, {data.data.student.first_name}{' '}
-            {data.data.student.middle_name}
-          </p> */}
+      <p id="name">John Eric Siguenza</p>
 
-          <p>
-            Personalized Remediation and Intervention Strategy for Student A
-          </p>
-        </>
-      ) : (
-        <p>Loading</p>
+      {personalizedRemediation.map(
+        ({ learning_competency, learning_materials, evaluationQuestions }) => {
+          return (
+            <Accordion multiple iconPosition="right" transitionDuration={300}>
+              <Accordion.Item label={learning_competency}>
+                <p>Learning Materials</p>
+
+                {learning_materials.map(lm => (
+                  <Code block color="dark" id="question-description">
+                    {lm}
+                  </Code>
+                ))}
+
+                <p>Questions for Evaluation</p>
+
+                <Code block color="dark" id="question-description">
+                  {evaluationQuestions.map(({ question, question_type }) => (
+                    <Accordion multiple iconPosition="right">
+                      <Accordion.Item label={question_type}>
+                        {question.questions.map(q => (
+                          <p>{q}</p>
+                        ))}
+                      </Accordion.Item>
+                    </Accordion>
+                  ))}
+                </Code>
+              </Accordion.Item>
+            </Accordion>
+          );
+        },
       )}
     </div>
   );

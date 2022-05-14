@@ -16,7 +16,8 @@ import { useCurrentUser } from '../../hooks';
 import { teacherNavigations, studentNavigations } from '../../constants';
 import { SubjectDropDown } from './SubjectDropDown';
 import { XCircle } from 'react-feather';
-import { Select } from '@mantine/core';
+import { Select, Button } from '@mantine/core';
+import { Logout } from 'tabler-icons-react';
 
 interface DashboardProps {}
 
@@ -92,7 +93,6 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
         <div>
           <div id="school">
             <img src={SchoolLogo} alt="School Logo" height={150} width={150} />
-            <p>Jose de Villa National High School</p>
           </div>
 
           <SideNav
@@ -117,7 +117,15 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
               navigate('/');
             }}
           >
-            <input type="submit" value="Sign out" />
+            <Button
+              leftIcon={<Logout size={20} />}
+              id="signout-btn"
+              size="xs"
+              color={'red'}
+              type="submit"
+            >
+              Sign out{' '}
+            </Button>
           </form>
         </div>
       </div>
@@ -141,20 +149,6 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
               )}
               <p>{headerFlags.headerStringValue}</p>
             </div>
-            {notification.text !== '' && (
-              <div id="notification" className={notification.type}>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Numquam consequuntur vel veniam ducimus aut expedita.
-                </p>
-                <XCircle
-                  id="notif-close-icon"
-                  onClick={() => {
-                    setNotification(initialNotificationState);
-                  }}
-                />
-              </div>
-            )}
           </div>
           <div className="content">
             <HeaderContext.Provider value={headerContextMemo}>

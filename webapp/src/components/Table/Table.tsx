@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './Table.scss';
 import {
   useTable,
@@ -43,6 +43,7 @@ const TableComponent: FC<TableProps> = ({
   );
 
   const { globalFilter, pageIndex } = state;
+  const [btnColor] = useState('orange');
 
   return (
     <div id="table-component">
@@ -100,13 +101,13 @@ const TableComponent: FC<TableProps> = ({
         </p>
 
         <div id="pagination-actions">
-          <Button onClick={() => gotoPage(0)} size="xs" color={'teal'}>
+          <Button onClick={() => gotoPage(0)} size="xs" color={btnColor}>
             {'<<'}
           </Button>
           <Button
             onClick={() => previousPage()}
             size="xs"
-            color={'teal'}
+            color={btnColor}
             disabled={!canPreviousPage}
           >
             Previous
@@ -115,14 +116,14 @@ const TableComponent: FC<TableProps> = ({
             onClick={() => nextPage()}
             size="xs"
             disabled={!canNextPage}
-            color={'teal'}
+            color={btnColor}
           >
             Next
           </Button>
           <Button
             size="xs"
             onClick={() => gotoPage(pageOptions.length - 1)}
-            color={'teal'}
+            color={btnColor}
           >
             {'>>'}
           </Button>

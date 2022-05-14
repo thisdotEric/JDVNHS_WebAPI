@@ -11,6 +11,7 @@ import {
   printTree,
   StudentAttributes,
 } from '../algorithms/cart-decision-tree';
+import QuestionRepository from '../repository/question.repository';
 
 export const mapData = (data: any[]) => {
   return data.map(d => {
@@ -30,7 +31,9 @@ class ReportsService {
     @inject(TYPES.SubjectRepository)
     private readonly subjectRepo: SubjectRepository,
     @inject(TYPES.GradesService)
-    private readonly gradesService: GradesService
+    private readonly gradesService: GradesService,
+    @inject(TYPES.QuestionsRepository)
+    private readonly questionRepo: QuestionRepository
   ) {}
 
   private async buildTree() {
@@ -121,6 +124,10 @@ class ReportsService {
     }
 
     return reportsTable;
+  }
+
+  async getQuestions(learning_competency_code: string) {
+    return this.questionRepo.getQuestions(learning_competency_code);
   }
 }
 

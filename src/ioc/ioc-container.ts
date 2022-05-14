@@ -23,6 +23,7 @@ import UserRepository from '../repository/user.repository';
 import LectureRepository from '../repository/lecture.repository';
 import AssessmentRepository from '../repository/assessment.repository';
 import TrainingDataRepository from '../repository/training_data.repository';
+import QuestionRepository from '../repository/question.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -75,6 +76,7 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<TrainingDataRepository>(TYPES.TrainingDataRepository).to(
     TrainingDataRepository
   );
+  bind<QuestionRepository>(TYPES.QuestionsRepository).to(QuestionRepository);
 
   bind<MustBeAuthenticated>(TYPES.AuthMiddleware).to(MustBeAuthenticated);
   bind<StudentAccessONLY>(TYPES.StudentAccessONLY).to(StudentAccessONLY);

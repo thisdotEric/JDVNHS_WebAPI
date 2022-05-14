@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <MantineProvider>
+    <NotificationsProvider position="top-right">
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </NotificationsProvider>
+  </MantineProvider>,
   document.getElementById('root'),
 );
 

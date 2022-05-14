@@ -20,6 +20,7 @@ const types = {
   GradesService: Symbol.for('GradesService'),
   ReportsService: Symbol.for('ReportsService'),
   TrainingDataRepository: Symbol.for('TrainingDataRepository'),
+  QuestionsRepository: Symbol.for('QuestionsRepository'),
 };
 
 export default types;

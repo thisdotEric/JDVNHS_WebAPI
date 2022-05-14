@@ -13,6 +13,8 @@ import type { Column } from 'react-table';
 import { TableComponent } from '../../components/Table';
 import { NumberInput, Button } from '@mantine/core';
 import { Refresh } from 'tabler-icons-react';
+import { showNotification } from '@mantine/notifications';
+import { getNotificationProps } from '../../components/Notifications';
 
 interface ScoresProps {}
 
@@ -89,6 +91,10 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
                           score_id: row.value,
                         },
                       },
+                    );
+
+                    showNotification(
+                      getNotificationProps('Score updated', 'success'),
                     );
                   }}
                   size="xs"

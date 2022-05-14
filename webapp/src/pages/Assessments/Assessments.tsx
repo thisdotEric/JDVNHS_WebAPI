@@ -82,14 +82,14 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
           accessor: 'assessment_id',
           Cell: (row: any) => {
             return (
-              <Button
-                size="xs"
+              <p
+                id="scores-action-btn"
                 onClick={() => {
                   navigate(`/t/assessments/scores/${row.value}`);
                 }}
               >
                 View Scores
-              </Button>
+              </p>
             );
           },
         },

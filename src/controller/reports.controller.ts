@@ -43,4 +43,17 @@ export class ReportsController {
     const response = JsonResponse.success(reports, 200);
     res.status(response.statusCode).send(response);
   }
+  @httpGet(
+    '/subject/:subject_id/:LRN',
+    TYPES.AuthMiddleware,
+    TYPES.TeacherAccessONLY
+  )
+  async getPersonalizedRemediation(req: Request, res: Response) {
+    const code = 'M7NS-Ia-1';
+
+    const questions = await this.reportsService.getQuestions(code);
+
+    const response = JsonResponse.success(questions, 200);
+    res.status(response.statusCode).send(response);
+  }
 }

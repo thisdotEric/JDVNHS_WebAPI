@@ -55,27 +55,27 @@ const Grades: FC<GradesProps> = ({}: GradesProps) => {
           accessor: 'LRN',
         },
         {
-          Header: 'Student',
+          Header: 'STUDENT',
           accessor: 'fullName',
         },
         {
-          Header: 'First Grading',
+          Header: 'FIRST GRADING',
           accessor: 'first_grading',
         },
         {
-          Header: 'Second Grading',
+          Header: 'SECOND GRADING',
           accessor: 'second_grading',
         },
         {
-          Header: 'Third Grading',
+          Header: 'THIRD GRADING',
           accessor: 'third_grading',
         },
         {
-          Header: 'Fourth Grading',
+          Header: 'FOURTH GRADING',
           accessor: 'fourth_grading',
         },
         {
-          Header: 'Final Grade',
+          Header: 'FINAL GRADE',
           accessor: 'finalGrade',
           Cell: row => <span style={{ fontWeight: 'bold' }}>{row.value}</span>,
         },

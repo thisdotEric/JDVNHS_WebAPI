@@ -3,12 +3,16 @@ nav {
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  width: 100%;
+
+  .link:hover {
+    background: #254057;
+  }
 
   .link {
     text-decoration: none;
     padding: 10px;
-    color: black;
+    color: rgb(243, 224, 224);
+    width: 210px;
 
     display: flex;
     justify-content: left;
@@ -24,8 +28,12 @@ nav {
   .active {
     color: white;
     width: 100%;
-    background-color: #309e2a;
+    background-color: #f06e12;
     padding: 10px;
     font-weight: bold;
+  }
+
+  .active:hover {
+    background-color: #f06e12;
   }
 }

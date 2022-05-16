@@ -75,19 +75,26 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
       {personalizedRemediation.map(
         ({ learning_competency, learning_materials, evaluationQuestions }) => {
           return (
-            <Accordion multiple iconPosition="right" transitionDuration={300}>
+            <Accordion multiple iconPosition="right">
               <Accordion.Item label={learning_competency}>
-                <p>Learning Materials</p>
+                <p id="section-title">Learning Materials</p>
 
-                {learning_materials.map(lm => (
-                  <Code block color="dark" id="question-description">
-                    {lm}
-                  </Code>
-                ))}
+                <ol id="learning-materials">
+                  {learning_materials.map(lm => (
+                    <li>
+                      <a
+                        href="https://github.com/thisdotEric"
+                        target={'_blank'}
+                      >
+                        {lm}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
 
-                <p>Questions for Evaluation</p>
+                <p id="section-title">Questions for Evaluation</p>
 
-                <Code block color="dark" id="question-description">
+                <Code block id="question-description">
                   {evaluationQuestions.map(({ question, question_type }) => (
                     <Accordion multiple iconPosition="right">
                       <Accordion.Item label={question_type}>

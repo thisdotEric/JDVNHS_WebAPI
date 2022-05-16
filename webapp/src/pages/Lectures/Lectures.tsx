@@ -1,11 +1,16 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect, useContext, useMemo } from 'react';
 import './Lectures.scss';
 import { axios } from '../../utils';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 import { shortenDate } from '../../utils';
-import { Button } from '../../components/Button';
+// import { Button } from '../../components/Button';
+import { TableComponent } from '../../components/Table';
+import type { Column } from 'react-table';
+import moment from 'moment';
+import { Modal, Button, Group } from '@mantine/core';
+import { CreateAssessment } from '../Assessments/CreateAssessment';
 
 interface LecturesProps {}
 
@@ -14,6 +19,15 @@ interface Lectures {
   lecture_date: Date;
   subject_id: string;
   grading_period: number;
+}
+
+interface LectureSession {
+  lecture_id: number;
+  learning_competency: string;
+  date: Date;
+  grading_period?: 1;
+  subject?: 1;
+  code?: string;
 }
 
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
@@ -27,6 +41,124 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
   const [validAttendance, setValidAttendance] = useState<number[]>();
+  const [opened, setOpened] = useState(false);
+
+  const data = useMemo<LectureSession[]>(
+    () => [
+      {
+        date: new Date(),
+        learning_competency:
+          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
+        lecture_id: 1,
+        code: 'M7NS-Ib-2',
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date(),
+        learning_competency:
+          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date(),
+        learning_competency:
+          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date(),
+        learning_competency:
+          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+      {
+        date: new Date('2021-12-12'),
+        learning_competency:
+          'uses Venn Diagrams to represent sets, subsets, and set operations.',
+        lecture_id: 1,
+      },
+    ],
+    [],
+  );
+
+  const columns = useMemo(
+    () =>
+      [
+        {
+          Header: 'SESSION DATE',
+          accessor: 'date',
+          Cell: row => <p>{moment(row.value).format('L')}</p>,
+        },
+        {
+          Header: 'CODE',
+          accessor: 'code',
+        },
+        {
+          Header: 'LEARNING COMPETENCY',
+          accessor: 'learning_competency',
+        },
+        {
+          Header: 'ACTIONS',
+          accessor: 'lecture_id',
+          Cell: row => (
+            <>
+              <p>
+                <Link to={'/t/assessments'}>View</Link>
+                <span> / </span>
+                <button id="open-modal-btn" onClick={() => setOpened(true)}>
+                  Create
+                </button>{' '}
+                Assessment
+              </p>
+              <p id="lectures-action-btn "></p>
+              <Link to={`/t/lectures/attendance/4`}>View Attendance</Link>
+            </>
+          ),
+        },
+      ] as Column<LectureSession>[],
+    [],
+  );
 
   useEffect(() => {
     axios
@@ -43,7 +175,23 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
   return (
     <div id="lectures">
-      {lectures &&
+      <TableComponent
+        columns={columns}
+        data={data}
+        globalFilterPlaceholder="Search lecture session"
+        pageSize={9}
+      />
+
+      <Modal
+        opened={opened}
+        closeOnEscape={false}
+        onClose={() => setOpened(false)}
+        title="Create New Assessment"
+      >
+        <CreateAssessment code="john" grading_period={1} subject_id="Math7" />
+      </Modal>
+
+      {/* {lectures &&
         lectures.map(({ lecture_date, lecture_id }) => {
           return (
             <div className="lecture-list">
@@ -78,7 +226,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
               </div>
             </div>
           );
-        })}
+        })} */}
     </div>
   );
 };

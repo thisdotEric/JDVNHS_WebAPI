@@ -8,7 +8,7 @@ import { axios } from '../../utils';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
 import { Button } from '@mantine/core';
 import { TableComponent } from '../Table';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { Column } from 'react-table';
 import { Report } from 'tabler-icons-react';
 import { showNotification } from '@mantine/notifications';
@@ -68,14 +68,9 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           accessor: 'user_id',
           Cell: row => {
             return (
-              <p
-                id="student-action-btn"
-                onClick={() => {
-                  navigate(`/t/reports/student/${row.value}`);
-                }}
-              >
+              <Link to={`/t/reports/student/${row.value}`}>
                 View individual report
-              </p>
+              </Link>
             );
           },
         },

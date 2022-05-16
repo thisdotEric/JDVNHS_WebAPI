@@ -6,6 +6,7 @@ import React, {
   useRef,
   memo,
   useCallback,
+  useMemo,
 } from 'react';
 import './Attendance.scss';
 import { axios } from '../../utils';
@@ -21,6 +22,9 @@ import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { Button, TableButton } from '../../components/Button';
 import AttendanceAction from './AttendanceAction';
 import type { ICellRendererParams } from 'ag-grid-community';
+import type { Column } from 'react-table';
+import { TableComponent } from '../../components/Table';
+import { RadioGroup, Radio } from '@mantine/core';
 
 interface AttendanceProps {}
 
@@ -31,6 +35,14 @@ interface Attendance {
   first_name: string;
   middle_name: string;
   last_name: string;
+  fullname: string;
+  status: AttendanceStatus;
+}
+
+interface StudentAttendance {
+  LRN: string;
+  user_id: string;
+  fullname: string;
   status: AttendanceStatus;
 }
 
@@ -48,22 +60,6 @@ export interface AttendanceDetails {
   absents: number;
   excused: number;
 }
-
-const UpdateAttendance = ({
-  table,
-  updatedAttendance,
-  updateStudentAttendance,
-}: UpdateAttendanceProp) => {
-  return (
-    <button
-      onClick={async () => {
-        await updateStudentAttendance(table, updatedAttendance);
-      }}
-    >
-      {updatedAttendance}
-    </button>
-  );
-};
 
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   const selectedSubject = useContext(SubjectContext);
@@ -87,69 +83,159 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     'excused',
   ]);
 
-  const ref = useRef<any>(null);
+  const data = useMemo<StudentAttendance[]>(
+    () => [
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+      {
+        LRN: '123456789123',
+        fullname: 'John Eric Siguenza',
+        user_id: '123456789123',
+        status: 'present',
+      },
+    ],
+    [],
+  );
 
-  const Sample = memo((params: ICellRendererParams) => {
-    return (
-      <label htmlFor="">
-        <input type="radio" name="Absent" id={params.data} />
-        <p>Absent</p>
-      </label>
-    );
-  });
-
-  const [columns] = useState([
-    ...attendanceColumns,
-    {
-      field: 'status',
-      headerName: 'Attendance',
-      cellRendererFramework: (params: ICellRendererParams) => (
-        <span id={params.data.status}>{params.data.status}</span>
-      ),
-      // cellRenderer: 'agAnimateShowChangeCellRenderer',
-    },
-    {
-      headerName: 'Action',
-      // cellRenderer: 'actionRender',
-      cellRendererFramework: memo((params: any) => (
-        <>
-          {attendanceStatus.map(at => (
-            <AttendanceAction
-              key={at}
-              LRN={params.data.LRN}
-              newAttendanceStatus={at}
-              updateStudentAttendance={() => {
-                all(params.data.LRN, at);
-              }}
-            />
-          ))}{' '}
-        </>
-      )),
-    },
-  ]);
-
-  const updateStudentAttendance = (
-    LRN: string,
-    updatedAttendance: AttendanceStatus,
-  ) => {
-    setAttendanceList(old => {
-      // return [];
-      return old?.map(o => {
-        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
-        else return o;
-      });
-    });
-  };
-
-  const all = useCallback((LRN, updatedAttendance) => {
-    setAttendanceList(old => {
-      // return [];
-      return old?.map(o => {
-        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
-        else return o;
-      });
-    });
-  }, []);
+  const columns = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        { Header: 'STUDENT', accessor: 'fullname' },
+        {
+          Header: 'ATTENDANCE STATUS',
+          accessor: 'user_id',
+          Cell: row => {
+            return (
+              <RadioGroup required onChange={value => console.log(value)}>
+                <Radio value="present" label="Present" />
+                <Radio value="absent" label="Absent" />
+                <Radio value="excused" label="Excused" />
+              </RadioGroup>
+            );
+          },
+        },
+      ] as Column<StudentAttendance>[],
+    [],
+  );
 
   const fetchStudentsAttendance = (isLatest: boolean = false) => {
     const id = isLatest ? 'latest' : params.id;
@@ -217,7 +303,9 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         />
       )}
 
-      <div>
+      <TableComponent columns={columns} data={data} />
+
+      {/* <div>
         <div
           className="ag-theme-balham-dark"
           id="student-table"
@@ -265,7 +353,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
             navigate('/t/lectures');
           }}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

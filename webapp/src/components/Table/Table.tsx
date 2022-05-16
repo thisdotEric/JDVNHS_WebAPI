@@ -14,12 +14,14 @@ interface TableProps {
   columns: any;
   data: any;
   globalFilterPlaceholder?: string;
+  pageSize?: number;
 }
 
 const TableComponent: FC<TableProps> = ({
   columns,
   data,
   globalFilterPlaceholder,
+  pageSize = 12,
 }: TableProps) => {
   const {
     getTableProps,
@@ -36,7 +38,7 @@ const TableComponent: FC<TableProps> = ({
     state,
     setGlobalFilter,
   } = useTable(
-    { columns, data, initialState: { pageSize: 12 } },
+    { columns, data, initialState: { pageSize } },
     useGlobalFilter,
     useSortBy,
     usePagination,

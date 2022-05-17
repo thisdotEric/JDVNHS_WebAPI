@@ -13,6 +13,7 @@ import { Assessments } from './pages/Assessments';
 import { AddScores } from './pages/Scores/AddScores';
 import { Grades } from './pages/Grades';
 import { Reports, StudentReport } from './pages/Reports';
+import { LearningMaterials } from './pages/LearningMaterials';
 
 interface AppProps {}
 
@@ -39,6 +40,7 @@ function App({}: AppProps) {
                 path="attendance/new/:lecture_id"
                 element={<AddAttendance />}
               />
+              <Route path="materials/:code" element={<LearningMaterials />} />
             </Route>
             <Route path="reports">
               <Route path="" element={<Reports />} />

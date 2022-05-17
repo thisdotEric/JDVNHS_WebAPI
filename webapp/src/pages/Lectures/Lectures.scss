@@ -6,6 +6,14 @@
     color: blue;
   }
 
+  #lecture-actions-group {
+    display: flex;
+
+    .left {
+      margin-right: 20px;
+    }
+  }
+
   .lecture-list {
     padding: 10px;
     display: flex;

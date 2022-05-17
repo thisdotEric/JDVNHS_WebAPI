@@ -142,18 +142,25 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
           Header: 'ACTIONS',
           accessor: 'lecture_id',
           Cell: row => (
-            <>
-              <p>
-                <Link to={'/t/assessments'}>View</Link>
-                <span> / </span>
-                <button id="open-modal-btn" onClick={() => setOpened(true)}>
-                  Create
-                </button>{' '}
-                Assessment
-              </p>
-              <p id="lectures-action-btn "></p>
-              <Link to={`/t/lectures/attendance/4`}>View Attendance</Link>
-            </>
+            <div id="lecture-actions-group">
+              <div className="left">
+                <p>
+                  <Link to={'/t/assessments'}>View</Link>
+                  <span> / </span>
+                  <button id="open-modal-btn" onClick={() => setOpened(true)}>
+                    Create
+                  </button>{' '}
+                  Assessment
+                </p>
+                <p id="lectures-action-btn "></p>
+                <Link to={`/t/lectures/attendance/4`}>View Attendance</Link>
+              </div>
+              <div className="right">
+                <Link to={`/t/lectures/materials/M7NS-Ib-2`}>
+                  Learning Materials
+                </Link>
+              </div>
+            </div>
           ),
         },
       ] as Column<LectureSession>[],

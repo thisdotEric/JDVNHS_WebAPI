@@ -38,7 +38,7 @@ const TableComponent: FC<TableProps> = ({
     state,
     setGlobalFilter,
   } = useTable(
-    { columns, data, initialState: { pageSize } },
+    { columns, data, initialState: { pageSize }, autoResetPage: false },
     useGlobalFilter,
     useSortBy,
     usePagination,

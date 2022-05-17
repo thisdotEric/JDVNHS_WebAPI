@@ -25,10 +25,16 @@ import type { ICellRendererParams } from 'ag-grid-community';
 import type { Column } from 'react-table';
 import { TableComponent } from '../../components/Table';
 import { RadioGroup, Radio } from '@mantine/core';
+import type { AttendanceStatus } from './AddAttendance/AddAttendance';
 
 interface AttendanceProps {}
 
-export type AttendanceStatus = 'present' | 'absent' | 'excused';
+export type Status = 'present' | 'absent' | 'excused';
+
+interface AttendanceStatusList {
+  status: Status;
+  name: string;
+}
 
 interface Attendance {
   LRN: string;
@@ -36,22 +42,21 @@ interface Attendance {
   middle_name: string;
   last_name: string;
   fullname: string;
-  status: AttendanceStatus;
+  status: Status;
 }
 
 interface StudentAttendance {
   LRN: string;
-  user_id: string;
   fullname: string;
-  status: AttendanceStatus;
+  status: Status;
 }
 
 interface UpdateAttendanceProp {
   table: any;
-  updatedAttendance: AttendanceStatus;
+  updatedAttendance: Status;
   updateStudentAttendance: (
     table: any,
-    updatedAttendance: AttendanceStatus,
+    updatedAttendance: Status,
   ) => Promise<void>;
 }
 
@@ -67,152 +72,34 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   useSetPageTitle('Attendance');
   useSetHeader({
     showSubjectDropdown: false,
-    headerStringValue: `Updating attendance of ${selectedSubject} subject dated 2022-03-12.`,
+    headerStringValue: `View/Update Attendance`,
   });
 
-  const [attendanceList, setAttendanceList] = useState<Attendance[]>([]);
+  const [attendanceList, setAttendanceList] = useState<StudentAttendance[]>([]);
   const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
   const navigate = useNavigate();
 
-  const [attendanceStatus] = useState<AttendanceStatus[]>([
-    'present',
-    'absent',
-    'excused',
+  const [attendanceStatus] = useState<AttendanceStatusList[]>([
+    {
+      status: 'present',
+      name: 'Present',
+    },
+    {
+      status: 'absent',
+      name: 'Absent',
+    },
+    {
+      status: 'excused',
+      name: 'Excused',
+    },
   ]);
 
   const data = useMemo<StudentAttendance[]>(
-    () => [
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-      {
-        LRN: '123456789123',
-        fullname: 'John Eric Siguenza',
-        user_id: '123456789123',
-        status: 'present',
-      },
-    ],
-    [],
+    () => attendanceList,
+    [attendanceList],
   );
 
   const columns = useMemo(
@@ -222,13 +109,25 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         { Header: 'STUDENT', accessor: 'fullname' },
         {
           Header: 'ATTENDANCE STATUS',
-          accessor: 'user_id',
+          accessor: 'status',
           Cell: row => {
             return (
-              <RadioGroup required onChange={value => console.log(value)}>
-                <Radio value="present" label="Present" />
-                <Radio value="absent" label="Absent" />
-                <Radio value="excused" label="Excused" />
+              <RadioGroup
+                required
+                defaultValue={row.row.original.status}
+                onChange={(value: Status) => {
+                  setAttendanceList(old => {
+                    return old.map(o => {
+                      if (o.LRN === row.row.original.LRN) o.status = value;
+
+                      return o;
+                    });
+                  });
+                }}
+              >
+                {attendanceStatus.map(({ name, status }) => (
+                  <Radio value={status} label={name} />
+                ))}
               </RadioGroup>
             );
           },
@@ -243,7 +142,13 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     axios
       .get(`subject/${selectedSubject}/attendance?id=${id}`)
       .then(({ data }) => {
-        setAttendanceList(data.data.attendance);
+        setAttendanceList(
+          data.data.attendance.map((at: any) => ({
+            LRN: at.LRN,
+            fullname: `${at.last_name}, ${at.middle_name} ${at.first_name}`,
+            status: at.status,
+          })),
+        );
 
         // Save the lecture id
         localStorage.setItem('lecture_id', data.data.lecture_id);
@@ -287,73 +192,11 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     if (!params.id) isLatest = true;
 
     fetchStudentsAttendance(isLatest);
-
-    return () => {
-      console.log('After');
-    };
   }, []);
 
   return (
     <div className="attendance">
-      {attendanceDetails && (
-        <AttendanceDetails
-          presents={attendanceDetails.presents}
-          absents={attendanceDetails.absents}
-          excused={attendanceDetails.excused}
-        />
-      )}
-
       <TableComponent columns={columns} data={data} />
-
-      {/* <div>
-        <div
-          className="ag-theme-balham-dark"
-          id="student-table"
-          style={{
-            height: '550px',
-          }}
-        >
-          <AgGridReact
-            ref={ref}
-            rowData={attendanceList}
-            columnDefs={columns}
-            getRowNodeId={data => data.row}
-            pagination={true}
-            rowSelection={'single'}
-            enableCellChangeFlash={true}
-            immutableData={true}
-            frameworkComponents={{
-              actionRender: Sample,
-            }}
-            animateRows={true}
-            defaultColDef={{
-              sortable: true,
-              flex: 1,
-              minWidth: 100,
-              filter: true,
-              resizable: true,
-            }}
-          ></AgGridReact>
-        </div>
-      </div>
-
-      <div id="attendance-actions">
-        <Button
-          buttontype="select"
-          value="Select another attendance"
-          onClick={() => {
-            navigate('/t/lectures');
-          }}
-        />
-
-        <Button
-          buttontype="save"
-          value="Save updated attendance"
-          onClick={() => {
-            navigate('/t/lectures');
-          }}
-        />
-      </div> */}
     </div>
   );
 };

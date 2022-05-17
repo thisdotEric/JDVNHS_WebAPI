@@ -184,6 +184,9 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
       <Modal
         opened={opened}
+        styles={{
+          title: { fontWeight: 'bold', fontSize: 16 },
+        }}
         closeOnEscape={false}
         onClose={() => setOpened(false)}
         title="Create New Assessment"

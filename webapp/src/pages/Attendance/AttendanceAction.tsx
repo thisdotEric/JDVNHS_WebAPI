@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import type { AttendanceStatus } from './Attendance';
+import type { Status } from './Attendance';
 import { TableButton } from '../../components/Button';
 
 interface AttendanceActionProps {
   LRN: string;
-  newAttendanceStatus: AttendanceStatus;
+  newAttendanceStatus: Status;
   updateStudentAttendance: () => void;
 }
 

@@ -31,11 +31,31 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
     subject_id,
   });
 
+  const [components] = useState([
+    {
+      value: 'WW',
+      label: 'Written Work',
+    },
+    {
+      value: 'QA',
+      label: 'Quarterly Assessment',
+    },
+    {
+      value: 'PT',
+      label: 'Performance Task',
+    },
+  ]);
+
   return (
     <div id="create-assessment-modal">
       <RadioGroup
+        classNames={{
+          radioWrapper: 'radio-wrapper',
+          label: 'radio-label',
+        }}
         label="Select type of Assessment"
         required
+        defaultValue={'summative'}
         onChange={value =>
           setAssessment({ ...assessment, assessmentType: value })
         }
@@ -46,20 +66,24 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
 
       <Select
         label="Component Type"
+        size="md"
+        classNames={{
+          wrapper: 'select-wrapper',
+        }}
         placeholder="Select Component Type"
         onChange={value =>
           setAssessment({ ...assessment, componentType: value! })
         }
         defaultValue={'WW'}
-        data={[
-          { value: 'WW', label: 'Written Work' },
-          { value: 'PT', label: 'Performance Task' },
-          { value: 'QA', label: 'Quarterly Assessment' },
-        ]}
+        data={components}
       />
 
       <NumberInput
         label={'Total Items'}
+        size="md"
+        classNames={{
+          wrapper: 'select-wrapper',
+        }}
         hideControls
         min={0}
         defaultValue={0}
@@ -68,10 +92,13 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
 
       <Button
         leftIcon={<DeviceFloppy size={20} />}
-        color="teal"
+        color="green"
+        styles={{
+          root: { display: 'block', margin: '0 auto' },
+        }}
         onClick={() => console.log(assessment)}
       >
-        Save
+        Save Assessment
       </Button>
     </div>
   );

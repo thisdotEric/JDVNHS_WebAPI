@@ -5,6 +5,7 @@ import './StudentReport.scss';
 import { Accordion, Code } from '@mantine/core';
 import { axios } from '../../../utils';
 import { data } from './data';
+import { MathComponent } from 'mathjax-react';
 
 interface StudentReportProps {}
 
@@ -43,6 +44,10 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
     <div id="student-report">
       <p id="name">John Eric Siguenza</p>
 
+      <MathComponent
+        tex={String.raw`Is A a subset of B, where A = {1, 3, 4} and B = {1, 4, 3, 2}? }`}
+      />
+
       {personalizedRemediation.map(
         ({ learning_competency, learning_materials, evaluationQuestions }) => {
           return (
@@ -69,9 +74,11 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                   {evaluationQuestions.map(({ question, question_type }) => (
                     <Accordion multiple iconPosition="right">
                       <Accordion.Item label={question_type}>
-                        {question.questions.map(q => (
-                          <p>{q}</p>
-                        ))}
+                        <ol id="learning-materials">
+                          {question.questions.map(q => (
+                            <li>{q}</li>
+                          ))}
+                        </ol>
                       </Accordion.Item>
                     </Accordion>
                   ))}

@@ -1,5 +1,6 @@
 import * as Knex from 'knex';
 import { QUESTIONS } from '../../../constant/tables';
+import { questionBank } from './questionbank';
 
 export interface QuestionItem {
   type: 'standard' | 'multiple';
@@ -9,9 +10,11 @@ export interface QuestionItem {
 }
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex(QUESTIONS).del();
+  // await knex(QUESTIONS).del();
 
   const code = 'M7NS-Ia-1';
+
+  console.log(questionBank);
 
   const questions: QuestionItem[] = [
     {
@@ -37,13 +40,13 @@ export async function seed(knex: Knex): Promise<void> {
     },
   ];
 
-  await knex(QUESTIONS).insert(
-    questions.map(question => {
-      return {
-        code,
-        question: JSON.stringify(question),
-        question_type: 'Introductory',
-      };
-    })
-  );
+  // await knex(QUESTIONS).insert(
+  //   questions.map(question => {
+  //     return {
+  //       code,
+  //       question: JSON.stringify(question),
+  //       question_type: 'Introductory',
+  //     };
+  //   })
+  // );
 }

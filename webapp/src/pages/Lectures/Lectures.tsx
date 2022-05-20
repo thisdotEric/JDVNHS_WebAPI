@@ -24,10 +24,10 @@ interface Lectures {
 interface LectureSession {
   lecture_id: number;
   learning_competency: string;
-  date: Date;
-  grading_period?: 1;
-  subject?: 1;
-  code?: string;
+  lecture_date: Date;
+  grading_period: number;
+  subject: string;
+  code: string;
 }
 
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
@@ -37,97 +37,20 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
     headerStringValue: 'List of all lecture dates',
   });
 
-  const [lectures, setLectures] = useState<Lectures[]>();
+  const [lectures, setLectures] = useState<LectureSession[]>([]);
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
   const [validAttendance, setValidAttendance] = useState<number[]>();
   const [opened, setOpened] = useState(false);
 
-  const data = useMemo<LectureSession[]>(
-    () => [
-      {
-        date: new Date(),
-        learning_competency:
-          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
-        lecture_id: 1,
-        code: 'M7NS-Ib-2',
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date(),
-        learning_competency:
-          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date(),
-        learning_competency:
-          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date(),
-        learning_competency:
-          'describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-      {
-        date: new Date('2021-12-12'),
-        learning_competency:
-          'uses Venn Diagrams to represent sets, subsets, and set operations.',
-        lecture_id: 1,
-      },
-    ],
-    [],
-  );
+  const data = useMemo<LectureSession[]>(() => lectures, [lectures]);
 
   const columns = useMemo(
     () =>
       [
         {
           Header: 'SESSION DATE',
-          accessor: 'date',
+          accessor: 'lecture_date',
           Cell: row => <p>{moment(row.value).format('L')}</p>,
         },
         {
@@ -153,12 +76,23 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                   Assessment
                 </p>
                 <p id="lectures-action-btn "></p>
-                <Link to={`/t/lectures/attendance/4`}>View Attendance</Link>
+                {validAttendance?.includes(row.value) ? (
+                  <Link to={`/t/lectures/attendance/${row.value}`}>
+                    View Attendance
+                  </Link>
+                ) : (
+                  <Link to={`/t/lectures/attendance/${row.value}`}>
+                    Create Attendance
+                  </Link>
+                )}
               </div>
               <div className="right">
-                <Link to={`/t/lectures/materials/M7NS-Ib-2`}>
+                <a
+                  href="https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing"
+                  target={'_blank'}
+                >
                   Learning Materials
-                </Link>
+                </a>
               </div>
             </div>
           ),
@@ -176,12 +110,23 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
           .then(({ data }) => {
             setValidAttendance(data.data.map((n: any) => n.lecture_id));
             setLectures(lectures.data);
+            console.log(data.data);
           });
       });
   }, [selectedSubject]);
 
+  useEffect(() => {
+    axios
+      .get(`subject/${selectedSubject}/lectures`)
+      .then(({ data: lectures }) => {
+        setLectures(lectures.data);
+        console.log(lectures.data);
+      });
+  }, []);
+
   return (
     <div id="lectures">
+      <Button>Create new Session</Button>
       <TableComponent
         columns={columns}
         data={data}

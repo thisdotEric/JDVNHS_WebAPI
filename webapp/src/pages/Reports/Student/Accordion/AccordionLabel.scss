@@ -1,0 +1,19 @@
+#accordion-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  #count {
+    font-weight: bold;
+  }
+
+  #label {
+    font-weight: bold;
+  }
+
+  #actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

@@ -10,11 +10,11 @@ export async function up(knex: Knex): Promise<void> {
       .primary()
       .unique()
       .defaultTo(0);
-    table.json('question').notNullable();
+    table.text('question').notNullable();
     table.string('code').notNullable(); // Learning competency id
     table
-      .enum('question_type', ['Introductory', 'Enabling', 'Demonstrative'])
-      .defaultTo('Introductory');
+      .enum('question_type', ['introductory', 'enabling', 'demonstrative'])
+      .defaultTo('introductory');
 
     table
       .foreign('code')

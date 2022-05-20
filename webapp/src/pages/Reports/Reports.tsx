@@ -18,6 +18,8 @@ interface ReportsTable {
   conductRemediation: boolean;
 }
 
+// ∩
+
 const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
   useSetPageTitle('Reports');
   useSetHeader({
@@ -40,15 +42,13 @@ const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
           accessor: 'fullname',
         },
         {
-          Header: 'CONDUCT REMEDIATION',
+          Header: 'STUDENT EVALUATION',
           accessor: 'conductRemediation',
           Cell: row => {
             return (
               <span id={`${row.value}-val`}>
                 {' '}
-                {row.value
-                  ? 'Conduct Remediation'
-                  : 'Does not undergo remediation'}
+                {row.value ? 'For Remediation' : 'Proficient/Enrichment'}
               </span>
             );
           },
@@ -70,9 +70,7 @@ const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
                   navigate(`/t/reports/student/${row.value}`);
                 }}
               >
-                {conduct
-                  ? ' View Personalized Remediation'
-                  : 'View Additional Learning Materials'}
+                {conduct ? ' View Personalized Remediation' : ''}
               </p>
             );
           },

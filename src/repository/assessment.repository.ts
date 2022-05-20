@@ -32,7 +32,7 @@ class AssessmentRepository {
   async getAllAssessmentInfo(subject_id: string) {
     const assessmentInfo = await this.db
       .getDbInstance()(ASSESSMENT)
-      .where({ subject_id })
+      .where({ subject_id, grading_period: 1 })
       .orderBy('date', 'desc');
 
     return assessmentInfo;

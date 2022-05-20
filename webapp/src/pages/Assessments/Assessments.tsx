@@ -14,6 +14,7 @@ import { TableComponent } from '../../components/Table';
 import type { Column } from 'react-table';
 import { Button } from '@mantine/core';
 import dateformat from 'dateformat';
+import moment from 'moment';
 
 interface AssessmentsProps {}
 
@@ -23,22 +24,23 @@ interface AssessmentTable {
   component: string;
   items: number;
   grading_period: number;
+  assessment_type: 'summative' | 'formative';
 }
 
-function toLongLearningComponentName(
-  learningComponent: LearningComponent,
-): string {
-  switch (learningComponent) {
-    case 'PT':
-      return 'Performance Task (PT)';
-    case 'QA':
-      return 'Quarterly Assessment (QA)';
-    case 'WW':
-      return 'Written Work (WW)';
-    default:
-      return '';
-  }
-}
+// function toLongLearningComponentName(
+//   learningComponent: LearningComponent,
+// ): string {
+//   switch (learningComponent) {
+//     case 'PT':
+//       return 'Performance Task (PT)';
+//     case 'QA':
+//       return 'Quarterly Assessment (QA)';
+//     case 'WW':
+//       return 'Written Work (WW)';
+//     default:
+//       return '';
+//   }
+// }
 
 const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   useSetPageTitle('Assessments');
@@ -68,6 +70,10 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
         {
           Header: 'COMPONENT TYPE',
           accessor: 'component',
+        },
+        {
+          Header: 'ASSESSMENT TYPE',
+          accessor: 'assessment_type',
         },
         {
           Header: 'ITEMS',
@@ -131,7 +137,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
       setAssessments(
         data.data.map((a: any) => {
-          return { ...a, date: dateformat(a.date, ' yyyy mmmm d, dddd') };
+          return { ...a, date: moment(a.date).format('L') };
         }),
       );
       console.table(data.data);

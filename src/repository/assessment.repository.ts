@@ -8,6 +8,9 @@ export interface Assessment {
   subject_id: string;
   items: number;
   component: 'WW' | 'PT' | 'QA';
+  grading_period: 1 | 2 | 3 | 4;
+  assessment_type: 'summative' | 'formative';
+  lecture_id: number;
 }
 
 @injectable()

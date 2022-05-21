@@ -29,6 +29,7 @@ function App({}: AppProps) {
 
             <Route path="assessments">
               <Route path="" element={<Assessments />} />
+              <Route path=":id" element={<Assessments />} />
               <Route path="scores/:id" element={<Scores />} />
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>

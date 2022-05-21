@@ -30,6 +30,16 @@ interface LectureSession {
   code: string;
 }
 
+export interface Assessment {
+  date: string;
+  subject_id: string;
+  items: number;
+  component: 'WW' | 'PT' | 'QA';
+  grading_period: 1 | 2 | 3 | 4;
+  assessment_type: 'summative' | 'formative';
+  code: string;
+}
+
 const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   useSetPageTitle('Lectures');
   useSetHeader({
@@ -42,6 +52,14 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const selectedSubject = useContext(SubjectContext);
   const [validAttendance, setValidAttendance] = useState<number[]>();
   const [opened, setOpened] = useState(false);
+  const [currentLecture, setCurrentLecture] = useState<LectureSession>({
+    code: '',
+    grading_period: 1,
+    learning_competency: '',
+    lecture_date: new Date(),
+    lecture_id: 1,
+    subject: '',
+  });
 
   const data = useMemo<LectureSession[]>(() => lectures, [lectures]);
 
@@ -68,9 +86,15 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
             <div id="lecture-actions-group">
               <div className="left">
                 <p>
-                  <Link to={'/t/assessments'}>View</Link>
+                  <Link to={`/t/assessments/${row.value}`}>View</Link>
                   <span> / </span>
-                  <button id="open-modal-btn" onClick={() => setOpened(true)}>
+                  <button
+                    id="open-modal-btn"
+                    onClick={() => {
+                      setCurrentLecture(row.row.original);
+                      setOpened(true);
+                    }}
+                  >
                     Create
                   </button>{' '}
                   Assessment
@@ -143,45 +167,14 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
         onClose={() => setOpened(false)}
         title="Create New Assessment"
       >
-        <CreateAssessment code="john" grading_period={1} subject_id="Math7" />
+        <CreateAssessment
+          lecture_id={currentLecture!.lecture_id}
+          date={currentLecture!.lecture_date}
+          grading_period={currentLecture!.grading_period}
+          subject_id={selectedSubject}
+          close={() => setOpened(false)}
+        />
       </Modal>
-
-      {/* {lectures &&
-        lectures.map(({ lecture_date, lecture_id }) => {
-          return (
-            <div className="lecture-list">
-              <p>{shortenDate(lecture_date)}</p>
-
-              <div className="actions">
-                {validAttendance?.includes(lecture_id) ? (
-                  <Button
-                    value="View/Update Attendance"
-                    buttontype="select"
-                    onClick={() => {
-                      navigate(`/t/lectures/attendance/${lecture_id}`);
-                    }}
-                  />
-                ) : (
-                  <Button
-                    value="Create New Attendance"
-                    buttontype="select"
-                    onClick={() => {
-                      navigate(`/t/lectures/attendance/new/${lecture_id}`);
-                    }}
-                  />
-                )}
-
-                <Button
-                  value="View Assessments"
-                  buttontype="select"
-                  onClick={() => {
-                    navigate(`/t/assessments`);
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })} */}
     </div>
   );
 };

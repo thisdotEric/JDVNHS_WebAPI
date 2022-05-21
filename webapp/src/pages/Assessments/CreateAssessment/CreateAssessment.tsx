@@ -2,33 +2,38 @@ import React, { FC, useState } from 'react';
 import './CreateAssessment.scss';
 import { NumberInput, Button, RadioGroup, Radio, Select } from '@mantine/core';
 import { DeviceFloppy } from 'tabler-icons-react';
+import { axios } from '../../../utils';
 
 interface CreateAssessmentProps {
-  code: string;
+  lecture_id: number;
   grading_period: number;
   subject_id: string;
+  date: Date | string;
+  close?: () => void;
 }
 
 interface Assessment {
-  assessmentType: string;
-  componentType: string;
-  totalItems: number;
+  assessment_type: string;
+  component: string;
+  items: number;
 }
 
 const CreateAssessment: FC<CreateAssessmentProps> = ({
-  code,
+  lecture_id,
   grading_period,
   subject_id,
+  close = () => {},
 }: CreateAssessmentProps) => {
   const [assessment, setAssessment] = useState<
     Assessment & CreateAssessmentProps
   >({
-    assessmentType: '',
-    componentType: 'WW',
-    totalItems: 0,
-    code,
+    assessment_type: 'summative',
+    component: 'WW',
+    items: 0,
+    lecture_id,
     grading_period,
     subject_id,
+    date: new Date(),
   });
 
   const [components] = useState([
@@ -57,7 +62,7 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
         required
         defaultValue={'summative'}
         onChange={value =>
-          setAssessment({ ...assessment, assessmentType: value })
+          setAssessment({ ...assessment, assessment_type: value })
         }
       >
         <Radio value="summative" label="Summative" />
@@ -71,9 +76,7 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
           wrapper: 'select-wrapper',
         }}
         placeholder="Select Component Type"
-        onChange={value =>
-          setAssessment({ ...assessment, componentType: value! })
-        }
+        onChange={value => setAssessment({ ...assessment, component: value! })}
         defaultValue={'WW'}
         data={components}
       />
@@ -87,7 +90,7 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
         hideControls
         min={0}
         defaultValue={0}
-        onChange={value => setAssessment({ ...assessment, totalItems: value! })}
+        onChange={value => setAssessment({ ...assessment, items: value! })}
       />
 
       <Button
@@ -96,7 +99,15 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
         styles={{
           root: { display: 'block', margin: '0 auto' },
         }}
-        onClick={() => console.log(assessment)}
+        onClick={async () => {
+          console.log(assessment);
+
+          await axios.post(`subject/${subject_id}/assessment`, {
+            assessment,
+          });
+
+          close();
+        }}
       >
         Save Assessment
       </Button>

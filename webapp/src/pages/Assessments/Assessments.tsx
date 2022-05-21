@@ -1,6 +1,13 @@
-import React, { FC, useState, useContext, useEffect, useMemo } from 'react';
+import React, {
+  FC,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import './Assessments.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../context';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
@@ -58,6 +65,10 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     (Assessment & { assessment_id: number; withScores: boolean })[]
   >([]);
 
+  const params = useParams();
+  const navigate = useNavigate();
+  const selectedSubject = useContext(SubjectContext);
+
   const data = useMemo(() => assessments, [assessments, setAssessments]);
 
   const columns = useMemo(
@@ -103,9 +114,9 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     [],
   );
 
-  const navigate = useNavigate();
-
-  const selectedSubject = useContext(SubjectContext);
+  const filterAssessments = useCallback(() => {
+    // setAssessments(old => old.filter(e => e.))
+  }, []);
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
@@ -131,6 +142,8 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
       });
 
     if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
+
+    console.log(params);
   }, []);
 
   useEffect(() => {

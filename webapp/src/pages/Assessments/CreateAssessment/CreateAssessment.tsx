@@ -95,7 +95,8 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
 
       <Button
         leftIcon={<DeviceFloppy size={20} />}
-        color="green"
+        color="teal"
+        id="submit-btn"
         styles={{
           root: { display: 'block', margin: '0 auto' },
         }}

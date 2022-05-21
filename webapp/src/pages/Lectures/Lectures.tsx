@@ -86,10 +86,16 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
             <div id="lecture-actions-group">
               <div className="left">
                 <p>
-                  <Link to={`/t/assessments/${row.value}`}>View</Link>
+                  <Link
+                    className="lectures-link"
+                    to={`/t/assessments/${row.value}`}
+                  >
+                    View
+                  </Link>
                   <span> / </span>
                   <button
                     id="open-modal-btn"
+                    className="lectures-link"
                     onClick={() => {
                       setCurrentLecture(row.row.original);
                       setOpened(true);
@@ -101,11 +107,17 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 </p>
                 <p id="lectures-action-btn "></p>
                 {validAttendance?.includes(row.value) ? (
-                  <Link to={`/t/lectures/attendance/${row.value}`}>
+                  <Link
+                    to={`/t/lectures/attendance/${row.value}`}
+                    className="lectures-link"
+                  >
                     View Attendance
                   </Link>
                 ) : (
-                  <Link to={`/t/lectures/attendance/${row.value}`}>
+                  <Link
+                    to={`/t/lectures/attendance/${row.value}`}
+                    className="lectures-link"
+                  >
                     Create Attendance
                   </Link>
                 )}
@@ -114,6 +126,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 <a
                   href="https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing"
                   target={'_blank'}
+                  className="lectures-link"
                 >
                   View Learning Materials
                 </a>

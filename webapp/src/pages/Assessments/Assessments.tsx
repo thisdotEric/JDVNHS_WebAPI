@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../context';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
-import type { Assessment, LearningComponent } from './types';
+import type { LearningComponent } from './types';
 import { AddAssessment } from './AddAssessment';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -26,28 +26,21 @@ import moment from 'moment';
 interface AssessmentsProps {}
 
 interface AssessmentTable {
-  LRN: string;
   date: string;
-  component: string;
+  component: LearningComponent;
+  assessment_type: 'summative' | 'formative';
   items: number;
   grading_period: number;
-  assessment_type: 'summative' | 'formative';
+  lecture_id: number;
 }
 
-// function toLongLearningComponentName(
-//   learningComponent: LearningComponent,
-// ): string {
-//   switch (learningComponent) {
-//     case 'PT':
-//       return 'Performance Task (PT)';
-//     case 'QA':
-//       return 'Quarterly Assessment (QA)';
-//     case 'WW':
-//       return 'Written Work (WW)';
-//     default:
-//       return '';
-//   }
-// }
+export interface Assessment {
+  date: string;
+  subject_id: string;
+  items: number;
+  component: LearningComponent;
+  grading_period: 1 | 2 | 3 | 4;
+}
 
 const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   useSetPageTitle('Assessments');
@@ -56,16 +49,11 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     headerStringValue: `List of all assessments`,
   });
 
-  const [createNewAssessment, setCreateNewAssessment] =
-    useState<boolean>(false);
-  const [refetchAssessments, setRefectchAssessments] = useState<number>();
-  const [assessmentWithScores, setAssessmentWithScores] = useState<number[]>();
-
   const [assessments, setAssessments] = useState<
-    (Assessment & { assessment_id: number; withScores: boolean })[]
+    (AssessmentTable & { assessment_id: number; withScores: boolean })[]
   >([]);
 
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
 
@@ -102,10 +90,16 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
               <p
                 id="scores-action-btn"
                 onClick={() => {
-                  navigate(`/t/assessments/scores/${row.value}`);
+                  navigate(`/t/assessments/scores/${row.value}`, {
+                    // Pass the total assessment items
+                    // to lectures component
+                    state: {
+                      items: row.row.original.items,
+                    },
+                  });
                 }}
               >
-                View Scores
+                {row.row.original.withScores ? 'View/Update ' : 'Add '} Scores
               </p>
             );
           },
@@ -114,81 +108,48 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
     [],
   );
 
-  const filterAssessments = useCallback(() => {
-    // setAssessments(old => old.filter(e => e.))
-  }, []);
+  const fetchAllAssessments = async () => {
+    // Fetch all assessments
+    const { data } = await axios.get(
+      `subject/${selectedSubject}/assessments/all`,
+    );
 
-  useEffect(() => {
-    axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
+    console.log('ID: ', id);
+
+    if (id)
       setAssessments(
-        data.data.map((a: any) => {
-          return { ...a, date: dateformat('Jun 9 2007', 'fullDate') };
-        }),
+        data.data.filter((e: any) => e.lecture_id == parseInt(id)),
       );
-      console.table(data.data);
-    });
-
-    axios
-      .get(`subject/${selectedSubject}/assessments/scores/valid`)
-      .then(({ data }) => {
-        const valid = data.data.map((a: any) => a.assessment_id);
-
-        setAssessments(old => {
-          return old.map(o => {
-            o.withScores = valid.includes(o.assessment_id);
-            return o;
-          });
-        });
-      });
-
-    if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
-
-    console.log(params);
-  }, []);
-
-  useEffect(() => {
-    axios.get(`subject/${selectedSubject}/assessments/all`).then(({ data }) => {
+    else
       setAssessments(
         data.data.map((a: any) => {
           return { ...a, date: moment(a.date).format('L') };
         }),
       );
-      console.table(data.data);
-    });
 
-    axios
-      .get(`subject/${selectedSubject}/assessments/scores/valid`)
-      .then(({ data }) => {
-        const valid = data.data.map((a: any) => a.assessment_id);
+    const { data: validWithAssessments } = await axios.get(
+      `subject/${selectedSubject}/assessments/scores/valid`,
+    );
+    const valid = validWithAssessments.data.map((a: any) => a.assessment_id);
 
-        setAssessments(old => {
-          return old.map(o => {
-            o.withScores = valid.includes(o.assessment_id);
-            return o;
-          });
-        });
+    setAssessments(old => {
+      return old.map(o => {
+        o.withScores = valid.includes(o.assessment_id);
+        return o;
       });
+    });
+  };
 
-    if (createNewAssessment) setCreateNewAssessment(!createNewAssessment);
-  }, [selectedSubject, refetchAssessments]);
+  useEffect(() => {
+    fetchAllAssessments();
+  }, []);
+
+  useEffect(() => {
+    fetchAllAssessments();
+  }, [id]);
 
   return (
     <div className="assessments">
-      <div className="create-assessments">
-        {/* <Button
-          onClick={() => {
-            setCreateNewAssessment(!createNewAssessment);
-            console.log(assessmentWithScores);
-          }}
-          buttontype={!createNewAssessment ? 'select' : 'cancel'}
-          value={!createNewAssessment ? 'Create New Assessment' : 'Cancel'}
-        /> */}
-
-        {createNewAssessment && (
-          <AddAssessment refetchAssessment={setRefectchAssessments} />
-        )}
-      </div>
-
       <TableComponent
         columns={columns}
         data={data}

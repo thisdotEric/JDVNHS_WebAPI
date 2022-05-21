@@ -28,6 +28,7 @@ interface LectureSession {
   grading_period: number;
   subject: string;
   code: string;
+  withAttendance: boolean;
 }
 
 export interface Assessment {
@@ -48,9 +49,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   });
 
   const [lectures, setLectures] = useState<LectureSession[]>([]);
-  const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
-  const [validAttendance, setValidAttendance] = useState<number[]>();
   const [opened, setOpened] = useState(false);
   const [currentLecture, setCurrentLecture] = useState<LectureSession>({
     code: '',
@@ -59,6 +58,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
     lecture_date: new Date(),
     lecture_id: 1,
     subject: '',
+    withAttendance: false,
   });
 
   const data = useMemo<LectureSession[]>(() => lectures, [lectures]);
@@ -106,7 +106,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                   Assessment
                 </p>
                 <p id="lectures-action-btn "></p>
-                {validAttendance?.includes(row.value) ? (
+                {row.row.original.withAttendance ? (
                   <Link
                     to={`/t/lectures/attendance/${row.value}`}
                     className="lectures-link"
@@ -115,10 +115,10 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                   </Link>
                 ) : (
                   <Link
-                    to={`/t/lectures/attendance/${row.value}`}
+                    to={`/t/lectures/attendance/new/${row.value}`}
                     className="lectures-link"
                   >
-                    Create Attendance
+                    Add Attendance
                   </Link>
                 )}
               </div>
@@ -138,27 +138,37 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
     [],
   );
 
-  useEffect(() => {
-    axios
-      .get(`subject/${selectedSubject}/lectures`)
-      .then(({ data: lectures }) => {
-        axios
-          .get(`subject/${selectedSubject}/attendance/valid`)
-          .then(({ data }) => {
-            setValidAttendance(data.data.map((n: any) => n.lecture_id));
-            setLectures(lectures.data);
-            console.log(data.data);
-          });
+  const fetchLectures = async () => {
+    const { data: lectures } = await axios.get(
+      `subject/${selectedSubject}/lectures`,
+    );
+    setLectures(
+      lectures.data.map((l: any) => ({ ...l, withAttendance: false })),
+    );
+
+    const { data: withAttendance } = await axios.get(
+      `subject/${selectedSubject}/attendance/valid`,
+    );
+
+    const lecturesWithAttendance = withAttendance.data.map(
+      (n: any) => n.lecture_id,
+    );
+
+    setLectures(old => {
+      return old.map(l => {
+        if (lecturesWithAttendance.includes(l.lecture_id))
+          l.withAttendance = true;
+        return l;
       });
+    });
+  };
+
+  useEffect(() => {
+    fetchLectures();
   }, [selectedSubject]);
 
   useEffect(() => {
-    axios
-      .get(`subject/${selectedSubject}/lectures`)
-      .then(({ data: lectures }) => {
-        setLectures(lectures.data);
-        console.log(lectures.data);
-      });
+    fetchLectures();
   }, []);
 
   return (

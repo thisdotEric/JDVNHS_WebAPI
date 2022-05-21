@@ -68,7 +68,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           accessor: 'user_id',
           Cell: row => {
             return (
-              <Link to={`/t/reports/student/${row.value}`}>
+              <Link to={`/t/reports/student/${row.value}`} id="report-btn">
                 View individual report
               </Link>
             );

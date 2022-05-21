@@ -51,15 +51,6 @@ interface StudentAttendance {
   status: Status;
 }
 
-interface UpdateAttendanceProp {
-  table: any;
-  updatedAttendance: Status;
-  updateStudentAttendance: (
-    table: any,
-    updatedAttendance: Status,
-  ) => Promise<void>;
-}
-
 export interface AttendanceDetails {
   presents: number;
   absents: number;
@@ -76,11 +67,9 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   });
 
   const [attendanceList, setAttendanceList] = useState<StudentAttendance[]>([]);
-  const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
-  const navigate = useNavigate();
 
   const [attendanceStatus] = useState<AttendanceStatusList[]>([
     {
@@ -96,6 +85,16 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       name: 'Excused',
     },
   ]);
+
+  const updateAttendace = useCallback(
+    async (LRN: string, newStatus: Status) => {
+      await axios.patch(`subject/${selectedSubject}/attendance/${params.id}`, {
+        LRN,
+        newStatus,
+      });
+    },
+    [],
+  );
 
   const data = useMemo<StudentAttendance[]>(
     () => attendanceList,
@@ -115,14 +114,9 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
               <RadioGroup
                 required
                 defaultValue={row.row.original.status}
-                onChange={(value: Status) => {
-                  setAttendanceList(old => {
-                    return old.map(o => {
-                      if (o.LRN === row.row.original.LRN) o.status = value;
-
-                      return o;
-                    });
-                  });
+                color={'teal'}
+                onChange={async (value: Status) => {
+                  await updateAttendace(row.row.original.LRN, value);
                 }}
               >
                 {attendanceStatus.map(({ name, status }) => (
@@ -145,7 +139,7 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         setAttendanceList(
           data.data.attendance.map((at: any) => ({
             LRN: at.LRN,
-            fullname: `${at.last_name}, ${at.middle_name} ${at.first_name}`,
+            fullname: `${at.last_name}, ${at.middle_name} ${at.first_name[0]}.`,
             status: at.status,
           })),
         );
@@ -177,14 +171,6 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
       excused,
     });
   };
-
-  useEffect(() => {
-    let isLatest = false;
-
-    if (!params.id) isLatest = true;
-
-    fetchStudentsAttendance(isLatest);
-  }, [attendanceUpdate]);
 
   useEffect(() => {
     let isLatest = false;

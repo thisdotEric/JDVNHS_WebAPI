@@ -91,7 +91,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                   href="https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing"
                   target={'_blank'}
                 >
-                  Learning Materials
+                  View Learning Materials
                 </a>
               </div>
             </div>

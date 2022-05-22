@@ -10,28 +10,20 @@ import React, {
 } from 'react';
 import './Attendance.scss';
 import { axios } from '../../utils';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
 import 'react-calendar/dist/Calendar.css';
-import { attendanceColumns } from './columns';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
-import { Button, TableButton } from '../../components/Button';
-import AttendanceAction from './AttendanceAction';
-import type { ICellRendererParams } from 'ag-grid-community';
 import type { Column } from 'react-table';
 import { TableComponent } from '../../components/Table';
 import { RadioGroup, Radio } from '@mantine/core';
-import type { AttendanceStatus } from './AddAttendance/AddAttendance';
 
 interface AttendanceProps {}
 
 export type Status = 'present' | 'absent' | 'excused';
 
-interface AttendanceStatusList {
+export interface AttendanceStatusList {
   status: Status;
   name: string;
 }
@@ -45,7 +37,7 @@ interface Attendance {
   status: Status;
 }
 
-interface StudentAttendance {
+export interface StudentAttendance {
   LRN: string;
   fullname: string;
   status: Status;

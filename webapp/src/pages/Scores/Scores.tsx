@@ -154,35 +154,10 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
         onClose={() => setOpened(false)}
         title={`Update ${currentScore.name}'s score`}
       >
-        <NumberInput
-          id="score-input"
-          value={currentScore?.score}
-          size="md"
-          min={0}
-          error={error.error}
-          max={maxScore}
-          onChange={e => {
-            if (e! > maxScore)
-              setError({
-                error: `Max score of ${maxScore} exceeded.`,
-                disableButton: true,
-              });
-            else {
-              setError(noError);
+        <form
+          onSubmit={async e => {
+            e.preventDefault();
 
-              setCurrentScore({ ...currentScore, score: e ? e : 0 });
-            }
-          }}
-          hideControls
-        />
-
-        <Button
-          id="submit-btn"
-          type="submit"
-          leftIcon={<DeviceFloppy size={20} />}
-          color={'teal'}
-          disabled={error.disableButton}
-          onClick={async () => {
             await axios.patch(`subject/${selectedSubject}/assessments/score`, {
               score: {
                 score: currentScore.score,
@@ -197,8 +172,38 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
             showNotification(getNotificationProps('Score updated', 'success'));
           }}
         >
-          Update
-        </Button>
+          <NumberInput
+            id="score-input"
+            value={currentScore?.score}
+            size="md"
+            min={0}
+            error={error.error}
+            max={maxScore}
+            onChange={e => {
+              if (e! > maxScore)
+                setError({
+                  error: `Max score of ${maxScore} exceeded.`,
+                  disableButton: true,
+                });
+              else {
+                setError(noError);
+
+                setCurrentScore({ ...currentScore, score: e ? e : 0 });
+              }
+            }}
+            hideControls
+          />
+
+          <Button
+            id="submit-btn"
+            type="submit"
+            leftIcon={<DeviceFloppy size={20} />}
+            color={'teal'}
+            disabled={error.disableButton}
+          >
+            Update
+          </Button>
+        </form>
       </Modal>
     </div>
   );

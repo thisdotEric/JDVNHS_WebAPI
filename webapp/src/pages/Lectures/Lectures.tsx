@@ -111,7 +111,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     to={`/t/lectures/attendance/${row.value}`}
                     className="lectures-link"
                   >
-                    View Attendance
+                    View/Update Attendance
                   </Link>
                 ) : (
                   <Link

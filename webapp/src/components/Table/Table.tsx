@@ -8,13 +8,23 @@ import {
 } from 'react-table';
 import GlobalFilter from './GlobalFilter';
 import { Table, Button } from '@mantine/core';
-import { ArrowNarrowDown, ArrowNarrowUp } from 'tabler-icons-react';
+import {
+  ArrowNarrowDown,
+  ArrowNarrowUp,
+  DeviceFloppy,
+} from 'tabler-icons-react';
+
+export interface ButtonProps {
+  name: string;
+  action: () => Promise<void>;
+}
 
 interface TableProps {
   columns: any;
   data: any;
   globalFilterPlaceholder?: string;
   pageSize?: number;
+  saveButton?: ButtonProps;
 }
 
 const TableComponent: FC<TableProps> = ({
@@ -22,6 +32,7 @@ const TableComponent: FC<TableProps> = ({
   data,
   globalFilterPlaceholder,
   pageSize = 12,
+  saveButton,
 }: TableProps) => {
   const {
     getTableProps,
@@ -49,11 +60,23 @@ const TableComponent: FC<TableProps> = ({
 
   return (
     <div id="table-component">
-      <GlobalFilter
-        filter={globalFilter}
-        setFilter={setGlobalFilter}
-        placeholder={globalFilterPlaceholder}
-      />
+      <div className="table-header-actions">
+        <GlobalFilter
+          filter={globalFilter}
+          setFilter={setGlobalFilter}
+          placeholder={globalFilterPlaceholder}
+        />
+
+        {saveButton && (
+          <Button
+            leftIcon={<DeviceFloppy size={20} />}
+            color={'teal'}
+            onClick={() => saveButton.action()}
+          >
+            {saveButton.name}
+          </Button>
+        )}
+      </div>
 
       <Table {...getTableProps()} fontSize={'md'} striped highlightOnHover>
         <thead>

@@ -1,6 +1,12 @@
 #table-component {
   padding-bottom: 20px;
 
+  .table-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .pagination {
     display: flex;
     align-items: flex-end;

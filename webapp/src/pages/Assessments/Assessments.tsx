@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import './Assessments.scss';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../context';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
@@ -86,20 +86,27 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
           Header: 'ACTIONS',
           accessor: 'assessment_id',
           Cell: (row: any) => {
+            const withScores = row.row.original.withScores;
+
             return (
               <p
                 id="scores-action-btn"
                 onClick={() => {
-                  navigate(`/t/assessments/scores/${row.value}`, {
-                    // Pass the total assessment items
-                    // to lectures component
-                    state: {
-                      items: row.row.original.items,
+                  navigate(
+                    `/t/assessments/scores/${withScores ? '' : 'new/'}${
+                      row.value
+                    }`,
+                    {
+                      // Pass the total assessment items
+                      // to lectures component
+                      state: {
+                        items: row.row.original.items,
+                      },
                     },
-                  });
+                  );
                 }}
               >
-                {row.row.original.withScores ? 'View/Update ' : 'Add '} Scores
+                {withScores ? 'View/Update ' : 'Add '} Scores
               </p>
             );
           },

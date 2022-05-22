@@ -173,12 +173,25 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
 
   return (
     <div id="lectures">
-      <Button>Create new Session</Button>
       <TableComponent
         columns={columns}
         data={data}
         globalFilterPlaceholder="Search lecture session"
         pageSize={9}
+        actions={[
+          {
+            name: 'Add new lecture session',
+            action: async () => {
+              console.log('dsf');
+            },
+          },
+          {
+            name: 'Add quarterly assessment (QA)',
+            action: async () => {
+              console.log('dsf');
+            },
+          },
+        ]}
       />
 
       <Modal

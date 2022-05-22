@@ -1,136 +1,150 @@
 import { AgGridReact } from 'ag-grid-react';
-import React, { FC, useEffect, useContext, useState } from 'react';
+import React, { FC, useEffect, useContext, useState, useMemo } from 'react';
 import './AddScores.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '../../../components/Button';
+import { TableComponent } from '../../../components/Table';
+import type { Column } from 'react-table';
+import { NumberInput } from '@mantine/core';
+import { useSetHeader, useSetPageTitle } from '../../../hooks';
 
 interface AddScoresProps {}
 
 interface Student {
-  user_id: string;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
+  LRN: string;
+  fullname: string;
   score: number;
 }
 
 const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
+  useSetPageTitle('Add new Scores');
+  useSetHeader({
+    showSubjectDropdown: false,
+    headerStringValue: 'Add new scores',
+  });
+
   const selectedSubject = useContext(SubjectContext);
   const [students, setStudents] = useState<Student[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [scoreColumns] = useState([
-    {
-      field: 'user_id',
-      headerName: 'LRN',
-    },
-    {
-      field: 'last_name',
-      headerName: 'Last Name',
-    },
-    {
-      field: 'first_name',
-      headerName: 'First Name',
-    },
-    {
-      field: 'middle_name',
-      headerName: 'Middle Name',
-    },
-    {
-      field: 'score',
-      headerName: 'Score',
-      editable: true,
-      onCellValueChanged: (grid: any) => {
-        let score: number;
-
-        score = parseInt(grid.node.data.score, 10);
-
-        // if (Number.isNaN(score)) console.log('Invalid NUmber');
-        // else console.log(score);
-        console.log(grid.node.id);
-
-        const currIndex = parseInt(grid.node.id, 10);
-
-        setStudents(old => {
-          return old.map((s, index) => {
-            if (index == currIndex) s.score = score;
-
-            return s;
-          });
-        });
-      },
-    },
-  ]);
+  const [disabledSave, setDisableSave] = useState(false);
+  const location = useLocation();
+  const [maxScore, setMaxScore] = useState(0);
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/students`).then(({ data }) => {
       setStudents(
         data.data.map((s: any) => ({
-          user_id: s.user_id,
-          first_name: s.first_name,
-          middle_name: s.middle_name,
-          last_name: s.last_name,
+          LRN: s.user_id,
+          fullname: `${s.last_name}, ${s.first_name} ${s.middle_name[0]}. `,
           score: 0,
         })),
       );
     });
+
+    setMaxScore((location.state as any).items || 0);
   }, []);
+
+  const data = useMemo(() => students, [students, setStudents]);
+
+  const columns = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        {
+          Header: 'STUDENT',
+          accessor: 'fullname',
+        },
+        {
+          Header: 'SCORE',
+          accessor: 'score',
+          Cell: row => {
+            const [error, setError] = useState(false);
+
+            return (
+              <NumberInput
+                value={row.value}
+                hideControls
+                classNames={{
+                  root: 'score-input',
+                  error: 'error-label',
+                  wrapper: 'wrapper',
+                }}
+                error={error && `Max score of ${maxScore} exceeded.`}
+                defaultValue={0}
+                min={0}
+                max={maxScore}
+                onChange={value => {
+                  console.log(value);
+
+                  if (value! > maxScore) {
+                    setError(true);
+                    setDisableSave(true);
+                  } else {
+                    setError(false);
+                    setDisableSave(false);
+
+                    setStudents(old => {
+                      return old.map(st => {
+                        if (st.LRN == row.row.original.LRN) st.score = value!;
+                        return st;
+                      });
+                    });
+                  }
+                }}
+              />
+            );
+          },
+        },
+      ] as Column<Student>[],
+    [],
+  );
 
   return (
     <div>
-      <div
-        className="ag-theme-balham"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={students}
-          pagination={true}
-          columnDefs={scoreColumns}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
-      </div>
-
-      <div className="scores-act">
-        <Button
-          buttontype="cancel"
-          value="Cancel"
-          onClick={async () => {
-            navigate('/t/assessments');
-          }}
-        />
-
-        <Button
-          buttontype="save"
-          value="Save new scores"
-          onClick={async () => {
-            console.table(students);
-
-            await axios.post(`subject/${selectedSubject}/assessments/scores`, {
-              assessment_id: id,
-              grading_period: 1,
-              scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
-            });
-
-            navigate('/t/assessments');
-          }}
-        />
-      </div>
+      <TableComponent
+        columns={columns}
+        data={data}
+        pageSize={11}
+        actions={[
+          {
+            name: 'Save Scores',
+            disabled: disabledSave,
+            action: async () => {
+              console.log(students);
+            },
+          },
+        ]}
+      />
     </div>
   );
 };
 
+// await axios.post(`subject/${selectedSubject}/assessments/scores`, {
+//   assessment_id: id,
+//   grading_period: 1,
+//   scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
+// });
+
+// onCellValueChanged: (grid: any) => {
+//   let score: number;
+
+//   score = parseInt(grid.node.data.score, 10);
+
+//   // if (Number.isNaN(score)) console.log('Invalid NUmber');
+//   // else console.log(score);
+//   console.log(grid.node.id);
+
+//   const currIndex = parseInt(grid.node.id, 10);
+
+//   setStudents(old => {
+//     return old.map((s, index) => {
+//       if (index == currIndex) s.score = score;
+
+//       return s;
+//     });
+//   });
+// },
 export default AddScores;

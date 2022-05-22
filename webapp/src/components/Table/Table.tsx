@@ -19,6 +19,7 @@ export interface ButtonProps {
   name: string;
   action: () => Promise<void>;
   icon?: () => Icon;
+  disabled?: boolean;
 }
 
 interface TableProps {
@@ -76,12 +77,13 @@ const TableComponent: FC<TableProps> = ({
         />
         <div className="action-btns">
           {saveButton &&
-            saveButton.map(({ action, name, icon }) => (
+            saveButton.map(({ action, name, icon, disabled }) => (
               <Button
                 id="action-btn"
                 leftIcon={icon}
                 color={'teal'}
                 onClick={() => action()}
+                disabled={disabled}
               >
                 {name}
               </Button>

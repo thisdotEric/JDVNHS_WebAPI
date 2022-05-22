@@ -12,6 +12,14 @@ import {
   StudentAttributes,
 } from '../algorithms/cart-decision-tree';
 import QuestionRepository from '../repository/question.repository';
+import LectureRepository from '../repository/lecture.repository';
+import AssessmentRepository from '../repository/assessment.repository';
+import AssessmentScoresRepository from '../repository/scores.repository';
+import {
+  computeCompetencyPercentage,
+  groupLearningCompetency,
+  LearningCompetencyScore,
+} from '../algorithms/personalized-remediation';
 
 export const mapData = (data: any[]) => {
   return data.map(d => {
@@ -33,7 +41,13 @@ class ReportsService {
     @inject(TYPES.GradesService)
     private readonly gradesService: GradesService,
     @inject(TYPES.QuestionsRepository)
-    private readonly questionRepo: QuestionRepository
+    private readonly questionRepo: QuestionRepository,
+    @inject(TYPES.LectureRepository)
+    private readonly lectureRepo: LectureRepository,
+    @inject(TYPES.AssessmentRepository)
+    private readonly assessmentRepo: AssessmentRepository,
+    @inject(TYPES.AssessmentScoresRepository)
+    private readonly scoresRepo: AssessmentScoresRepository
   ) {}
 
   private async buildTree() {
@@ -41,7 +55,7 @@ class ReportsService {
     let data = await csv().fromFile(testdata_path);
     data = mapData(data);
 
-    console.log('Full Dataset: ', data);
+    // console.log('Full Dataset: ', data);
 
     const node = buildTree(data);
 
@@ -63,18 +77,18 @@ class ReportsService {
     };
 
     const treeJson = JSON.stringify(tree);
-    console.log(treeJson);
+    // console.log(treeJson);
 
     printTree(tree);
 
     const prediction = classify(studentData, tree);
     // console.log({ user_id, weights });
-    console.log(prediction);
+    // console.log(prediction);
 
     let conductRemediation =
       prediction.trueCount > prediction.falseCount ? true : false;
 
-    console.log('Conduct: ', conductRemediation);
+    // console.log('Conduct: ', conductRemediation);
 
     const students = await this.subjectRepo.getEnrolledStudents(subject_id);
 
@@ -128,6 +142,67 @@ class ReportsService {
 
   async getQuestions(learning_competency_code: string) {
     return this.questionRepo.getQuestions(learning_competency_code);
+  }
+
+  async getStudentReport(
+    LRN: string,
+    subject_id: string,
+    grading_period: number
+  ) {
+    const learningCompetenciesWithAssessments =
+      await this.lectureRepo.getLearningCompetencyWithAssessments(
+        subject_id,
+        grading_period
+      );
+
+    let learning_competency_score: LearningCompetencyScore[] = [];
+
+    for await (const lc of learningCompetenciesWithAssessments) {
+      // Get the lecture ids per learning competency
+      const lecture_ids = (await this.lectureRepo.getLectureIds(lc.code)).map(
+        l => l.lecture_id
+      );
+      console.log('Code', lc.code);
+      console.log('Lectures IDS', lecture_ids);
+
+      const assessment_ids = (
+        await Promise.all(
+          lecture_ids.map(lecture_id => {
+            return this.assessmentRepo.getAssessmentIdByLectureId(lecture_id);
+          })
+        )
+      ).flat();
+
+      console.log('Assessment IDS: ', assessment_ids);
+
+      const assessmentTotalItem =
+        await this.assessmentRepo.getAssessmentTotalItemPerLectureIds(
+          lecture_ids
+        );
+
+      console.log('Total Item: ', assessmentTotalItem);
+
+      const totalScore = await this.scoresRepo.getTotalScoreByAssessmentIds(
+        LRN,
+        assessment_ids
+      );
+      console.log('Total Score: ', totalScore);
+
+      learning_competency_score.push({
+        learningCompetency: lc.code,
+        competencyPercantageScore: computeCompetencyPercentage(
+          totalScore,
+          assessmentTotalItem
+        ),
+      });
+
+      console.log('=========');
+    }
+
+    console.log('Percentage Scores: ', learning_competency_score);
+
+    const groupings = groupLearningCompetency(LRN, learning_competency_score);
+    console.log('Groupings: ', groupings);
   }
 }
 

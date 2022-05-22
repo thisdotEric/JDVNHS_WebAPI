@@ -43,6 +43,7 @@ export class ReportsController {
     const response = JsonResponse.success(reports, 200);
     res.status(response.statusCode).send(response);
   }
+
   @httpGet(
     '/subject/:subject_id/:LRN',
     TYPES.AuthMiddleware,
@@ -50,6 +51,12 @@ export class ReportsController {
   )
   async getPersonalizedRemediation(req: Request, res: Response) {
     const code = 'M7NS-Ia-1';
+    const subject_id = 'Math7';
+    const LRN = '123456789110';
+
+    // select distinct code from lectures where subject_id = 'Math7' and grading_period = '1';
+
+    await this.reportsService.getStudentReport(LRN, subject_id, 1);
 
     const questions = await this.reportsService.getQuestions(code);
 

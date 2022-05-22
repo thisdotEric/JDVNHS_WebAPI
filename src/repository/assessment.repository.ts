@@ -52,6 +52,32 @@ class AssessmentRepository {
   async removeAssessment(assessment_id: number) {
     await this.db.getDbInstance()(ASSESSMENT).where({ assessment_id }).delete();
   }
+
+  async getAssessmentIdByLectureId(lecture_id: number) {
+    // Disregard QA
+    const assessment_ids = await this.db
+      .getDbInstance()
+      .raw(
+        `select a."assessment_id" from assessments a join lectures l on a."lecture_id" = l."lecture_id" where l.lecture_id = '${lecture_id}' and a.component != 'QA'`
+      );
+
+    return assessment_ids.rows.map((a: any) => a.assessment_id);
+  }
+
+  async getAssessmentTotalItemPerLectureIds(
+    lecture_ids: number[]
+  ): Promise<number> {
+    const ids = lecture_ids.map(id => id).join(',');
+
+    // Disregard QA
+    const assessmentTotalItem = await this.db
+      .getDbInstance()
+      .raw(
+        `select sum(a."items") from assessments a join lectures l on a."lecture_id" = l."lecture_id" where l.lecture_id in (${ids}) and a.component != 'QA'`
+      );
+
+    return parseInt(assessmentTotalItem.rows[0].sum);
+  }
 }
 
 export default AssessmentRepository;

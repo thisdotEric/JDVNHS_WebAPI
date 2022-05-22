@@ -32,6 +32,30 @@ class LectureRepository {
 
     return lectures.rows;
   }
+
+  async getLearningCompetencyWithAssessments(
+    subject_id: string,
+    grading_period: number
+  ) {
+    const unique_lc = await this.db
+      .getDbInstance()
+      .raw(
+        `select distinct code from lectures where subject_id = '${subject_id}' and grading_period = '${grading_period}'`
+      );
+
+    return unique_lc.rows;
+  }
+
+  async getLectureIds(learning_competency_code: string) {
+    //select lecture_id from lectures where code = 'M7NS-Ie-1'
+
+    const lecture_ids = await this.db
+      .getDbInstance()(LECTURES)
+      .where({ code: learning_competency_code })
+      .select('lecture_id');
+
+    return lecture_ids;
+  }
 }
 
 export default LectureRepository;

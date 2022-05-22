@@ -41,10 +41,10 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
       value: 'WW',
       label: 'Written Work',
     },
-    {
-      value: 'QA',
-      label: 'Quarterly Assessment',
-    },
+    // {
+    //   value: 'QA',
+    //   label: 'Quarterly Assessment',
+    // },
     {
       value: 'PT',
       label: 'Performance Task',

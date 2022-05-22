@@ -84,6 +84,8 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
         LRN,
         newStatus,
       });
+
+      await fetchStudentsAttendance();
     },
     [],
   );
@@ -122,28 +124,25 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     [],
   );
 
-  const fetchStudentsAttendance = (isLatest: boolean = false) => {
+  const fetchStudentsAttendance = async (isLatest: boolean = false) => {
     const id = isLatest ? 'latest' : params.id;
 
-    axios
-      .get(`subject/${selectedSubject}/attendance?id=${id}`)
-      .then(({ data }) => {
-        setAttendanceList(
-          data.data.attendance.map((at: any) => ({
-            LRN: at.LRN,
-            fullname: `${at.last_name}, ${at.middle_name} ${at.first_name[0]}.`,
-            status: at.status,
-          })),
-        );
+    const { data } = await axios.get(
+      `subject/${selectedSubject}/attendance?id=${id}`,
+    );
 
-        // Save the lecture id
-        localStorage.setItem('lecture_id', data.data.lecture_id);
+    setAttendanceList(
+      data.data.attendance.map((at: any) => ({
+        LRN: at.LRN,
+        fullname: `${at.last_name}, ${at.middle_name} ${at.first_name[0]}.`,
+        status: at.status,
+      })),
+    );
 
-        deriveAttendanceDetails(data.data.attendance);
-      })
-      .catch(err => {
-        console.log('Not Found');
-      });
+    // Save the lecture id
+    localStorage.setItem('lecture_id', data.data.lecture_id);
+
+    deriveAttendanceDetails(data.data.attendance);
   };
 
   const deriveAttendanceDetails = (attendance: any[]) => {

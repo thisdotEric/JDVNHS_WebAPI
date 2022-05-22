@@ -1,10 +1,16 @@
 #table-component {
   padding-bottom: 20px;
 
-  .table-header-actions {
+  .table-header-actions,
+  .action-btns {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .action-btns {
+    #action-btn {
+      margin-left: 10px;
+    }
   }
 
   .pagination {

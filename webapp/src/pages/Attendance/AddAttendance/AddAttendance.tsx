@@ -123,12 +123,14 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
       <TableComponent
         columns={columns}
         data={data}
-        saveButton={{
-          name: 'Save Attendance',
-          action: async () => {
-            await saveAttendance();
+        actions={[
+          {
+            name: 'Save Attendance',
+            action: async () => {
+              await saveAttendance();
+            },
           },
-        }}
+        ]}
       />
     </div>
   );

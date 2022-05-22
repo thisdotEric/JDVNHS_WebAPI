@@ -12,11 +12,13 @@ import {
   ArrowNarrowDown,
   ArrowNarrowUp,
   DeviceFloppy,
+  Icon,
 } from 'tabler-icons-react';
 
 export interface ButtonProps {
   name: string;
   action: () => Promise<void>;
+  icon?: () => Icon;
 }
 
 interface TableProps {
@@ -24,7 +26,7 @@ interface TableProps {
   data: any;
   globalFilterPlaceholder?: string;
   pageSize?: number;
-  saveButton?: ButtonProps;
+  actions?: ButtonProps[];
 }
 
 const TableComponent: FC<TableProps> = ({
@@ -32,7 +34,7 @@ const TableComponent: FC<TableProps> = ({
   data,
   globalFilterPlaceholder,
   pageSize = 12,
-  saveButton,
+  actions: saveButton,
 }: TableProps) => {
   const {
     getTableProps,
@@ -49,7 +51,13 @@ const TableComponent: FC<TableProps> = ({
     state,
     setGlobalFilter,
   } = useTable(
-    { columns, data, initialState: { pageSize }, autoResetPage: false },
+    {
+      columns,
+      data,
+      initialState: { pageSize },
+      autoResetPage: false,
+      autoResetSortBy: false,
+    },
     useGlobalFilter,
     useSortBy,
     usePagination,
@@ -66,16 +74,19 @@ const TableComponent: FC<TableProps> = ({
           setFilter={setGlobalFilter}
           placeholder={globalFilterPlaceholder}
         />
-
-        {saveButton && (
-          <Button
-            leftIcon={<DeviceFloppy size={20} />}
-            color={'teal'}
-            onClick={() => saveButton.action()}
-          >
-            {saveButton.name}
-          </Button>
-        )}
+        <div className="action-btns">
+          {saveButton &&
+            saveButton.map(({ action, name, icon }) => (
+              <Button
+                id="action-btn"
+                leftIcon={icon}
+                color={'teal'}
+                onClick={() => action()}
+              >
+                {name}
+              </Button>
+            ))}
+        </div>
       </div>
 
       <Table {...getTableProps()} fontSize={'md'} striped highlightOnHover>

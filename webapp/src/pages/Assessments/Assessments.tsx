@@ -101,6 +101,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                       // to lectures component
                       state: {
                         items: row.row.original.items,
+                        grading_period: row.row.original.grading_period,
                       },
                     },
                   );

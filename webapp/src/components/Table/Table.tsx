@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './Table.scss';
 import {
   useTable,
@@ -7,7 +7,7 @@ import {
   usePagination,
 } from 'react-table';
 import GlobalFilter from './GlobalFilter';
-import { Table, Button } from '@mantine/core';
+import { Table, Button, Skeleton } from '@mantine/core';
 import {
   ArrowNarrowDown,
   ArrowNarrowUp,

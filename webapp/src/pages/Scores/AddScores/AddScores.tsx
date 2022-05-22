@@ -18,6 +18,11 @@ interface Student {
   score: number;
 }
 
+interface LocationState {
+  items: number;
+  grading_period: number;
+}
+
 const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
   useSetPageTitle('Add new Scores');
   useSetHeader({
@@ -31,7 +36,6 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
   const navigate = useNavigate();
   const [disabledSave, setDisableSave] = useState(false);
   const location = useLocation();
-  const [maxScore, setMaxScore] = useState(0);
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/students`).then(({ data }) => {
@@ -43,11 +47,16 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
         })),
       );
     });
-
-    setMaxScore((location.state as any).items || 0);
   }, []);
 
   const data = useMemo(() => students, [students, setStudents]);
+  const { items, grading_period } = useMemo<LocationState>(
+    () => ({
+      items: (location.state as any).items,
+      grading_period: parseInt((location.state as any).grading_period),
+    }),
+    [],
+  );
 
   const columns = useMemo(
     () =>
@@ -72,14 +81,15 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
                   error: 'error-label',
                   wrapper: 'wrapper',
                 }}
-                error={error && `Max score of ${maxScore} exceeded.`}
+                error={
+                  error &&
+                  `Max score of ${items} exceeded. Will default to ${items}`
+                }
                 defaultValue={0}
                 min={0}
-                max={maxScore}
+                max={items}
                 onChange={value => {
-                  console.log(value);
-
-                  if (value! > maxScore) {
+                  if (value! > items) {
                     setError(true);
                     setDisableSave(true);
                   } else {
@@ -113,7 +123,19 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
             name: 'Save Scores',
             disabled: disabledSave,
             action: async () => {
-              console.log(students);
+              await axios.post(
+                `subject/${selectedSubject}/assessments/scores`,
+                {
+                  assessment_id: id,
+                  grading_period,
+                  scores: students.map(s => ({
+                    LRN: s.LRN,
+                    score: s.score,
+                  })),
+                },
+              );
+
+              navigate(-1);
             },
           },
         ]}
@@ -122,29 +144,4 @@ const AddScores: FC<AddScoresProps> = ({}: AddScoresProps) => {
   );
 };
 
-// await axios.post(`subject/${selectedSubject}/assessments/scores`, {
-//   assessment_id: id,
-//   grading_period: 1,
-//   scores: students.map(s => ({ LRN: s.user_id, score: s.score })),
-// });
-
-// onCellValueChanged: (grid: any) => {
-//   let score: number;
-
-//   score = parseInt(grid.node.data.score, 10);
-
-//   // if (Number.isNaN(score)) console.log('Invalid NUmber');
-//   // else console.log(score);
-//   console.log(grid.node.id);
-
-//   const currIndex = parseInt(grid.node.id, 10);
-
-//   setStudents(old => {
-//     return old.map((s, index) => {
-//       if (index == currIndex) s.score = score;
-
-//       return s;
-//     });
-//   });
-// },
 export default AddScores;

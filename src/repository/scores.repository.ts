@@ -124,7 +124,7 @@ class AssessmentScoresRepository {
     const totalStudentRawScore = await this.db
       .getDbInstance()
       .raw(
-        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}'`
+        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}' and a."assessment_type" = 'summative'`
       );
 
     if (totalStudentRawScore.rows.length == 0) return 0;

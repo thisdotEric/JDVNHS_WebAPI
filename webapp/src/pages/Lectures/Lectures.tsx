@@ -51,6 +51,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const [lectures, setLectures] = useState<LectureSession[]>([]);
   const selectedSubject = useContext(SubjectContext);
   const [opened, setOpened] = useState(false);
+  const [createQA, setCreateQA] = useState(false);
   const [currentLecture, setCurrentLecture] = useState<LectureSession>({
     code: '',
     grading_period: 1,
@@ -98,6 +99,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     className="lectures-link"
                     onClick={() => {
                       setCurrentLecture(row.row.original);
+                      setCreateQA(false);
                       setOpened(true);
                     }}
                   >
@@ -188,6 +190,8 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
           {
             name: 'Add quarterly assessment (QA)',
             action: async () => {
+              setCreateQA(true);
+              setOpened(true);
               console.log('dsf');
             },
           },
@@ -204,6 +208,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
         title="Create New Assessment"
       >
         <CreateAssessment
+          isQuarterlyAssessment={createQA}
           lecture_id={currentLecture!.lecture_id}
           date={currentLecture!.lecture_date}
           grading_period={currentLecture!.grading_period}

@@ -45,20 +45,23 @@ export class ReportsController {
   }
 
   @httpGet(
-    '/subject/:subject_id/:LRN',
+    '/subject/:subject_id/:grading_period/:LRN',
     TYPES.AuthMiddleware,
     TYPES.TeacherAccessONLY
   )
   async getPersonalizedRemediation(req: Request, res: Response) {
     const code = 'M7NS-Ia-1';
-    const subject_id = 'Math7';
-    const LRN = '123456789110';
+    const subject_id = `${req.params.subject_id}`;
+    const LRN = `${req.params.LRN}`;
+    const grading_period = parseInt(`${req.params.LRN}`);
 
     // select distinct code from lectures where subject_id = 'Math7' and grading_period = '1';
 
     await this.reportsService.getStudentReport(LRN, subject_id, 1);
 
     const questions = await this.reportsService.getQuestions(code);
+
+    console.log(questions);
 
     const response = JsonResponse.success(questions, 200);
     res.status(response.statusCode).send(response);

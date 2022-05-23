@@ -1,15 +1,17 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import './CreateAssessment.scss';
 import { NumberInput, Button, RadioGroup, Radio, Select } from '@mantine/core';
 import { DeviceFloppy } from 'tabler-icons-react';
 import { axios } from '../../../utils';
+import { DatePicker } from '@mantine/dates';
 
 interface CreateAssessmentProps {
-  lecture_id: number;
+  lecture_id: number | null;
   grading_period: number;
   subject_id: string;
   date: Date | string;
   close?: () => void;
+  isQuarterlyAssessment?: boolean;
 }
 
 interface Assessment {
@@ -18,15 +20,16 @@ interface Assessment {
   items: number;
 }
 
+type AssessmentInfo = Assessment & CreateAssessmentProps;
+
 const CreateAssessment: FC<CreateAssessmentProps> = ({
   lecture_id,
   grading_period,
   subject_id,
+  isQuarterlyAssessment,
   close = () => {},
 }: CreateAssessmentProps) => {
-  const [assessment, setAssessment] = useState<
-    Assessment & CreateAssessmentProps
-  >({
+  const [assessment, setAssessment] = useState<AssessmentInfo>({
     assessment_type: 'summative',
     component: 'WW',
     items: 0,
@@ -34,51 +37,75 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
     grading_period,
     subject_id,
     date: new Date(),
+    isQuarterlyAssessment,
   });
 
-  const [components] = useState([
-    {
-      value: 'WW',
-      label: 'Written Work',
-    },
-    // {
-    //   value: 'QA',
-    //   label: 'Quarterly Assessment',
-    // },
-    {
-      value: 'PT',
-      label: 'Performance Task',
-    },
-  ]);
+  const [qaDate, setQADate] = useState(new Date());
+
+  const components = useMemo(
+    () => [
+      {
+        value: 'WW',
+        label: 'Written Work',
+      },
+      {
+        value: 'PT',
+        label: 'Performance Task',
+      },
+    ],
+    [],
+  );
+
+  const QaComponentOnly = useMemo(
+    () => [
+      {
+        value: 'QA',
+        label: 'Quarterly Assessment',
+      },
+    ],
+    [],
+  );
 
   return (
     <div id="create-assessment-modal">
-      <RadioGroup
-        classNames={{
-          radioWrapper: 'radio-wrapper',
-          label: 'radio-label',
-        }}
-        label="Select type of Assessment"
-        required
-        defaultValue={'summative'}
-        onChange={value =>
-          setAssessment({ ...assessment, assessment_type: value })
-        }
-      >
-        <Radio value="summative" label="Summative" />
-        <Radio value="formative" label="Formative" />
-      </RadioGroup>
+      {isQuarterlyAssessment ? (
+        <DatePicker
+          placeholder="Pick date"
+          label="Quarterly Assessment Date"
+          value={qaDate}
+          onChange={date => setQADate(date!)}
+          defaultValue={new Date()}
+          required
+        />
+      ) : (
+        <RadioGroup
+          classNames={{
+            radioWrapper: 'radio-wrapper',
+            label: 'radio-label',
+          }}
+          label="Select type of Assessment"
+          required
+          defaultValue={'summative'}
+          onChange={value =>
+            setAssessment({ ...assessment, assessment_type: value })
+          }
+        >
+          <Radio value="summative" label="Summative" />
+          <Radio value="formative" label="Formative" />
+        </RadioGroup>
+      )}
 
       <Select
         label="Component Type"
         size="md"
+        disabled
         classNames={{
           wrapper: 'select-wrapper',
         }}
         placeholder="Select Component Type"
         onChange={value => setAssessment({ ...assessment, component: value! })}
-        defaultValue={'WW'}
-        data={components}
+        defaultValue={isQuarterlyAssessment ? 'QA' : 'WW'}
+        data={isQuarterlyAssessment ? QaComponentOnly : components}
       />
 
       <NumberInput
@@ -103,8 +130,20 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
         onClick={async () => {
           console.log(assessment);
 
+          const isQA = assessment.isQuarterlyAssessment;
+
+          const assessmentInfo: AssessmentInfo = {
+            assessment_type: assessment.assessment_type,
+            component: isQA ? 'QA' : assessment.component,
+            date: isQA ? qaDate : assessment.date,
+            grading_period: assessment.grading_period,
+            items: assessment.items,
+            lecture_id: isQA ? null : assessment.lecture_id,
+            subject_id: assessment.subject_id,
+          };
+
           await axios.post(`subject/${subject_id}/assessment`, {
-            assessment,
+            assessment: assessmentInfo,
           });
 
           close();

@@ -61,7 +61,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
   ]);
 
   useEffect(() => {
-    axios.get('reports/subject/Math7/123456789123').then(({ data }) => {
+    axios.get('reports/subject/Math7/1/123456789123').then(({ data }) => {
       console.log(data.data);
       setEvalutionQuestions(data.data);
     });

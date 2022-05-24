@@ -84,6 +84,7 @@ const TableComponent: FC<TableProps> = ({
                 color={'teal'}
                 onClick={() => action()}
                 disabled={disabled}
+                size="xs"
               >
                 {name}
               </Button>

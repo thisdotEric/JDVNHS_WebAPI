@@ -39,12 +39,6 @@ const Grades: FC<GradesProps> = ({}: GradesProps) => {
 
   const selectedSubject = useContext(SubjectContext);
 
-  const [{ data, loading, error }, { runFetch: getUser }] = useFetch(
-    `subject/${selectedSubject}/students`,
-  );
-
-  const ref = useRef<any>(null);
-
   const [grades, setGrades] = useState<StudentGrade[]>([]);
 
   const columns = useMemo(

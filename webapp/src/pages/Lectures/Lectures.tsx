@@ -11,6 +11,7 @@ import type { Column } from 'react-table';
 import moment from 'moment';
 import { Modal, Button, Group } from '@mantine/core';
 import { CreateAssessment } from '../Assessments/CreateAssessment';
+import { CreateLectureModal } from './CreateLectureModal';
 
 interface LecturesProps {}
 
@@ -51,6 +52,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const [lectures, setLectures] = useState<LectureSession[]>([]);
   const selectedSubject = useContext(SubjectContext);
   const [opened, setOpened] = useState(false);
+  const [openLectureModal, setOpenLectureModal] = useState(false);
   const [createQA, setCreateQA] = useState(false);
   const [currentLecture, setCurrentLecture] = useState<LectureSession>({
     code: '',
@@ -61,6 +63,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
     subject: '',
     withAttendance: false,
   });
+  const [refetchLectures, setRefetchLectures] = useState(false);
 
   const data = useMemo<LectureSession[]>(() => lectures, [lectures]);
 
@@ -170,6 +173,12 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   }, [selectedSubject]);
 
   useEffect(() => {
+    setTimeout(() => {
+      fetchLectures();
+    }, 1000);
+  }, [refetchLectures]);
+
+  useEffect(() => {
     fetchLectures();
   }, []);
 
@@ -184,6 +193,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
           {
             name: 'Add new lecture session',
             action: async () => {
+              setOpenLectureModal(true);
               console.log('dsf');
             },
           },
@@ -214,6 +224,24 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
           grading_period={currentLecture!.grading_period}
           subject_id={selectedSubject}
           close={() => setOpened(false)}
+        />
+      </Modal>
+
+      <Modal
+        opened={openLectureModal}
+        styles={{
+          title: { fontWeight: 'bold', fontSize: 16 },
+          modal: { width: 700 },
+        }}
+        closeOnEscape={false}
+        onClose={() => setOpenLectureModal(false)}
+        title="Create New Assessment"
+      >
+        <CreateLectureModal
+          subject_id="Math7"
+          grading_period={1}
+          refetchLectures={setRefetchLectures}
+          close={() => setOpenLectureModal(false)}
         />
       </Modal>
     </div>

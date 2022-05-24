@@ -17,6 +17,7 @@ interface Assessment {
   items: number;
   component: string;
   date: string | Date;
+  lecture_id?: number;
 }
 
 export async function seed(knex: Knex): Promise<void> {
@@ -31,7 +32,7 @@ export async function seed(knex: Knex): Promise<void> {
   let date = new Date();
 
   for (let grading_period of grading_periods) {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 3; i++) {
       date = addDays(date, randomize(3, 7));
       assessmentList.push({
         date,
@@ -39,10 +40,11 @@ export async function seed(knex: Knex): Promise<void> {
         items: randomize(20, 35),
         component: 'WW',
         grading_period,
+        lecture_id: 16,
       });
     }
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 3; i++) {
       date = addDays(date, randomize(3, 7));
       assessmentList.push({
         date,
@@ -50,6 +52,7 @@ export async function seed(knex: Knex): Promise<void> {
         items: randomize(20, 35),
         component: 'PT',
         grading_period,
+        lecture_id: 16,
       });
     }
 

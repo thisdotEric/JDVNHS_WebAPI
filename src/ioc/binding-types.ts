@@ -21,6 +21,7 @@ const types = {
   ReportsService: Symbol.for('ReportsService'),
   TrainingDataRepository: Symbol.for('TrainingDataRepository'),
   QuestionsRepository: Symbol.for('QuestionsRepository'),
+  LearningCompetencyRepository: Symbol.for('LearningCompetencyRepository'),
 };
 
 export default types;

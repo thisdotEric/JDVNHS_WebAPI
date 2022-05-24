@@ -70,6 +70,10 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
     <div id="create-assessment-modal">
       {isQuarterlyAssessment ? (
         <DatePicker
+          classNames={{
+            label: 'radio-label',
+          }}
+          size="md"
           placeholder="Pick date"
           label="Quarterly Assessment Date"
           value={qaDate}
@@ -98,7 +102,7 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
       <Select
         label="Component Type"
         size="md"
-        disabled
+        disabled={isQuarterlyAssessment}
         classNames={{
           wrapper: 'select-wrapper',
         }}
@@ -134,12 +138,12 @@ const CreateAssessment: FC<CreateAssessmentProps> = ({
 
           const assessmentInfo: AssessmentInfo = {
             assessment_type: assessment.assessment_type,
+            subject_id: assessment.subject_id,
+            items: assessment.items,
+            grading_period: assessment.grading_period,
             component: isQA ? 'QA' : assessment.component,
             date: isQA ? qaDate : assessment.date,
-            grading_period: assessment.grading_period,
-            items: assessment.items,
             lecture_id: isQA ? null : assessment.lecture_id,
-            subject_id: assessment.subject_id,
           };
 
           await axios.post(`subject/${subject_id}/assessment`, {

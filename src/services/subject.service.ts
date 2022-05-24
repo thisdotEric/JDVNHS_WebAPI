@@ -12,12 +12,13 @@ import AssessmentScoresRepository, {
   NewScores,
   UpdatedScore,
 } from '../repository/scores.repository';
-import LectureRepository from '../repository/lecture.repository';
+import LectureRepository, { Lecture } from '../repository/lecture.repository';
 import AssessmentRepository, {
   Assessment,
 } from '../repository/assessment.repository';
 import { computePercentageScore } from '../algorithms/grades';
 import TrainingDataRepository from '../repository/training_data.repository';
+import LearningCompetencyRepository from '../repository/learning_competency.repository';
 
 @injectable()
 class SubjectService {
@@ -33,7 +34,9 @@ class SubjectService {
     @inject(TYPES.AssessmentRepository)
     private readonly assessmentRepo: AssessmentRepository,
     @inject(TYPES.TrainingDataRepository)
-    private readonly trainingDataRepository: TrainingDataRepository
+    private readonly trainingDataRepository: TrainingDataRepository,
+    @inject(TYPES.LearningCompetencyRepository)
+    private readonly competencyRepo: LearningCompetencyRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -144,6 +147,17 @@ class SubjectService {
       subject_id,
       grading_period
     );
+  }
+
+  async getLearningCompetencies(subject_id: string, grading_period: number) {
+    return this.competencyRepo.getLearningCompetencies(
+      subject_id,
+      grading_period
+    );
+  }
+
+  async addNewLecture(lecture: Lecture) {
+    return this.lectureRepo.addNewLectureSession(lecture);
   }
 
   async getClassGrades(subject_id: string) {

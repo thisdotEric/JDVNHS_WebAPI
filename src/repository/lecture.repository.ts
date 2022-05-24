@@ -3,9 +3,20 @@ import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { LECTURES, TEACHER_SUBJECTS } from '../constant/tables';
 
+export interface Lecture {
+  lecture_date: Date;
+  subject_id: string;
+  grading_period: number;
+  code: string;
+}
+
 @injectable()
 class LectureRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
+
+  async addNewLectureSession(lecture: Lecture) {
+    await this.db.getDbInstance()(LECTURES).insert(lecture);
+  }
 
   async getValidLectureDates(teacher_id: string, subject_id: string) {
     const lecture_dates = await this.db

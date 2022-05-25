@@ -11,6 +11,7 @@ import {
   QuestionAccordionLabel,
 } from './Accordion/';
 import { EvaluationQuestions } from './Questions';
+import { LearningMaterialsComponent } from './LearningMaterials';
 
 interface StudentReportProps {}
 
@@ -66,8 +67,6 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   const { LRN } = useParams();
 
-  const [personalizedRemediation, setPersonalizedRemediation] =
-    useState<PersonalizedRemediation[]>(data);
   const [learningCompetencies, setLearningCompetencies] = useState<
     LearningCompetencyAnalysis[]
   >([]);
@@ -83,81 +82,74 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   const [evaluationQuestions, setEvalutionQuestions] = useState<
     EvaluationQuestion[]
-  >([
-    {
-      code: 'Code',
-      question: 'JOhn',
-      question_type: 'enabling',
-    },
-  ]);
+  >([]);
+
   const [questionTypes] = useState<QuestionType[]>([
     'introductory',
     'enabling',
     'demonstrative',
   ]);
 
+  const fetchRemediation = async () => {
+    const { data } = await axios.get(`reports/subject/Math7/1/${LRN}`);
+    setLearningCompetencies(data.data);
+
+    const { data: questions } = await axios.get(
+      'reports/Math7/competencies/M7NS-Ia-1/questions',
+    );
+    setEvalutionQuestions(questions.data);
+    console.table(questions.data);
+  };
+
   useEffect(() => {
-    axios.get('reports/subject/Math7/1/123456789123').then(({ data }) => {
-      console.table(data.data);
-      // setEvalutionQuestions(data.data);
-      setLearningCompetencies(data.data);
-    });
+    fetchRemediation();
   }, []);
 
   return (
     <div id="student-report">
       <p id="name">John Eric Siguenza</p>
 
-      {learningCompetencies.map(({ learning_competency }) => {
+      {learningCompetencies.map(({ learning_competency, analysis }) => {
         return (
-          <Accordion multiple iconPosition="right">
-            <Accordion.Item
-              label={
-                <MainReportAccordiionLabel
-                  learning_competency={capitlizeString(learning_competency)}
-                  proficient={false}
+          analysis === 'notProficient' && (
+            <Accordion multiple iconPosition="right">
+              <Accordion.Item
+                label={
+                  <MainReportAccordiionLabel
+                    learning_competency={capitlizeString(learning_competency)}
+                    proficient={false}
+                  />
+                }
+              >
+                <LearningMaterialsComponent
+                  learning_materials={learningMaterials}
                 />
-              }
-            >
-              {/* <p id="section-title">Additional Learning Materials</p>
 
-                <ol id="learning-materials">
-                  {learning_materials.map(lm => (
-                    <li>
-                      <a
-                        href="https://github.com/thisdotEric"
-                        target={'_blank'}
+                <p id="section-title">Questions for Evaluation</p>
+
+                <Code block id="question-description">
+                  {questionTypes.map(q_type => (
+                    <Accordion multiple iconPosition="right">
+                      <Accordion.Item
+                        label={
+                          <QuestionAccordionLabel
+                            passed
+                            label={q_type}
+                            questionsCount={10}
+                          />
+                        }
                       >
-                        {lm}
-                      </a>
-                    </li>
-                  ))}
-                </ol> */}
-
-              <p id="section-title">Questions for Evaluation</p>
-
-              <Code block id="question-description">
-                {questionTypes.map(q_type => (
-                  <Accordion multiple iconPosition="right">
-                    <Accordion.Item
-                      label={
-                        <QuestionAccordionLabel
-                          passed
-                          label={q_type}
-                          questionsCount={10}
+                        <EvaluationQuestions
+                          questionType={q_type}
+                          questions={evaluationQuestions}
                         />
-                      }
-                    >
-                      <EvaluationQuestions
-                        questionType={q_type}
-                        questions={evaluationQuestions}
-                      />
-                    </Accordion.Item>
-                  </Accordion>
-                ))}
-              </Code>
-            </Accordion.Item>
-          </Accordion>
+                      </Accordion.Item>
+                    </Accordion>
+                  ))}
+                </Code>
+              </Accordion.Item>
+            </Accordion>
+          )
         );
       })}
     </div>

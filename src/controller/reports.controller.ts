@@ -93,10 +93,19 @@ export class ReportsController {
 
     console.log(groupings);
 
-    // const questions = await this.reportsService.getQuestions(code);
     // console.log(LRN, learning_competency_groupings);
 
     const response = JsonResponse.success(groupings, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/competencies/:code/questions')
+  async getEvaluationQuestions(req: Request, res: Response) {
+    const code = `${req.params.code}`;
+
+    const questions = await this.reportsService.getQuestions(code);
+
+    const response = JsonResponse.success(questions, 200);
     res.status(response.statusCode).send(response);
   }
 }

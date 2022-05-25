@@ -1,1 +1,1 @@
-export { default as LearningMaterials } from './LearningMaterials';
+export { default as LearningMaterialsComponent } from './LearningMaterials';

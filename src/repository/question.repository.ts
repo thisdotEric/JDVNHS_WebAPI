@@ -9,10 +9,7 @@ export type QuestionLevel = 'easy' | 'average' | 'hard';
 class QuestionRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
 
-  async getQuestions(
-    learning_competency_code: string,
-    question_level?: string
-  ) {
+  async getQuestions(learning_competency_code: string) {
     const questions = await this.db
       .getDbInstance()(QUESTIONS)
       .where({ code: learning_competency_code })

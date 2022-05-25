@@ -1,27 +1,24 @@
 import React, { FC } from 'react';
+import type { LearningMaterials } from '../StudentReport';
 
-interface LearningMaterialsProps {}
+interface LearningMaterialsProps {
+  learning_materials: LearningMaterials[];
+}
 
-const LearningMaterials: FC<
-  LearningMaterialsProps
-> = ({}: LearningMaterialsProps) => {
-  return <div></div>;
+const LearningMaterialsComponent: FC<LearningMaterialsProps> = ({
+  learning_materials,
+}: LearningMaterialsProps) => {
+  return (
+    <ol id="learning-materials">
+      {learning_materials.map(({ url, learning_material }) => (
+        <li>
+          <a href={url} target={'_blank'}>
+            {learning_material}
+          </a>
+        </li>
+      ))}
+    </ol>
+  );
 };
 
-/**
- * 
- *   <ol id="learning-materials">
-                  {learning_materials.map(lm => (
-                    <li>
-                      <a
-                        href="https://github.com/thisdotEric"
-                        target={'_blank'}
-                      >
-                        {lm}
-                      </a>
-                    </li>
-                  ))}
-                </ol> 
- */
-
-export default LearningMaterials;
+export default LearningMaterialsComponent;

@@ -4,7 +4,7 @@ import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
 import { IStudent } from './student.repository';
 import { SubjectNotFoundException } from '../exceptions';
-import { COMPONENTS } from '../constant/tables';
+import { COMPONENTS, LEARNING_COMPETENCY } from '../constant/tables';
 
 export type EnrolledStudents = Pick<
   IStudent,
@@ -129,6 +129,17 @@ class SubjectRepository {
     if (!componentWeights) return null;
 
     return componentWeights;
+  }
+
+  async getLearningCompetencyDetails(code: string) {
+    const learning_competency = await this.db
+      .getDbInstance()(LEARNING_COMPETENCY)
+      .where({
+        code,
+      })
+      .limit(1);
+
+    return learning_competency[0].learning_competency;
   }
 }
 

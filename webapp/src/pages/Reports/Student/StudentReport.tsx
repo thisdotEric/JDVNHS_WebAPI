@@ -10,10 +10,22 @@ import {
   MainReportAccordiionLabel,
   QuestionAccordionLabel,
 } from './Accordion/';
+import { EvaluationQuestions } from './Questions';
 
 interface StudentReportProps {}
 
-type QuestionType = 'introductory' | 'enabling' | 'demonstrative';
+export type QuestionType = 'introductory' | 'enabling' | 'demonstrative';
+
+interface LearningCompetencyAnalysis {
+  code: string;
+  learning_competency: string;
+  analysis: 'proficient' | 'notProficient';
+}
+
+export interface LearningMaterials {
+  learning_material: string;
+  url: string;
+}
 
 export interface QuestionItem {
   questions: string[];
@@ -41,6 +53,10 @@ export interface PersonalizedRemediation {
 const link =
   'https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing';
 
+function capitlizeString(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
 const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
   useSetPageTitle('Student Report');
   useSetHeader({
@@ -52,8 +68,28 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   const [personalizedRemediation, setPersonalizedRemediation] =
     useState<PersonalizedRemediation[]>(data);
+  const [learningCompetencies, setLearningCompetencies] = useState<
+    LearningCompetencyAnalysis[]
+  >([]);
 
-  const [ee, setEvalutionQuestions] = useState<EvaluationQuestion[]>([]);
+  const [learningMaterials, setLearningMaterials] = useState<
+    LearningMaterials[]
+  >([
+    {
+      learning_material: 'Go Concurrency',
+      url: 'https://github.com/thisdotEric',
+    },
+  ]);
+
+  const [evaluationQuestions, setEvalutionQuestions] = useState<
+    EvaluationQuestion[]
+  >([
+    {
+      code: 'Code',
+      question: 'JOhn',
+      question_type: 'enabling',
+    },
+  ]);
   const [questionTypes] = useState<QuestionType[]>([
     'introductory',
     'enabling',
@@ -62,8 +98,9 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   useEffect(() => {
     axios.get('reports/subject/Math7/1/123456789123').then(({ data }) => {
-      console.log(data.data);
-      setEvalutionQuestions(data.data);
+      console.table(data.data);
+      // setEvalutionQuestions(data.data);
+      setLearningCompetencies(data.data);
     });
   }, []);
 
@@ -71,19 +108,18 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
     <div id="student-report">
       <p id="name">John Eric Siguenza</p>
 
-      {personalizedRemediation.map(
-        ({ learning_competency, learning_materials }) => {
-          return (
-            <Accordion multiple iconPosition="right">
-              <Accordion.Item
-                label={
-                  <MainReportAccordiionLabel
-                    learning_competency={learning_competency}
-                    proficient={false}
-                  />
-                }
-              >
-                <p id="section-title">Additional Learning Materials</p>
+      {learningCompetencies.map(({ learning_competency }) => {
+        return (
+          <Accordion multiple iconPosition="right">
+            <Accordion.Item
+              label={
+                <MainReportAccordiionLabel
+                  learning_competency={capitlizeString(learning_competency)}
+                  proficient={false}
+                />
+              }
+            >
+              {/* <p id="section-title">Additional Learning Materials</p>
 
                 <ol id="learning-materials">
                   {learning_materials.map(lm => (
@@ -96,44 +132,34 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                       </a>
                     </li>
                   ))}
-                </ol>
+                </ol> */}
 
-                <p id="section-title">Questions for Evaluation</p>
+              <p id="section-title">Questions for Evaluation</p>
 
-                <Code block id="question-description">
-                  {questionTypes.map(q_type => (
-                    <Accordion multiple iconPosition="right">
-                      <Accordion.Item
-                        label={
-                          <QuestionAccordionLabel
-                            passed
-                            label={q_type}
-                            questionsCount={10}
-                          />
-                        }
-                      >
-                        <List>
-                          {ee.map(e => {
-                            if (e.question_type === q_type)
-                              return (
-                                <List.Item
-                                  icon={<Notes size={20} />}
-                                  id="question-item"
-                                >
-                                  {e.question}
-                                </List.Item>
-                              );
-                          })}
-                        </List>
-                      </Accordion.Item>
-                    </Accordion>
-                  ))}
-                </Code>
-              </Accordion.Item>
-            </Accordion>
-          );
-        },
-      )}
+              <Code block id="question-description">
+                {questionTypes.map(q_type => (
+                  <Accordion multiple iconPosition="right">
+                    <Accordion.Item
+                      label={
+                        <QuestionAccordionLabel
+                          passed
+                          label={q_type}
+                          questionsCount={10}
+                        />
+                      }
+                    >
+                      <EvaluationQuestions
+                        questionType={q_type}
+                        questions={evaluationQuestions}
+                      />
+                    </Accordion.Item>
+                  </Accordion>
+                ))}
+              </Code>
+            </Accordion.Item>
+          </Accordion>
+        );
+      })}
     </div>
   );
 };

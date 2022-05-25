@@ -5,6 +5,12 @@ import { inject } from 'inversify';
 import JsonResponse from '../utils/JsonResponse';
 import ReportsService from '../services/reports.service';
 
+interface LearningCompetencyAnalysis {
+  code: string;
+  learning_competency: string;
+  analysis: 'proficient' | 'notProficient';
+}
+
 @controller('/reports')
 export class ReportsController {
   constructor(
@@ -49,21 +55,48 @@ export class ReportsController {
     TYPES.AuthMiddleware,
     TYPES.TeacherAccessONLY
   )
-  async getPersonalizedRemediation(req: Request, res: Response) {
-    const code = 'M7NS-Ia-1';
+  async getLearningCompetencyGroupings(req: Request, res: Response) {
     const subject_id = `${req.params.subject_id}`;
     const LRN = `${req.params.LRN}`;
-    const grading_period = parseInt(`${req.params.LRN}`);
+    const grading_period = parseInt(`${req.params.grading_period}`);
 
-    // select distinct code from lectures where subject_id = 'Math7' and grading_period = '1';
+    let groupings: LearningCompetencyAnalysis[] = [];
 
-    await this.reportsService.getStudentReport(LRN, subject_id, 1);
+    const learning_competency_groupings =
+      await this.reportsService.getLearningCompetencyGroupings(
+        LRN,
+        subject_id,
+        grading_period
+      );
 
-    const questions = await this.reportsService.getQuestions(code);
+    for await (const code of learning_competency_groupings.notProficient) {
+      const learning_competency =
+        await this.reportsService.getLearningCompetencyDetails(code);
 
-    console.log(questions);
+      groupings.push({
+        code,
+        learning_competency,
+        analysis: 'notProficient',
+      });
+    }
 
-    const response = JsonResponse.success(questions, 200);
+    for await (const code of learning_competency_groupings.proficient) {
+      const learning_competency =
+        await this.reportsService.getLearningCompetencyDetails(code);
+
+      groupings.push({
+        code,
+        learning_competency,
+        analysis: 'proficient',
+      });
+    }
+
+    console.log(groupings);
+
+    // const questions = await this.reportsService.getQuestions(code);
+    // console.log(LRN, learning_competency_groupings);
+
+    const response = JsonResponse.success(groupings, 200);
     res.status(response.statusCode).send(response);
   }
 }

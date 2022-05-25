@@ -144,7 +144,11 @@ class ReportsService {
     return this.questionRepo.getQuestions(learning_competency_code);
   }
 
-  async getStudentReport(
+  async getLearningCompetencyDetails(code: string) {
+    return this.subjectRepo.getLearningCompetencyDetails(code);
+  }
+
+  async getLearningCompetencyGroupings(
     LRN: string,
     subject_id: string,
     grading_period: number
@@ -202,7 +206,8 @@ class ReportsService {
     console.log('Percentage Scores: ', learning_competency_score);
 
     const groupings = groupLearningCompetency(LRN, learning_competency_score);
-    console.log('Groupings: ', groupings);
+
+    return groupings;
   }
 }
 

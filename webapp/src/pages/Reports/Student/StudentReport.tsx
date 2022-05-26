@@ -8,7 +8,7 @@ import {
   MainReportAccordiionLabel,
   QuestionAccordionLabel,
 } from './Accordion/';
-import { EvaluationQuestions } from './Questions';
+import { EvaluationQuestionsList } from './Questions';
 import { LearningMaterialsComponent } from './LearningMaterials';
 
 interface StudentReportProps {}
@@ -62,15 +62,14 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
   });
 
   const { LRN } = useParams();
+  const [student, setStudent] = useState<string>();
 
   const [learningCompetencies, setLearningCompetencies] = useState<
     LearningCompetencyAnalysis[]
   >([]);
-
   const [learningMaterials, setLearningMaterials] = useState<
     LearningMaterials[]
   >([]);
-
   const [evaluationQuestions, setEvalutionQuestions] = useState<
     EvaluationQuestion[]
   >([]);
@@ -146,12 +145,18 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
   };
 
   useEffect(() => {
+    axios.get(`student/${LRN}`).then(({ data }) => {
+      console.log(data.data);
+
+      setStudent(`${data.data.first_name} ${data.data.last_name} `);
+    });
+
     fetchRemediation();
   }, []);
 
   return (
     <div id="student-report">
-      <p id="name">John Eric Siguenza</p>
+      <p id="name">{student}</p>
 
       {learningCompetencies.map(({ learning_competency, analysis, code }) => {
         return (
@@ -184,7 +189,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                           />
                         }
                       >
-                        <EvaluationQuestions
+                        <EvaluationQuestionsList
                           code={code}
                           questionType={q_type}
                           questions={evaluationQuestions}

@@ -8,6 +8,8 @@ import {
   UserCheck,
 } from 'react-feather';
 
+import { Bulb } from 'tabler-icons-react';
+
 export interface ILink {
   to: string;
   name: string;
@@ -52,6 +54,11 @@ const teacherNavigations: ILink[] = [
     to: '/t/reports',
     name: 'Reports',
     icon: <BarChart2 id="sidenav-icon" />,
+  },
+  {
+    to: '/t/competencies',
+    name: 'Learning Competencies',
+    icon: <Bulb id="sidenav-icon" size={30} />,
   },
 ];
 

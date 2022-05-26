@@ -1,1 +1,1 @@
-export { default as EvaluationQuestions } from './EvaluationQuestions';
+export { default as EvaluationQuestionsList } from './EvaluationQuestions';

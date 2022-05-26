@@ -24,13 +24,13 @@ const QuestionAccordionLabel: FC<QuestionAccordionLabelProps> = ({
         <p>
           <span id="count">{questionsCount}</span> items
         </p>
-        &nbsp;&nbsp;
+        {/* &nbsp;&nbsp;
         {passed && (
           <>
             <Check size={20} stroke="green" />
             <p>Passed</p>
           </>
-        )}
+        )} */}
       </div>
     </div>
   );

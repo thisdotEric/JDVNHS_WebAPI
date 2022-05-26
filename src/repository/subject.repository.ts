@@ -4,7 +4,11 @@ import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
 import { IStudent } from './student.repository';
 import { SubjectNotFoundException } from '../exceptions';
-import { COMPONENTS, LEARNING_COMPETENCY } from '../constant/tables';
+import {
+  COMPONENTS,
+  LEARNING_COMPETENCY,
+  LEARNING_MATERIAL,
+} from '../constant/tables';
 
 export type EnrolledStudents = Pick<
   IStudent,
@@ -140,6 +144,16 @@ class SubjectRepository {
       .limit(1);
 
     return learning_competency[0].learning_competency;
+  }
+
+  async getLearningMaterials(code: string) {
+    const learning_materials = await this.db
+      .getDbInstance()(LEARNING_MATERIAL)
+      .where({
+        code,
+      });
+
+    return learning_materials;
   }
 }
 

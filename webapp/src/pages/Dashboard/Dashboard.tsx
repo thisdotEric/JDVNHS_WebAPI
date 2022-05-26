@@ -135,7 +135,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
         <main>
           <div className="top">
             <div id="header-left">
-              {headerFlags?.showSubjectDropdown && (
+              {/* {headerFlags?.showSubjectDropdown && (
                 <Select
                   id="subject-dropdown"
                   placeholder="Select Subject"
@@ -146,7 +146,7 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
                     { value: 'vue', label: 'Vue' },
                   ]}
                 />
-              )}
+              )} */}
               <p>{headerFlags.headerStringValue}</p>
             </div>
           </div>

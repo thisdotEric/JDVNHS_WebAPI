@@ -108,4 +108,16 @@ export class ReportsController {
     const response = JsonResponse.success(questions, 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpGet('/:subject_name/materials/:code')
+  async getLearningMaterials(req: Request, res: Response) {
+    const code = `${req.params.code}`;
+
+    const learningMaterials = await this.reportsService.getLearningMaterials(
+      code
+    );
+
+    const response = JsonResponse.success(learningMaterials, 200);
+    res.status(response.statusCode).send(response);
+  }
 }

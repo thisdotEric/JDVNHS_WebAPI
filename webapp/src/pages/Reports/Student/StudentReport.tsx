@@ -4,8 +4,6 @@ import { useSetHeader, useSetPageTitle } from '../../../hooks';
 import './StudentReport.scss';
 import { Accordion, Code, List } from '@mantine/core';
 import { axios } from '../../../utils';
-import { data } from './data';
-import { QuestionMark, Notes } from 'tabler-icons-react';
 import {
   MainReportAccordiionLabel,
   QuestionAccordionLabel,
@@ -26,6 +24,7 @@ interface LearningCompetencyAnalysis {
 export interface LearningMaterials {
   learning_material: string;
   url: string;
+  code: string;
 }
 
 export interface QuestionItem {
@@ -51,9 +50,6 @@ export interface PersonalizedRemediation {
   evaluationQuestions: Question[];
 }
 
-const link =
-  'https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing';
-
 function capitlizeString(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
@@ -73,12 +69,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   const [learningMaterials, setLearningMaterials] = useState<
     LearningMaterials[]
-  >([
-    {
-      learning_material: 'Go Concurrency',
-      url: 'https://github.com/thisdotEric',
-    },
-  ]);
+  >([]);
 
   const [evaluationQuestions, setEvalutionQuestions] = useState<
     EvaluationQuestion[]
@@ -90,15 +81,68 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
     'demonstrative',
   ]);
 
+  const fetchLearningMaterials = async (codes: string[]) => {
+    const learningMaterialsSet = new Set();
+
+    for await (const code of codes) {
+      const { data } = await axios.get(`reports/Math7/materials/${code}`);
+      data.data.forEach((lc: any) => {
+        learningMaterialsSet.add(lc);
+      });
+    }
+
+    let allLearningMaterials: LearningMaterials[] = [];
+    for (let q of learningMaterialsSet.values()) {
+      allLearningMaterials.push(q as LearningMaterials);
+    }
+
+    console.log(allLearningMaterials);
+    setLearningMaterials(allLearningMaterials);
+  };
+
   const fetchRemediation = async () => {
     const { data } = await axios.get(`reports/subject/Math7/1/${LRN}`);
     setLearningCompetencies(data.data);
 
-    const { data: questions } = await axios.get(
-      'reports/Math7/competencies/M7NS-Ia-1/questions',
+    const codes: string[] = data.data.map(
+      (d: any) => d.analysis === 'notProficient' && d.code,
     );
-    setEvalutionQuestions(questions.data);
-    console.table(questions.data);
+    console.log('Codes: ', codes);
+
+    const questionSet = new Set();
+
+    for await (const lc of data.data) {
+      if (lc.analysis === 'proficient') continue;
+
+      const { data: questions } = await axios.get(
+        `reports/Math7/competencies/${lc.code}/questions`,
+      );
+
+      /**
+       * Add the questions to the set
+       * Using set will not permit duplicate values
+       */
+      questions.data.forEach((d: any) => questionSet.add(d));
+    }
+
+    let allQuestions: EvaluationQuestion[] = [];
+    for (let q of questionSet.values()) {
+      allQuestions.push(q as EvaluationQuestion);
+    }
+
+    fetchLearningMaterials(codes);
+
+    setEvalutionQuestions(allQuestions);
+  };
+
+  const countQuestion = (code: string, q_type: QuestionType): number => {
+    let count = 0;
+
+    evaluationQuestions.forEach(q => {
+      if (q.code === code && q.question_type === q_type) count++;
+    });
+
+    return count;
   };
 
   useEffect(() => {
@@ -109,7 +153,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
     <div id="student-report">
       <p id="name">John Eric Siguenza</p>
 
-      {learningCompetencies.map(({ learning_competency, analysis }) => {
+      {learningCompetencies.map(({ learning_competency, analysis, code }) => {
         return (
           analysis === 'notProficient' && (
             <Accordion multiple iconPosition="right">
@@ -122,6 +166,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                 }
               >
                 <LearningMaterialsComponent
+                  code={code}
                   learning_materials={learningMaterials}
                 />
 
@@ -135,11 +180,12 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                           <QuestionAccordionLabel
                             passed
                             label={q_type}
-                            questionsCount={10}
+                            questionsCount={countQuestion(code, q_type)}
                           />
                         }
                       >
                         <EvaluationQuestions
+                          code={code}
                           questionType={q_type}
                           questions={evaluationQuestions}
                         />

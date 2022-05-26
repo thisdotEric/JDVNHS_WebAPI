@@ -148,6 +148,10 @@ class ReportsService {
     return this.subjectRepo.getLearningCompetencyDetails(code);
   }
 
+  async getLearningMaterials(code: string) {
+    return this.subjectRepo.getLearningMaterials(code);
+  }
+
   async getLearningCompetencyGroupings(
     LRN: string,
     subject_id: string,

@@ -409,6 +409,32 @@ class SubjectController extends BaseHttpController {
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpPost('/:subject_name/learning-materials')
+  async addNewLearningMaterial(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const { learningMaterial } = req.body;
+
+    await this.subjectService.addNewLearningMaterial(learningMaterial);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/learning-materials/:id')
+  async deleteLearningCompetency(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const id = parseInt(`${req.params.id}`);
+
+    await this.subjectService.deleteLearningMaterial(id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default SubjectController;

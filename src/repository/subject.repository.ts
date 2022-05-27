@@ -22,6 +22,12 @@ export interface SubjectComponentWeights {
   written_work: number;
 }
 
+export interface LearningMaterial {
+  code: string;
+  learning_material: string;
+  link?: string;
+}
+
 @injectable()
 class SubjectRepository {
   constructor(@inject(TYPES.IDatabase) private readonly db: KnexQueryBuilder) {}
@@ -154,6 +160,14 @@ class SubjectRepository {
       });
 
     return learning_materials;
+  }
+
+  async addLearningMaterial(learningMaterial: LearningMaterial) {
+    await this.db.getDbInstance()(LEARNING_MATERIAL).insert(learningMaterial);
+  }
+
+  async deleteLearningMaterials(id: number) {
+    await this.db.getDbInstance()(LEARNING_MATERIAL).where({ id }).delete();
   }
 }
 

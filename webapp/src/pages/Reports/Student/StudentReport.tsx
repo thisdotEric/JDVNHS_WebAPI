@@ -23,7 +23,7 @@ interface LearningCompetencyAnalysis {
 
 export interface LearningMaterials {
   learning_material: string;
-  url: string;
+  link: string;
   code: string;
 }
 
@@ -170,6 +170,7 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
                   />
                 }
               >
+                <p id="section-title">Learning Materials</p>
                 <LearningMaterialsComponent
                   code={code}
                   learning_materials={learningMaterials}

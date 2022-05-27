@@ -128,13 +128,11 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 )}
               </div>
               <div className="right">
-                <a
-                  href="https://drive.google.com/drive/folders/1HD79Ypi9AMOpOKxYp8g83vEpkCs1DIb4?usp=sharing"
-                  target={'_blank'}
-                  className="lectures-link"
+                <Link
+                  to={`/t/competencies/learning-materials/${row.row.original.code}`}
                 >
                   View Learning Materials
-                </a>
+                </Link>
               </div>
             </div>
           ),

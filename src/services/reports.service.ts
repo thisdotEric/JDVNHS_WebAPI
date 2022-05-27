@@ -20,6 +20,7 @@ import {
   groupLearningCompetency,
   LearningCompetencyScore,
 } from '../algorithms/personalized-remediation';
+import { LearningCompetencyAnalysis } from '../controller/reports.controller';
 
 export const mapData = (data: any[]) => {
   return data.map(d => {
@@ -99,7 +100,12 @@ class ReportsService {
 
     const reportsTable = [];
 
-    for (let { user_id, first_name, middle_name, last_name } of students) {
+    for await (let {
+      user_id,
+      first_name,
+      middle_name,
+      last_name,
+    } of students) {
       const weights_Promise = components.map(c => {
         return this.gradesService.computeForComponentWeightedScore(
           subject_id,
@@ -127,6 +133,15 @@ class ReportsService {
       let conductRemediation =
         prediction.trueCount > prediction.falseCount ? true : false;
 
+      const groupings = await this.groupLearningCompetency(user_id, 'Math7', 1);
+
+      let notProficientCount = 0;
+      groupings.forEach(({ analysis }) => {
+        if (analysis === 'notProficient') notProficientCount++;
+      });
+
+      if (notProficientCount == 0) conductRemediation = false;
+
       reportsTable.push({
         user_id,
         first_name,
@@ -138,6 +153,43 @@ class ReportsService {
     }
 
     return reportsTable;
+  }
+
+  private async groupLearningCompetency(
+    LRN: string,
+    subject_id: string,
+    grading_period: number
+  ): Promise<LearningCompetencyAnalysis[]> {
+    let groupings: LearningCompetencyAnalysis[] = [];
+
+    const learning_competency_groupings =
+      await this.getLearningCompetencyGroupings(
+        LRN,
+        subject_id,
+        grading_period
+      );
+
+    for await (const code of learning_competency_groupings.notProficient) {
+      const learning_competency = await this.getLearningCompetencyDetails(code);
+
+      groupings.push({
+        code,
+        learning_competency,
+        analysis: 'notProficient',
+      });
+    }
+
+    for await (const code of learning_competency_groupings.proficient) {
+      const learning_competency = await this.getLearningCompetencyDetails(code);
+
+      groupings.push({
+        code,
+        learning_competency,
+        analysis: 'proficient',
+      });
+    }
+
+    return groupings;
   }
 
   async getQuestions(learning_competency_code: string) {
@@ -170,8 +222,8 @@ class ReportsService {
       const lecture_ids = (await this.lectureRepo.getLectureIds(lc.code)).map(
         l => l.lecture_id
       );
-      console.log('Code', lc.code);
-      console.log('Lectures IDS', lecture_ids);
+      // console.log('Code', lc.code);
+      // console.log('Lectures IDS', lecture_ids);
 
       const assessment_ids = (
         await Promise.all(
@@ -181,20 +233,20 @@ class ReportsService {
         )
       ).flat();
 
-      console.log('Assessment IDS: ', assessment_ids);
+      // console.log('Assessment IDS: ', assessment_ids);
 
       const assessmentTotalItem =
         await this.assessmentRepo.getAssessmentTotalItemPerLectureIds(
           lecture_ids
         );
 
-      console.log('Total Item: ', assessmentTotalItem);
+      // console.log('Total Item: ', assessmentTotalItem);
 
       const totalScore = await this.scoresRepo.getTotalScoreByAssessmentIds(
         LRN,
         assessment_ids
       );
-      console.log('Total Score: ', totalScore);
+      // console.log('Total Score: ', totalScore);
 
       learning_competency_score.push({
         learningCompetency: lc.code,
@@ -204,10 +256,10 @@ class ReportsService {
         ),
       });
 
-      console.log('=========');
+      // console.log('=========');
     }
 
-    console.log('Percentage Scores: ', learning_competency_score);
+    // console.log('Percentage Scores: ', learning_competency_score);
 
     const groupings = groupLearningCompetency(LRN, learning_competency_score);
 

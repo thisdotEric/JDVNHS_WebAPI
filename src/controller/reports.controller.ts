@@ -5,7 +5,7 @@ import { inject } from 'inversify';
 import JsonResponse from '../utils/JsonResponse';
 import ReportsService from '../services/reports.service';
 
-interface LearningCompetencyAnalysis {
+export interface LearningCompetencyAnalysis {
   code: string;
   learning_competency: string;
   analysis: 'proficient' | 'notProficient';
@@ -50,16 +50,11 @@ export class ReportsController {
     res.status(response.statusCode).send(response);
   }
 
-  @httpGet(
-    '/subject/:subject_id/:grading_period/:LRN',
-    TYPES.AuthMiddleware,
-    TYPES.TeacherAccessONLY
-  )
-  async getLearningCompetencyGroupings(req: Request, res: Response) {
-    const subject_id = `${req.params.subject_id}`;
-    const LRN = `${req.params.LRN}`;
-    const grading_period = parseInt(`${req.params.grading_period}`);
-
+  private async groupLearningCompetency(
+    LRN: string,
+    subject_id: string,
+    grading_period: number
+  ): Promise<LearningCompetencyAnalysis[]> {
     let groupings: LearningCompetencyAnalysis[] = [];
 
     const learning_competency_groupings =
@@ -91,7 +86,57 @@ export class ReportsController {
       });
     }
 
-    console.log(groupings);
+    return groupings;
+  }
+
+  @httpGet(
+    '/subject/:subject_id/:grading_period/:LRN',
+    TYPES.AuthMiddleware,
+    TYPES.TeacherAccessONLY
+  )
+  async getLearningCompetencyGroupings(req: Request, res: Response) {
+    const subject_id = `${req.params.subject_id}`;
+    const LRN = `${req.params.LRN}`;
+    const grading_period = parseInt(`${req.params.grading_period}`);
+
+    const groupings = await this.groupLearningCompetency(
+      LRN,
+      subject_id,
+      grading_period
+    );
+
+    // let groupings: LearningCompetencyAnalysis[] = [];
+
+    // const learning_competency_groupings =
+    //   await this.reportsService.getLearningCompetencyGroupings(
+    //     LRN,
+    //     subject_id,
+    //     grading_period
+    //   );
+
+    // for await (const code of learning_competency_groupings.notProficient) {
+    //   const learning_competency =
+    //     await this.reportsService.getLearningCompetencyDetails(code);
+
+    //   groupings.push({
+    //     code,
+    //     learning_competency,
+    //     analysis: 'notProficient',
+    //   });
+    // }
+
+    // for await (const code of learning_competency_groupings.proficient) {
+    //   const learning_competency =
+    //     await this.reportsService.getLearningCompetencyDetails(code);
+
+    //   groupings.push({
+    //     code,
+    //     learning_competency,
+    //     analysis: 'proficient',
+    //   });
+    // }
+
+    // console.log(groupings);
 
     // console.log(LRN, learning_competency_groupings);
 

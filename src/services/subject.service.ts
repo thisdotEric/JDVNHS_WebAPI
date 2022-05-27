@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import SubjectRepository, {
   EnrolledStudents,
+  LearningMaterial,
 } from '../repository/subject.repository';
 import AttendanceRepository, {
   ATTENDANCE_STATUS,
@@ -158,6 +159,14 @@ class SubjectService {
 
   async addNewLecture(lecture: Lecture) {
     return this.lectureRepo.addNewLectureSession(lecture);
+  }
+
+  async addNewLearningMaterial(learningMaterial: LearningMaterial) {
+    return this.subjectRepo.addLearningMaterial(learningMaterial);
+  }
+
+  async deleteLearningMaterial(id: number) {
+    return this.subjectRepo.deleteLearningMaterials(id);
   }
 
   async getClassGrades(subject_id: string) {

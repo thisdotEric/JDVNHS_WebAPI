@@ -15,12 +15,11 @@ const LearningMaterialsComponent: FC<LearningMaterialsProps> = ({
 }: LearningMaterialsProps) => {
   return (
     <ol id="learning-materials">
-      {learning_materials.map(({ url, learning_material, code }) => {
-        url = gdrive_link;
+      {learning_materials.map(({ link, learning_material, code }) => {
         if (code === lcCode) {
           return (
             <li>
-              <a href={url} target={'_blank'}>
+              <a href={link} target={'_blank'}>
                 {learning_material}
               </a>
             </li>

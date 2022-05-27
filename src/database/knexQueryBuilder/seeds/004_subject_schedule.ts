@@ -3,8 +3,7 @@ import { DbConstants } from '../../../constant/db.constants';
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex(DbConstants.SCHEDULE_TABLE).del();
-
+  // await knex(DbConstants.SCHEDULE_TABLE).del();
   // Inserts seed entries
   // await knex(DbConstants.SCHEDULE_TABLE).insert([
   //   {

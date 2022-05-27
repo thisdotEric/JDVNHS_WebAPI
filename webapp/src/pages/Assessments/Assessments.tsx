@@ -126,7 +126,11 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
 
     if (id)
       setAssessments(
-        data.data.filter((e: any) => e.lecture_id == parseInt(id)),
+        data.data
+          .filter((e: any) => e.lecture_id == parseInt(id))
+          .map((a: any) => {
+            return { ...a, date: moment(a.date).format('L') };
+          }),
       );
     else
       setAssessments(

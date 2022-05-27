@@ -25,7 +25,7 @@ const EvaluationQuestions: FC<
 > = ({}: EvaluationQuestionsProps) => {
   useSetPageTitle('Evaluation Questions');
   useSetHeader({
-    headerStringValue: '',
+    headerStringValue: 'List of all Evaluation Questions',
     showSubjectDropdown: false,
   });
 
@@ -33,6 +33,9 @@ const EvaluationQuestions: FC<
   const [questions, setQuestions] = useState<Question[]>([]);
   const [updateQuestion, setUpdateQuestion] = useState(false);
   const [addQuestion, setAddQuestion] = useState(false);
+  const [currentId, setCurrentId] = useState<number>();
+
+  const currId = useMemo(() => currentId, [currentId]);
 
   const [currentQuestion, setCurrentQuestion] = useState<Question>({
     code: '',
@@ -88,6 +91,8 @@ const EvaluationQuestions: FC<
                     },
                   }}
                   onClick={() => {
+                    setCurrentId(row.value!);
+
                     console.log(
                       questions.filter(q => q.question_id == row.value)[0],
                     );
@@ -100,7 +105,18 @@ const EvaluationQuestions: FC<
                 >
                   Edit
                 </Button>
-                <Button>Delete</Button>
+
+                <Button
+                  onClick={async () => {
+                    await axios.delete(`subject/Math7/questions/${row.value}`);
+
+                    setQuestions(old =>
+                      old.filter(q => q.question_id != row.value),
+                    );
+                  }}
+                >
+                  Delete
+                </Button>
               </div>
             );
           },
@@ -157,6 +173,8 @@ const EvaluationQuestions: FC<
           onSubmit={async e => {
             e.preventDefault();
 
+            console.log(currentQuestion);
+
             setQuestions(old => {
               console.log(currentQuestion.question_id);
 
@@ -172,7 +190,7 @@ const EvaluationQuestions: FC<
 
             await axios.patch('subject/Math7/questions', {
               question: currentQuestion?.question,
-              question_id: currentQuestion?.question_id,
+              question_id: currId,
               question_type: currentQuestion?.question_type,
             });
 
@@ -192,7 +210,7 @@ const EvaluationQuestions: FC<
               });
             }}
           >
-            {currentQuestion?.question}
+            {questions.filter(q => q.question_id == currId)[0]?.question}
           </Textarea>
 
           <Button

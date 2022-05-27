@@ -63,17 +63,17 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
           Header: 'CONTACT NUMBER',
           accessor: 'contact_number',
         },
-        {
-          Header: 'ACTION',
-          accessor: 'user_id',
-          Cell: row => {
-            return (
-              <Link to={`/t/reports/student/${row.value}`} id="report-btn">
-                View individual report
-              </Link>
-            );
-          },
-        },
+        // {
+        //   Header: 'ACTION',
+        //   accessor: 'user_id',
+        //   Cell: row => {
+        //     return (
+        //       <Link to={`/t/reports/student/${row.value}`} id="report-btn">
+        //         View individual report
+        //       </Link>
+        //     );
+        //   },
+        // },
       ] as Column<IStudent>[],
     [],
   );

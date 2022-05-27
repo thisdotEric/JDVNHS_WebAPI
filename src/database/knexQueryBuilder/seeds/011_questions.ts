@@ -1,6 +1,6 @@
 import * as Knex from 'knex';
 import { QUESTIONS } from '../../../constant/tables';
-import { questionBank } from './questionbank';
+import { questionBank } from '../questionbank';
 
 export interface QuestionItem {
   code: string;

@@ -174,6 +174,14 @@ class SubjectService {
     return this.subjectRepo.deleteLearningMaterials(id);
   }
 
+  async deleteLecture(lecture_id: number) {
+    return this.lectureRepo.removeLecture(lecture_id);
+  }
+
+  async deleteQuestion(question_id: number) {
+    return this.questionRepo.deleteQuestion(question_id);
+  }
+
   async updateQuestion(
     question_id: number,
     question: string,

@@ -440,6 +440,8 @@ class SubjectController extends BaseHttpController {
   async updateQuestion(@request() req: Request, @response() res: Response) {
     const { question_id, question, question_type } = req.body;
 
+    console.log(req.body);
+
     await this.subjectService.updateQuestion(
       question_id,
       question,
@@ -455,6 +457,28 @@ class SubjectController extends BaseHttpController {
     const { question } = req.body;
 
     await this.subjectService.addNewQuestion(question);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/lectures/:lecture_id')
+  async deleteLecture(@request() req: Request, @response() res: Response) {
+    const lecture_id = parseInt(`${req.params.lecture_id}`);
+
+    console.log(lecture_id);
+
+    await this.subjectService.deleteLecture(lecture_id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/questions/:question_id')
+  async deleteQuestion(@request() req: Request, @response() res: Response) {
+    const question_id = parseInt(`${req.params.question_id}`);
+
+    await this.subjectService.deleteQuestion(question_id);
 
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);

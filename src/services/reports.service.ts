@@ -70,24 +70,24 @@ class ReportsService {
     // Build the decision tree
     const tree = await this.buildTree();
 
-    const studentData: StudentAttributes = {
-      passedPreTest: false,
-      pt_wScore: 13,
-      ww_wScore: 10,
-      qa_wScore: 11,
-    };
+    // const studentData: StudentAttributes = {
+    //   passedPreTest: false,
+    //   pt_wScore: 13,
+    //   ww_wScore: 10,
+    //   qa_wScore: 11,
+    // };
 
-    const treeJson = JSON.stringify(tree);
-    // console.log(treeJson);
+    // const treeJson = JSON.stringify(tree);
+    // // console.log(treeJson);
 
-    printTree(tree);
+    // printTree(tree);
 
-    const prediction = classify(studentData, tree);
-    // console.log({ user_id, weights });
-    // console.log(prediction);
+    // const prediction = classify(studentData, tree);
+    // // console.log({ user_id, weights });
+    // // console.log(prediction);
 
-    let conductRemediation =
-      prediction.trueCount > prediction.falseCount ? true : false;
+    // let conductRemediation =
+    //   prediction.trueCount > prediction.falseCount ? true : false;
 
     // console.log('Conduct: ', conductRemediation);
 

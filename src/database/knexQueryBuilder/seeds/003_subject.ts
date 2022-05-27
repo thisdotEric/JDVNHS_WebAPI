@@ -45,7 +45,8 @@ export async function seed(knex: Knex): Promise<void> {
   const enrolledStudentsInMath7: any[] = [];
 
   for (let index = start; index <= end; index++) {
-    LRN = `1234567891${index}`;
+    // LRN = `1234567891${index}`;
+    LRN = `5011416007${index}`;
 
     enrolledStudentsInFil10.push({ LRN, subject_id: 'Fil10' });
     enrolledStudentsInMath10.push({ LRN, subject_id: 'Math10' });

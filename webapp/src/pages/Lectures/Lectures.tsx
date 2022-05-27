@@ -5,11 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
 import { SubjectContext } from '../../context';
 import { shortenDate } from '../../utils';
-// import { Button } from '../../components/Button';
 import { TableComponent } from '../../components/Table';
 import type { Column } from 'react-table';
 import moment from 'moment';
-import { Modal, Button, Group } from '@mantine/core';
+import { Modal, Button } from '@mantine/core';
 import { CreateAssessment } from '../Assessments/CreateAssessment';
 import { CreateLectureModal } from './CreateLectureModal';
 
@@ -133,6 +132,18 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                 >
                   View Learning Materials
                 </Link>
+                <Button
+                  id="remove-lecture"
+                  onClick={async () => {
+                    await axios.delete(
+                      `subject/Math7/lectures/${row.row.original.lecture_id}`,
+                    );
+
+                    setRefetchLectures(true);
+                  }}
+                >
+                  Remove Lecture
+                </Button>
               </div>
             </div>
           ),

@@ -44,6 +44,10 @@ class QuestionRepository {
   async addQuestion(question: Question) {
     await this.db.getDbInstance()(QUESTIONS).insert(question);
   }
+
+  async deleteQuestion(question_id: number) {
+    await this.db.getDbInstance()(QUESTIONS).where({ question_id }).delete();
+  }
 }
 
 export default QuestionRepository;

@@ -67,6 +67,11 @@ class LectureRepository {
 
     return lecture_ids;
   }
+
+  async removeLecture(lecture_id: number) {
+    //select lecture_id from lectures where code = 'M7NS-Ie-1'
+    await this.db.getDbInstance()(LECTURES).where({ lecture_id }).delete();
+  }
 }
 
 export default LectureRepository;

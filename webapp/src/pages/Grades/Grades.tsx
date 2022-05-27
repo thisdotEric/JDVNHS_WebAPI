@@ -33,7 +33,7 @@ interface GradesProps {}
 const Grades: FC<GradesProps> = ({}: GradesProps) => {
   useSetPageTitle('Grades');
   useSetHeader({
-    headerStringValue: 'List of computed grades',
+    headerStringValue: 'Math 7 - List of computed grades',
     showSubjectDropdown: true,
   });
 

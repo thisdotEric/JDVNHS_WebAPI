@@ -1,3 +1,15 @@
 #evaluation-questions {
-  display: block;
+  #question {
+    font-size: 16px;
+    background-color: transparent;
+    width: 850px;
+  }
+
+  #q_type {
+    font-weight: bold;
+  }
+
+  #textarea {
+    height: 500px;
+  }
 }

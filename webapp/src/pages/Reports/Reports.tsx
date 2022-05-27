@@ -24,7 +24,7 @@ const Reports: FC<ReportsProps> = ({}: ReportsProps) => {
   useSetPageTitle('Reports');
   useSetHeader({
     showSubjectDropdown: true,
-    headerStringValue: 'Student Individual Reports',
+    headerStringValue: 'Math 7 - Student Individual Reports',
   });
 
   const [students, setStudents] = useState<ReportsTable[]>([]);

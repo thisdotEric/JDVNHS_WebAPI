@@ -20,6 +20,9 @@ import AssessmentRepository, {
 import { computePercentageScore } from '../algorithms/grades';
 import TrainingDataRepository from '../repository/training_data.repository';
 import LearningCompetencyRepository from '../repository/learning_competency.repository';
+import QuestionRepository, {
+  Question,
+} from '../repository/question.repository';
 
 @injectable()
 class SubjectService {
@@ -37,7 +40,9 @@ class SubjectService {
     @inject(TYPES.TrainingDataRepository)
     private readonly trainingDataRepository: TrainingDataRepository,
     @inject(TYPES.LearningCompetencyRepository)
-    private readonly competencyRepo: LearningCompetencyRepository
+    private readonly competencyRepo: LearningCompetencyRepository,
+    @inject(TYPES.QuestionsRepository)
+    private readonly questionRepo: QuestionRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -167,6 +172,22 @@ class SubjectService {
 
   async deleteLearningMaterial(id: number) {
     return this.subjectRepo.deleteLearningMaterials(id);
+  }
+
+  async updateQuestion(
+    question_id: number,
+    question: string,
+    question_type: string
+  ) {
+    return this.questionRepo.updateQuestion(
+      question_id,
+      question,
+      question_type
+    );
+  }
+
+  async addNewQuestion(question: Question) {
+    return this.questionRepo.addQuestion(question);
   }
 
   async getClassGrades(subject_id: string) {

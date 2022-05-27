@@ -20,7 +20,7 @@ const LearningCompetencies: FC<
 > = ({}: LearningCompetenciesProps) => {
   useSetPageTitle('Learning Competencies');
   useSetHeader({
-    headerStringValue: 'List of Learning Competencies',
+    headerStringValue: 'Math 7, 1st Grading List of Learning Competencies',
     showSubjectDropdown: false,
   });
 

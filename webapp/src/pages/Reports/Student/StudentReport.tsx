@@ -146,8 +146,6 @@ const StudentReport: FC<StudentReportProps> = ({}: StudentReportProps) => {
 
   useEffect(() => {
     axios.get(`student/${LRN}`).then(({ data }) => {
-      console.log(data.data);
-
       setStudent(`${data.data.first_name} ${data.data.last_name} `);
     });
 

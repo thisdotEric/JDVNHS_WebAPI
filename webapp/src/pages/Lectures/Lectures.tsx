@@ -46,7 +46,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   useSetPageTitle('Lectures');
   useSetHeader({
     showSubjectDropdown: true,
-    headerStringValue: 'List of all lecture dates',
+    headerStringValue: 'Math 7, 1st Grading list of all lectures',
   });
 
   const [lectures, setLectures] = useState<LectureSession[]>([]);
@@ -195,14 +195,14 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
               console.log('dsf');
             },
           },
-          {
-            name: 'Add quarterly assessment (QA)',
-            action: async () => {
-              setCreateQA(true);
-              setOpened(true);
-              console.log('dsf');
-            },
-          },
+          // {
+          //   name: 'Add quarterly assessment (QA)',
+          //   action: async () => {
+          //     setCreateQA(true);
+          //     setOpened(true);
+          //     console.log('dsf');
+          //   },
+          // },
         ]}
       />
 

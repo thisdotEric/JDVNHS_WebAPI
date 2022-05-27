@@ -35,7 +35,7 @@ const Students: FC<StudentsProps> = ({}: StudentsProps) => {
   useSetPageTitle('Students');
   useSetHeader({
     showSubjectDropdown: true,
-    headerStringValue: 'List of all students',
+    headerStringValue: 'Math 7 - List of all students',
   });
 
   const [students, setStudents] = useState<IStudent[]>([]);

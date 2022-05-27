@@ -46,7 +46,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
   useSetPageTitle('Assessments');
   useSetHeader({
     showSubjectDropdown: true,
-    headerStringValue: `List of all assessments`,
+    headerStringValue: `Math 7, 1st grading list of all assessments`,
   });
 
   const [assessments, setAssessments] = useState<
@@ -107,7 +107,7 @@ const Assessments: FC<AssessmentsProps> = ({}: AssessmentsProps) => {
                   );
                 }}
               >
-                {withScores ? 'View/Update ' : 'Add '} Scores
+                {withScores ? 'Update ' : 'Add '} Scores
               </p>
             );
           },

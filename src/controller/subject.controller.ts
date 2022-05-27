@@ -435,6 +435,30 @@ class SubjectController extends BaseHttpController {
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
+
+  @httpPatch('/:subject_name/questions')
+  async updateQuestion(@request() req: Request, @response() res: Response) {
+    const { question_id, question, question_type } = req.body;
+
+    await this.subjectService.updateQuestion(
+      question_id,
+      question,
+      question_type
+    );
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/questions')
+  async addNewQuestion(@request() req: Request, @response() res: Response) {
+    const { question } = req.body;
+
+    await this.subjectService.addNewQuestion(question);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
 }
 
 export default SubjectController;

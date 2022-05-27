@@ -119,7 +119,18 @@ const CreateLectureModal: FC<CreateLectureModalProps> = ({
         data={data}
         onChange={code => setLecture({ ...lecture, code: code! })}
       />
-      <Button type="submit">Save</Button>
+      <Button
+        styles={{
+          root: {
+            marginTop: 10,
+            width: '100%',
+          },
+        }}
+        color={'teal'}
+        type="submit"
+      >
+        Save new Lecture
+      </Button>
     </form>
   );
 };

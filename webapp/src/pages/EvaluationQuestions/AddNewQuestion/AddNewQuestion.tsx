@@ -4,13 +4,20 @@ import { DeviceFloppy } from 'tabler-icons-react';
 import './AddNewQuestion.scss';
 import type { Question } from '../EvaluationQuestions';
 import { axios } from '../../../utils';
+import type { QuestionType } from 'src/pages/Reports/Student/StudentReport';
 
 interface AddNewQuestionProps {
   code: string;
+  add: React.Dispatch<React.SetStateAction<Question[]>>;
+  close: () => void;
+  fetchAgain: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const AddNewQuestion: FC<AddNewQuestionProps> = ({
   code,
+  close,
+  add,
+  fetchAgain,
 }: AddNewQuestionProps) => {
   const [newQuestion, setQuestion] = useState<Question>({
     code,
@@ -25,6 +32,10 @@ const AddNewQuestion: FC<AddNewQuestionProps> = ({
 
         console.log(newQuestion);
 
+        add(old => {
+          return [...old, newQuestion];
+        });
+
         await axios.post('subject/Math7/questions', {
           question: {
             question: newQuestion.question,
@@ -32,6 +43,10 @@ const AddNewQuestion: FC<AddNewQuestionProps> = ({
             code: newQuestion.code,
           },
         });
+
+        fetchAgain(Math.random());
+
+        close();
       }}
     >
       <Select
@@ -41,6 +56,9 @@ const AddNewQuestion: FC<AddNewQuestionProps> = ({
           root: {
             marginBottom: 10,
           },
+        }}
+        onChange={value => {
+          setQuestion({ ...newQuestion, question_type: value as QuestionType });
         }}
         defaultValue={'introductory'}
         data={[

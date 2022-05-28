@@ -156,7 +156,12 @@ const EvaluationQuestions: FC<
         onClose={() => setAddQuestion(false)}
         title="Add new Question"
       >
-        <AddNewQuestion code={code!} />
+        <AddNewQuestion
+          fetchAgain={setRefetch}
+          code={code!}
+          close={() => setAddQuestion(false)}
+          add={setQuestions}
+        />
       </Modal>
 
       <Modal

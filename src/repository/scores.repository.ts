@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
-import { SCORES } from '../constant/tables';
+import { ASSESSMENT, SCORES, TRANSMUTATION } from '../constant/tables';
 
 export interface Score {
   score_id: number;
@@ -77,6 +77,75 @@ class AssessmentScoresRepository {
 
     return allAssessmentsWithScores.rows;
   }
+
+  async getComponentsTotalItem(
+    subject_id: string,
+    component: string,
+    grading_period: number
+  ): Promise<number> {
+    const totalScore = await this.db
+      .getDbInstance()(ASSESSMENT)
+      .where({
+        subject_id,
+        component,
+        grading_period,
+      })
+      .sum('items as total_items')
+      .first();
+
+    return totalScore ? parseInt(totalScore.total_items, 10) : 0;
+  }
+
+  async getScores(
+    subject_id: string,
+    component: string,
+    grading_period: number
+  ) {
+    let query = `select s."LRN", SUM(s."score") as total_score from scores s join assessments a on a."assessment_id" = s."assessment_id" where a."component" = '${component}' AND a."grading_period" = '${grading_period}' AND a."subject_id" = '${subject_id}'  group by s."LRN";
+    `;
+
+    const totalScores = await this.db.getDbInstance().raw(query);
+
+    return totalScores.rows;
+  }
+
+  async getTotalStudentRawScore(
+    subject_id: string,
+    grading_period: number,
+    component: string,
+    LRN: string
+  ): Promise<number> {
+    const totalStudentRawScore = await this.db
+      .getDbInstance()
+      .raw(
+        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}'`
+      );
+
+    if (totalStudentRawScore.rows.length == 0) return 0;
+
+    return parseInt(totalStudentRawScore.rows[0].sum, 10);
+  }
+
+  async getTransmutatedGradeValue(grade: number) {
+    const transmutatedValue = await this.db
+      .getDbInstance()
+      .raw(
+        `select transmutated_grade from transmutation where '${grade}' BETWEEN initial_grade_low and initial_grade_high;`
+      );
+
+    return transmutatedValue.rows[0].transmutated_grade;
+  }
+
+  /// Sum select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';
+
+  /**
+ * 
+ * 
+ * select s."LRN", s."score" from assessments a join scores s on s."assessment_id" = a."assessment_id" where a."subject_id" = 'Math10' and a."grading_period" = '1' and s."LRN" = '123456789110' and a."component" = 'QA' group by s."LRN", s."score";
+
+/// Sum
+select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';
+ */
 }
 
 export default AssessmentScoresRepository;

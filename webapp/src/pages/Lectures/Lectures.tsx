@@ -29,14 +29,16 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
   const [validAttendance, setValidAttendance] = useState<number[]>();
 
   useEffect(() => {
-    axios.get(`subject/${selectedSubject}/lectures`).then(({ data }) => {
-      setLectures(data.data);
-      axios
-        .get(`subject/${selectedSubject}/attendance/valid`)
-        .then(({ data }) => {
-          setValidAttendance(data.data.map((n: any) => n.lecture_id));
-        });
-    });
+    axios
+      .get(`subject/${selectedSubject}/lectures`)
+      .then(({ data: lectures }) => {
+        axios
+          .get(`subject/${selectedSubject}/attendance/valid`)
+          .then(({ data }) => {
+            setValidAttendance(data.data.map((n: any) => n.lecture_id));
+            setLectures(lectures.data);
+          });
+      });
   }, [selectedSubject]);
 
   return (
@@ -53,7 +55,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     value="View/Update Attendance"
                     buttontype="select"
                     onClick={() => {
-                      navigate(`/t/attendance/${lecture_id}`);
+                      navigate(`/t/lectures/attendance/${lecture_id}`);
                     }}
                   />
                 ) : (
@@ -61,7 +63,7 @@ const Lectures: FC<LecturesProps> = ({}: LecturesProps) => {
                     value="Create New Attendance"
                     buttontype="select"
                     onClick={() => {
-                      navigate(`/t/attendance/new/${lecture_id}`);
+                      navigate(`/t/lectures/attendance/new/${lecture_id}`);
                     }}
                   />
                 )}

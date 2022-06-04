@@ -11,13 +11,12 @@ export async function seed(knex: Knex): Promise<void> {
   const end = 50;
 
   let LRN: string = '';
-  let attendance_id = 1;
 
   const id = await knex(DbConstants.LECTURE_TABLE)
     .returning('lecture_id')
     .insert({
       lecture_date: '2021-12-16',
-      subject_id: 'PreCal',
+      subject_id: 'Math10',
       grading_period: 1,
     });
 

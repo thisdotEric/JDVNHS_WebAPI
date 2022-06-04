@@ -16,6 +16,7 @@ import LectureRepository from '../repository/lecture.repository';
 import AssessmentRepository, {
   Assessment,
 } from '../repository/assessment.repository';
+import { computePercentageScore } from '../algorithms/grades';
 
 @injectable()
 class SubjectService {
@@ -129,6 +130,55 @@ class SubjectService {
 
   async addNewScores(scores: NewScores) {
     return this.scoresRepo.addNewScores(scores);
+  }
+
+  async getClassGrades(subject_id: string) {
+    let component = 'PT';
+    const grading_period = 1;
+
+    const grading_periods = [1, 2, 3, 4];
+    const components = ['PT', 'WW', 'QA'];
+
+    let gradingScores = [];
+
+    for (let i = 0; i < grading_periods.length; i++) {
+      gradingScores.push(
+        this.scoresRepo.getScores(subject_id, component, grading_periods[i])
+      );
+    }
+
+    const ff = await Promise.all(gradingScores);
+
+    console.log(ff);
+
+    // try {
+    //   const scores = await this.scoresRepo.getScores(
+    //     subject_id,
+    //     component,
+    //     grading_period
+    //   );
+    //   const totalItem = await this.scoresRepo.getComponentsTotalItem(
+    //     subject_id,
+    //     component,
+    //     grading_period
+    //   );
+
+    //   const items: number = parseInt(totalItem?.total_items);
+    //   console.log('Total number of items:', items);
+
+    //   const percentage_scores = scores.map((score: any) => {
+    //     let studentScore: number = parseInt(score.total_score, 10);
+
+    //     return {
+    //       ...score,
+    //       percentage_score: computePercentageScore(studentScore, items),
+    //     };
+    //   });
+
+    //   console.log(percentage_scores);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 }
 

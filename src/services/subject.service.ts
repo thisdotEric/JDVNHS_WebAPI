@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import TYPES from '../ioc/binding-types';
 import SubjectRepository, {
   EnrolledStudents,
+  LearningMaterial,
 } from '../repository/subject.repository';
 import AttendanceRepository, {
   ATTENDANCE_STATUS,
@@ -12,11 +13,16 @@ import AssessmentScoresRepository, {
   NewScores,
   UpdatedScore,
 } from '../repository/scores.repository';
-import LectureRepository from '../repository/lecture.repository';
+import LectureRepository, { Lecture } from '../repository/lecture.repository';
 import AssessmentRepository, {
   Assessment,
 } from '../repository/assessment.repository';
 import { computePercentageScore } from '../algorithms/grades';
+import TrainingDataRepository from '../repository/training_data.repository';
+import LearningCompetencyRepository from '../repository/learning_competency.repository';
+import QuestionRepository, {
+  Question,
+} from '../repository/question.repository';
 
 @injectable()
 class SubjectService {
@@ -30,7 +36,13 @@ class SubjectService {
     @inject(TYPES.LectureRepository)
     private readonly lectureRepo: LectureRepository,
     @inject(TYPES.AssessmentRepository)
-    private readonly assessmentRepo: AssessmentRepository
+    private readonly assessmentRepo: AssessmentRepository,
+    @inject(TYPES.TrainingDataRepository)
+    private readonly trainingDataRepository: TrainingDataRepository,
+    @inject(TYPES.LearningCompetencyRepository)
+    private readonly competencyRepo: LearningCompetencyRepository,
+    @inject(TYPES.QuestionsRepository)
+    private readonly questionRepo: QuestionRepository
   ) {}
 
   async getEnrolledStudents(subjectName: string): Promise<EnrolledStudents[]> {
@@ -116,6 +128,10 @@ class SubjectService {
     return this.scoresRepo.updateAssessmentScores(scores);
   }
 
+  async updateSingleAssessmentScore(score: UpdatedScore) {
+    return this.scoresRepo.updateSingleAssessmentScore(score);
+  }
+
   async addNewAssessment(assessment: Assessment) {
     return this.assessmentRepo.addNewAssessment(assessment);
   }
@@ -130,6 +146,56 @@ class SubjectService {
 
   async addNewScores(scores: NewScores) {
     return this.scoresRepo.addNewScores(scores);
+  }
+
+  async getStudentPerformance(subject_id: string, grading_period: number) {
+    return this.trainingDataRepository.getTrainingData(
+      subject_id,
+      grading_period
+    );
+  }
+
+  async getLearningCompetencies(subject_id: string, grading_period: number) {
+    return this.competencyRepo.getLearningCompetencies(
+      subject_id,
+      grading_period
+    );
+  }
+
+  async addNewLecture(lecture: Lecture) {
+    return this.lectureRepo.addNewLectureSession(lecture);
+  }
+
+  async addNewLearningMaterial(learningMaterial: LearningMaterial) {
+    return this.subjectRepo.addLearningMaterial(learningMaterial);
+  }
+
+  async deleteLearningMaterial(id: number) {
+    return this.subjectRepo.deleteLearningMaterials(id);
+  }
+
+  async deleteLecture(lecture_id: number) {
+    return this.lectureRepo.removeLecture(lecture_id);
+  }
+
+  async deleteQuestion(question_id: number) {
+    return this.questionRepo.deleteQuestion(question_id);
+  }
+
+  async updateQuestion(
+    question_id: number,
+    question: string,
+    question_type: string
+  ) {
+    return this.questionRepo.updateQuestion(
+      question_id,
+      question,
+      question_type
+    );
+  }
+
+  async addNewQuestion(question: Question) {
+    return this.questionRepo.addQuestion(question);
   }
 
   async getClassGrades(subject_id: string) {

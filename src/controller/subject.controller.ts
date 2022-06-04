@@ -13,6 +13,11 @@ import { Request, Response } from 'express';
 import JsonResponse from '../utils/JsonResponse';
 import SubjectService from '../services/subject.service';
 import TYPES from '../ioc/binding-types';
+import {
+  buildTree,
+  classify,
+  StudentAttributes,
+} from '../algorithms/cart-decision-tree';
 
 @controller('/subject', TYPES.AuthMiddleware, TYPES.TeacherAccessONLY)
 class SubjectController extends BaseHttpController {
@@ -264,6 +269,24 @@ class SubjectController extends BaseHttpController {
     res.status(response.statusCode).send(response);
   }
 
+  @httpPatch('/:subject_name/assessments/score')
+  async updateSingleAssessmentScore(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const { score } = req.body;
+
+    try {
+      await this.subjectService.updateSingleAssessmentScore(score);
+    } catch (error) {
+      console.log(error);
+    }
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
   @httpPost('/:subject_name/assessments/scores')
   async addAssessmentScores(
     @request() req: Request,
@@ -289,11 +312,9 @@ class SubjectController extends BaseHttpController {
     const subject_id = `${req.params.subject_name}`;
     const { assessment } = req.body;
 
-    const addedAssessment = await this.subjectService.addNewAssessment(
-      assessment
-    );
+    await this.subjectService.addNewAssessment(assessment);
 
-    const response = JsonResponse.success(addedAssessment, 200);
+    const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }
 
@@ -329,6 +350,136 @@ class SubjectController extends BaseHttpController {
     const allAssessmentsWithScores = await this.subjectService.getClassGrades(
       subject_id
     );
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/performance')
+  async getPerformance(@request() req: Request, @response() res: Response) {
+    const subject_id = `${req.params.subject_name}`;
+    let prediction;
+
+    try {
+      const training_data = await this.subjectService.getStudentPerformance(
+        subject_id,
+        1
+      );
+
+      const node = buildTree(training_data);
+
+      const studentData: StudentAttributes = {
+        passedPreTest: false,
+        pt_wScore: 90,
+        qa_wScore: 80,
+        ww_wScore: 100,
+      };
+
+      prediction = classify(studentData, node);
+    } catch (error) {
+      console.log(error);
+    }
+    const response = JsonResponse.success(prediction, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpGet('/:subject_name/:grading_period/competencies')
+  async getLearningCompetencies(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const subject_id = `${req.params.subject_name}`;
+    const grading_period = parseInt(`${req.params.grading_period}`);
+
+    const learningCompetencies =
+      await this.subjectService.getLearningCompetencies(
+        subject_id,
+        grading_period
+      );
+
+    const response = JsonResponse.success(learningCompetencies, 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/lectures')
+  async addNewLecture(@request() req: Request, @response() res: Response) {
+    const { lecture } = req.body;
+
+    await this.subjectService.addNewLecture(JSON.parse(lecture));
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/learning-materials')
+  async addNewLearningMaterial(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const { learningMaterial } = req.body;
+
+    await this.subjectService.addNewLearningMaterial(learningMaterial);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/learning-materials/:id')
+  async deleteLearningCompetency(
+    @request() req: Request,
+    @response() res: Response
+  ) {
+    const id = parseInt(`${req.params.id}`);
+
+    await this.subjectService.deleteLearningMaterial(id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPatch('/:subject_name/questions')
+  async updateQuestion(@request() req: Request, @response() res: Response) {
+    const { question_id, question, question_type } = req.body;
+
+    console.log(req.body);
+
+    await this.subjectService.updateQuestion(
+      question_id,
+      question,
+      question_type
+    );
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpPost('/:subject_name/questions')
+  async addNewQuestion(@request() req: Request, @response() res: Response) {
+    const { question } = req.body;
+
+    await this.subjectService.addNewQuestion(question);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/lectures/:lecture_id')
+  async deleteLecture(@request() req: Request, @response() res: Response) {
+    const lecture_id = parseInt(`${req.params.lecture_id}`);
+
+    console.log(lecture_id);
+
+    await this.subjectService.deleteLecture(lecture_id);
+
+    const response = JsonResponse.success('Ok', 200);
+    res.status(response.statusCode).send(response);
+  }
+
+  @httpDelete('/:subject_name/questions/:question_id')
+  async deleteQuestion(@request() req: Request, @response() res: Response) {
+    const question_id = parseInt(`${req.params.question_id}`);
+
+    await this.subjectService.deleteQuestion(question_id);
+
     const response = JsonResponse.success('Ok', 200);
     res.status(response.statusCode).send(response);
   }

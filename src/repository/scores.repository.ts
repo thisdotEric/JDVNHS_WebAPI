@@ -29,7 +29,7 @@ class AssessmentScoresRepository {
     const scores = await this.db
       .getDbInstance()
       .raw(
-        `select s."score_id", s."LRN", u."first_name", u."middle_name", u."last_name", s."score" from scores s join users u on u."user_id" = s."LRN" where s."assessment_id" = ${assessment_id};`
+        `select s."score_id", s."LRN", u."first_name", u."middle_name", u."last_name", s."score" from scores s join users u on u."user_id" = s."LRN" where s."assessment_id" = ${assessment_id} order by s."LRN" asc`
       );
 
     return scores.rows;
@@ -66,6 +66,12 @@ class AssessmentScoresRepository {
     }
 
     await Promise.all(updates);
+  }
+
+  async updateSingleAssessmentScore({ score, score_id }: UpdatedScore) {
+    await this.db.getDbInstance()(SCORES).update({ score }).where({
+      score_id,
+    });
   }
 
   async getAllAssessmentsWithScores(subject_id: string) {
@@ -118,7 +124,7 @@ class AssessmentScoresRepository {
     const totalStudentRawScore = await this.db
       .getDbInstance()
       .raw(
-        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}'`
+        `select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '${LRN}' and a."grading_period" = '${grading_period}' and a."component" = '${component}' and a."subject_id" = '${subject_id}' and a."assessment_type" = 'summative'`
       );
 
     if (totalStudentRawScore.rows.length == 0) return 0;
@@ -134,6 +140,35 @@ class AssessmentScoresRepository {
       );
 
     return transmutatedValue.rows[0].transmutated_grade;
+  }
+
+  async getTotalScoreByAssessmentIds(LRN: string, assessment_ids: number[]) {
+    let totalScore = 0;
+
+    let scores_Promise: any[] = [];
+
+    assessment_ids.forEach(id => {
+      scores_Promise.push(
+        this.db
+          .getDbInstance()(SCORES)
+          .where({
+            LRN,
+            assessment_id: id,
+          })
+          .select('score')
+      );
+    });
+
+    const result = await Promise.all(scores_Promise);
+
+    // Add all scores to compute the total score
+    result.forEach(a => {
+      a.forEach((element: any) => {
+        if (element) totalScore += element.score;
+      });
+    });
+
+    return totalScore;
   }
 
   /// Sum select SUM(s."score") from scores s join assessments a on a."assessment_id" = s."assessment_id" where s."LRN" = '123456789110' and a."grading_period" = '1' and a."component" = 'PT';

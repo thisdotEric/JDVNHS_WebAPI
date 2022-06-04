@@ -13,6 +13,9 @@ import { Assessments } from './pages/Assessments';
 import { AddScores } from './pages/Scores/AddScores';
 import { Grades } from './pages/Grades';
 import { Reports, StudentReport } from './pages/Reports';
+import { LearningMaterials } from './pages/LearningMaterials';
+import { LearningCompetencies } from './pages/LearningCompetencies';
+import { EvaluationQuestions } from './pages/EvaluationQuestions';
 
 interface AppProps {}
 
@@ -28,6 +31,7 @@ function App({}: AppProps) {
 
             <Route path="assessments">
               <Route path="" element={<Assessments />} />
+              <Route path=":id" element={<Assessments />} />
               <Route path="scores/:id" element={<Scores />} />
               <Route path="scores/new/:id" element={<AddScores />} />
             </Route>
@@ -39,12 +43,21 @@ function App({}: AppProps) {
                 path="attendance/new/:lecture_id"
                 element={<AddAttendance />}
               />
+              {/* <Route path="materials/:code" element={<LearningMaterials />} /> */}
             </Route>
             <Route path="reports">
               <Route path="" element={<Reports />} />
               <Route path="student/:LRN" element={<StudentReport />} />
             </Route>
-            <Route path="Grades" element={<Grades />} />
+            <Route path="grades" element={<Grades />} />
+            <Route path="competencies">
+              <Route path="" element={<LearningCompetencies />} />
+              <Route path="questions/:code" element={<EvaluationQuestions />} />
+              <Route
+                path="learning-materials/:code"
+                element={<LearningMaterials />}
+              />
+            </Route>
           </Route>
         </Route>
         <Route element={<ProtectedRoutes hasAccess="student" />}>

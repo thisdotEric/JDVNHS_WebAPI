@@ -1,11 +1,11 @@
 .dashboard {
-  min-height: 100%;
   display: flex;
   font-size: 16px;
+  margin: 0;
+  height: 100%;
 
   .side {
-    width: 200px;
-    background-color: #fc7519;
+    background-color: #2d4b65;
     height: 100%;
     width: 210px;
     position: fixed;
@@ -18,8 +18,27 @@
     align-items: center;
     flex-direction: column;
 
-    img {
-      padding: 10px;
+    #subject-dropdown {
+      margin-bottom: 50px;
+      margin-left: 20px;
+    }
+
+    #school {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+      color: white;
+
+      img {
+        padding: 10px;
+      }
+
+      p {
+        padding: 10px;
+        text-align: center;
+      }
     }
 
     .user {
@@ -30,9 +49,12 @@
       align-items: center;
 
       p {
-        font-weight: bold;
-        color: black;
+        color: white;
         text-align: center;
+      }
+
+      #signout-btn {
+        margin-top: 10px;
       }
 
       input {
@@ -50,17 +72,15 @@
   }
 
   main {
-    background-color: #e8eaec;
-    height: 100vh;
+    background-color: #f3f1f5;
+    height: 100%;
     width: 100vw;
     padding-right: 10px;
 
     .top {
-      background: #283659;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      color: white;
+      // position: fixed;
+      // top: 0;
+      color: black;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -74,6 +94,7 @@
 
         p {
           padding-left: 10px;
+          font-size: 18px;
           font-weight: bold;
         }
       }
@@ -109,7 +130,6 @@
 
     .content {
       margin-left: 220px;
-      margin-top: 45px;
     }
   }
 }

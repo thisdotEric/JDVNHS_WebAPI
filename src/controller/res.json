@@ -1,0 +1,40 @@
+{
+  "prediction": { "falseCount": 1, "trueCount": 0 },
+  "node": {
+    "question": { "value": 27, "objectKey": "ww_wScore" },
+    "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+    "falseBranch": {
+      "question": { "value": 25, "objectKey": "ww_wScore" },
+      "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+      "falseBranch": {
+        "question": { "value": 20, "objectKey": "qa_wScore" },
+        "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+        "falseBranch": {
+          "question": { "value": 24, "objectKey": "ww_wScore" },
+          "trueBranch": { "classCounts": { "falseCount": 1, "trueCount": 0 } },
+          "falseBranch": {
+            "question": { "value": 23, "objectKey": "ww_wScore" },
+            "trueBranch": {
+              "classCounts": { "falseCount": 1, "trueCount": 0 }
+            },
+            "falseBranch": {
+              "question": { "value": false, "objectKey": "passedPreTest" },
+              "trueBranch": {
+                "classCounts": { "falseCount": 0, "trueCount": 1 }
+              },
+              "falseBranch": {
+                "question": { "value": 15, "objectKey": "qa_wScore" },
+                "trueBranch": {
+                  "classCounts": { "falseCount": 1, "trueCount": 0 }
+                },
+                "falseBranch": {
+                  "classCounts": { "falseCount": 0, "trueCount": 7 }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

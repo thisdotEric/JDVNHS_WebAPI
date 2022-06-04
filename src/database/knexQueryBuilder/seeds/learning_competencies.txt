@@ -1,0 +1,38 @@
+M7NS-Ia-1
+describes well-defined sets, subsets, universal sets, and the null set and cardinality of sets.
+M7NS-Ia-2
+illustrates the union and intersection of sets and the difference of two sets. 
+M7NS-Ib-1
+uses Venn Diagrams to represent sets, subsets, and set operations.
+M7NS-Ib-2
+solves problems involving sets.
+M7NS-Ic-1
+represents the absolute value of a number on a number line as the distance of a number from 0.
+M7NS-Ic-d-1
+performs fundamental operations on integers.
+M7NS-Id-2
+illustrates the different properties of operations on the set of integers. 
+M7NS-Ie-1
+expresses rational numbers from fraction form to decimal form and vice versa.
+M7NS-Ie-2
+arranges rational numbers on a number line. 
+M7NS-If-1
+performs operations on rational numbers.
+M7NS-Ig-1
+describes principal roots and tells whether they are rational or irrational.
+M7NS-Ig-2
+determines between what two integers the square root of a number is.
+M7NS-Ig-3
+estimates the square root of a whole number to the nearest hundredth.
+M7NS-Ig-4
+plots irrational numbers (up to square roots) on a number line.
+M7NS-Ih-1
+illustrates the different subsets of real numbers.
+M7NS-Ih-2
+arranges real numbers in increasing or decreasing order.
+M7NS-Ii-1
+writes numbers in scientific notation and vice versa.
+M7NS-Ii-2
+represents real-life situations which involve real numbers. 
+M7NS-Ij-1
+solves problems involving real numbers. 

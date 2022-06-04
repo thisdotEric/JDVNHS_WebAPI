@@ -1,6 +1,12 @@
 .assessments {
   background: transparent;
 
+  #scores-action-btn {
+    cursor: pointer;
+    text-decoration: underline;
+    color: darkblue;
+  }
+
   .create-assessments {
     display: flex;
     justify-content: left;

@@ -1,5 +1,30 @@
 #student-report {
+  height: 100vh;
+
   #name {
     font-size: 20px;
+    padding: 10px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  #learning-materials {
+    margin-left: 20px;
+  }
+
+  #section-title {
+    font-weight: bold;
+    padding-top: 10px;
+    font-style: italic;
+  }
+
+  #question-description {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  #question-item {
+    font-size: 16px;
   }
 }

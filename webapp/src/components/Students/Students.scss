@@ -1,4 +1,14 @@
 .class-students {
+  #student-action-btn {
+    cursor: pointer;
+    text-decoration: underline;
+    color: darkblue;
+  }
+
+  #report-btn:hover {
+    font-weight: bold;
+  }
+
   .class-info {
     display: flex;
     justify-content: left;

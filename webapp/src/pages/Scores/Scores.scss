@@ -1,9 +1,25 @@
 .scores {
   background: transparent;
 
-  .scores-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  #update-button {
+    border: none;
+    background-color: transparent;
+    text-decoration: underline;
+    color: blue;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}
+
+.update-modal {
+  #score-input {
+    font-weight: bold;
+  }
+
+  #submit-btn {
+    width: 100%;
+    margin-top: 10px;
   }
 }

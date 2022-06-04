@@ -63,7 +63,7 @@ class AttendanceRepository {
         lecture_id,
       })
       .select('status', 'LRN', 'first_name', 'middle_name', 'last_name')
-      .orderBy('last_name');
+      .orderBy('LRN');
 
     return { attendance, lecture_id };
   }

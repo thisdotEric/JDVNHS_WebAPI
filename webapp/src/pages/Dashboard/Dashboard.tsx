@@ -16,6 +16,8 @@ import { useCurrentUser } from '../../hooks';
 import { teacherNavigations, studentNavigations } from '../../constants';
 import { SubjectDropDown } from './SubjectDropDown';
 import { XCircle } from 'react-feather';
+import { Select, Button } from '@mantine/core';
+import { Logout } from 'tabler-icons-react';
 
 interface DashboardProps {}
 
@@ -32,7 +34,7 @@ const initialNotificationState: Notification = {
 const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
   const navigate = useNavigate();
   const [userSubjects, setUserSubjects] = useState<Subject[]>();
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('Math7');
   const [loading, setLoading] = useState<boolean>(true);
   const [headerFlags, setHeaderContextValue] = useState<HeaderFlags>({
     showSubjectDropdown: true,
@@ -89,7 +91,10 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
     <div className="dashboard">
       <div className="side">
         <div>
-          <img src={SchoolLogo} alt="School Logo" height={170} width={170} />
+          <div id="school">
+            <img src={SchoolLogo} alt="School Logo" height={150} width={150} />
+          </div>
+
           <SideNav
             links={
               currentUser?.role === 'student'
@@ -112,7 +117,15 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
               navigate('/');
             }}
           >
-            <input type="submit" value="Sign out" />
+            <Button
+              leftIcon={<Logout size={20} />}
+              id="signout-btn"
+              size="xs"
+              color={'red'}
+              type="submit"
+            >
+              Sign out{' '}
+            </Button>
           </form>
         </div>
       </div>
@@ -122,28 +135,20 @@ const Dashboard: FC<DashboardProps> = ({}: DashboardProps) => {
         <main>
           <div className="top">
             <div id="header-left">
-              {headerFlags?.showSubjectDropdown && (
-                <SubjectDropDown
-                  setSelectedSubject={setSelectedSubject}
-                  userSubjects={userSubjects}
+              {/* {headerFlags?.showSubjectDropdown && (
+                <Select
+                  id="subject-dropdown"
+                  placeholder="Select Subject"
+                  data={[
+                    { value: 'react', label: 'React' },
+                    { value: 'ng', label: 'Angular' },
+                    { value: 'svelte', label: 'Svelte' },
+                    { value: 'vue', label: 'Vue' },
+                  ]}
                 />
-              )}
+              )} */}
               <p>{headerFlags.headerStringValue}</p>
             </div>
-            {notification.text !== '' && (
-              <div id="notification" className={notification.type}>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Numquam consequuntur vel veniam ducimus aut expedita.
-                </p>
-                <XCircle
-                  id="notif-close-icon"
-                  onClick={() => {
-                    setNotification(initialNotificationState);
-                  }}
-                />
-              </div>
-            )}
           </div>
           <div className="content">
             <HeaderContext.Provider value={headerContextMemo}>

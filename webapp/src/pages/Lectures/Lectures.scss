@@ -1,4 +1,29 @@
 #lectures {
+  #open-modal-btn {
+    text-decoration: underline;
+    border: none;
+    background: none;
+    color: blue;
+  }
+
+  #remove-lecture {
+    background: none;
+    color: blue;
+    text-decoration: underline;
+  }
+
+  .lectures-link:hover {
+    font-weight: bold;
+  }
+
+  #lecture-actions-group {
+    display: flex;
+
+    .left {
+      margin-right: 20px;
+    }
+  }
+
   .lecture-list {
     padding: 10px;
     display: flex;

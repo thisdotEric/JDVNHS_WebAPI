@@ -19,7 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
   let LRN: string = '';
 
   for (let count = start; count <= end; count++) {
-    LRN = `1234567891${count}`;
+    LRN = `5011416007${count}`;
 
     userSeedData.push({
       user_id: LRN,

@@ -1,0 +1,38 @@
+#table-component {
+  padding-bottom: 20px;
+
+  .table-header-actions,
+  .action-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .action-btns {
+    #action-btn {
+      margin-left: 10px;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: flex-end;
+    justify-content: right;
+    margin: 20px;
+
+    button {
+      margin-left: 10px;
+    }
+
+    #page-pagination-info {
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+#filter-searchbox {
+  margin: 10px 0;
+  width: 250px;
+  font-size: medium;
+}

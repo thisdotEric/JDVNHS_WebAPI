@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import './AttendanceActionAction.scss';
-import type { AttendanceAction, AttendanceStatus } from './AddAttendance';
+import type { AttendanceStatus } from './AddAttendance';
 
 interface AttendanceActionProps {
   index: number;

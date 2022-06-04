@@ -13,6 +13,10 @@ const LECTURES = 'lectures';
 const LESSONS = 'lessons';
 const COMPONENTS = 'components';
 const TRANSMUTATION = 'transmutation';
+const TRAINING_DATA = 'training_data';
+const LEARNING_COMPETENCY = 'learning_competency';
+const LEARNING_MATERIAL = 'learning_material';
+const QUESTIONS = 'questions';
 
 export {
   STUDENT,
@@ -30,4 +34,8 @@ export {
   LESSONS,
   COMPONENTS,
   TRANSMUTATION,
+  TRAINING_DATA,
+  LEARNING_COMPETENCY,
+  LEARNING_MATERIAL,
+  QUESTIONS,
 };

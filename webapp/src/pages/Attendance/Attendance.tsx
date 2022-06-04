@@ -6,41 +6,41 @@ import React, {
   useRef,
   memo,
   useCallback,
+  useMemo,
 } from 'react';
 import './Attendance.scss';
 import { axios } from '../../utils';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { SubjectContext } from '../../context';
 import 'react-calendar/dist/Calendar.css';
-import { attendanceColumns } from './columns';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AttendanceDetails } from './AttendanceDetails';
 import { useSetHeader, useSetPageTitle } from '../../hooks';
-import { Button, TableButton } from '../../components/Button';
-import AttendanceAction from './AttendanceAction';
-import type { ICellRendererParams } from 'ag-grid-community';
+import type { Column } from 'react-table';
+import { TableComponent } from '../../components/Table';
+import { RadioGroup, Radio } from '@mantine/core';
 
 interface AttendanceProps {}
 
-export type AttendanceStatus = 'present' | 'absent' | 'excused';
+export type Status = 'present' | 'absent' | 'excused';
+
+export interface AttendanceStatusList {
+  status: Status;
+  name: string;
+}
 
 interface Attendance {
   LRN: string;
   first_name: string;
   middle_name: string;
   last_name: string;
-  status: AttendanceStatus;
+  fullname: string;
+  status: Status;
 }
 
-interface UpdateAttendanceProp {
-  table: any;
-  updatedAttendance: AttendanceStatus;
-  updateStudentAttendance: (
-    table: any,
-    updatedAttendance: AttendanceStatus,
-  ) => Promise<void>;
+export interface StudentAttendance {
+  LRN: string;
+  fullname: string;
+  status: Status;
 }
 
 export interface AttendanceDetails {
@@ -49,124 +49,100 @@ export interface AttendanceDetails {
   excused: number;
 }
 
-const UpdateAttendance = ({
-  table,
-  updatedAttendance,
-  updateStudentAttendance,
-}: UpdateAttendanceProp) => {
-  return (
-    <button
-      onClick={async () => {
-        await updateStudentAttendance(table, updatedAttendance);
-      }}
-    >
-      {updatedAttendance}
-    </button>
-  );
-};
-
 const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
   const selectedSubject = useContext(SubjectContext);
 
   useSetPageTitle('Attendance');
   useSetHeader({
     showSubjectDropdown: false,
-    headerStringValue: `Updating attendance of ${selectedSubject} subject dated 2022-03-12.`,
+    headerStringValue: `View/Update Attendance`,
   });
 
-  const [attendanceList, setAttendanceList] = useState<Attendance[]>([]);
-  const [attendanceUpdate, setAttendanceUpdate] = useState<number>(0);
+  const [attendanceList, setAttendanceList] = useState<StudentAttendance[]>([]);
   const [attendanceDetails, setAttendanceDetails] =
     useState<AttendanceDetails>();
   const params = useParams();
-  const navigate = useNavigate();
 
-  const [attendanceStatus] = useState<AttendanceStatus[]>([
-    'present',
-    'absent',
-    'excused',
-  ]);
-
-  const ref = useRef<any>(null);
-
-  const Sample = memo((params: ICellRendererParams) => {
-    return (
-      <label htmlFor="">
-        <input type="radio" name="Absent" id={params.data} />
-        <p>Absent</p>
-      </label>
-    );
-  });
-
-  const [columns] = useState([
-    ...attendanceColumns,
+  const [attendanceStatus] = useState<AttendanceStatusList[]>([
     {
-      field: 'status',
-      headerName: 'Attendance',
-      cellRendererFramework: (params: ICellRendererParams) => (
-        <span id={params.data.status}>{params.data.status}</span>
-      ),
-      // cellRenderer: 'agAnimateShowChangeCellRenderer',
+      status: 'present',
+      name: 'Present',
     },
     {
-      headerName: 'Action',
-      // cellRenderer: 'actionRender',
-      cellRendererFramework: memo((params: any) => (
-        <>
-          {attendanceStatus.map(at => (
-            <AttendanceAction
-              key={'absent'}
-              LRN={params.data.LRN}
-              newAttendanceStatus={'absent'}
-              updateStudentAttendance={() => {
-                all(params.data.LRN, 'absent');
-              }}
-            />
-          ))}{' '}
-        </>
-      )),
+      status: 'absent',
+      name: 'Absent',
+    },
+    {
+      status: 'excused',
+      name: 'Excused',
     },
   ]);
 
-  const updateStudentAttendance = (
-    LRN: string,
-    updatedAttendance: AttendanceStatus,
-  ) => {
-    setAttendanceList(old => {
-      // return [];
-      return old?.map(o => {
-        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
-        else return o;
+  const updateAttendace = useCallback(
+    async (LRN: string, newStatus: Status) => {
+      await axios.patch(`subject/${selectedSubject}/attendance/${params.id}`, {
+        LRN,
+        newStatus,
       });
-    });
-  };
 
-  const all = useCallback((LRN, updatedAttendance) => {
-    setAttendanceList(old => {
-      // return [];
-      return old?.map(o => {
-        if (LRN === o.LRN) return { ...o, status: updatedAttendance };
-        else return o;
-      });
-    });
-  }, []);
+      await fetchStudentsAttendance();
+    },
+    [],
+  );
 
-  const fetchStudentsAttendance = (isLatest: boolean = false) => {
+  const data = useMemo<StudentAttendance[]>(
+    () => attendanceList,
+    [attendanceList],
+  );
+
+  const columns = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        { Header: 'STUDENT', accessor: 'fullname' },
+        {
+          Header: 'ATTENDANCE STATUS',
+          accessor: 'status',
+          Cell: row => {
+            return (
+              <RadioGroup
+                required
+                defaultValue={row.row.original.status}
+                color={'teal'}
+                onChange={async (value: Status) => {
+                  await updateAttendace(row.row.original.LRN, value);
+                }}
+              >
+                {attendanceStatus.map(({ name, status }) => (
+                  <Radio value={status} label={name} />
+                ))}
+              </RadioGroup>
+            );
+          },
+        },
+      ] as Column<StudentAttendance>[],
+    [],
+  );
+
+  const fetchStudentsAttendance = async (isLatest: boolean = false) => {
     const id = isLatest ? 'latest' : params.id;
 
-    axios
-      .get(`subject/${selectedSubject}/attendance?id=${id}`)
-      .then(({ data }) => {
-        setAttendanceList(data.data.attendance);
+    const { data } = await axios.get(
+      `subject/${selectedSubject}/attendance?id=${id}`,
+    );
 
-        // Save the lecture id
-        localStorage.setItem('lecture_id', data.data.lecture_id);
+    setAttendanceList(
+      data.data.attendance.map((at: any) => ({
+        LRN: at.LRN,
+        fullname: `${at.last_name}, ${at.middle_name} ${at.first_name[0]}.`,
+        status: at.status,
+      })),
+    );
 
-        deriveAttendanceDetails(data.data.attendance);
-      })
-      .catch(err => {
-        console.log('Not Found');
-      });
+    // Save the lecture id
+    localStorage.setItem('lecture_id', data.data.lecture_id);
+
+    deriveAttendanceDetails(data.data.attendance);
   };
 
   const deriveAttendanceDetails = (attendance: any[]) => {
@@ -193,79 +169,11 @@ const Attendance: FC<AttendanceProps> = ({}: AttendanceProps) => {
     if (!params.id) isLatest = true;
 
     fetchStudentsAttendance(isLatest);
-  }, [attendanceUpdate]);
-
-  useEffect(() => {
-    let isLatest = false;
-
-    if (!params.id) isLatest = true;
-
-    fetchStudentsAttendance(isLatest);
-
-    return () => {
-      console.log('After');
-    };
   }, []);
 
   return (
     <div className="attendance">
-      {attendanceDetails && (
-        <AttendanceDetails
-          presents={attendanceDetails.presents}
-          absents={attendanceDetails.absents}
-          excused={attendanceDetails.excused}
-        />
-      )}
-
-      <div>
-        <div
-          className="ag-theme-balham-dark"
-          id="student-table"
-          style={{
-            height: '550px',
-          }}
-        >
-          <AgGridReact
-            ref={ref}
-            rowData={attendanceList}
-            columnDefs={columns}
-            getRowNodeId={data => data.row}
-            pagination={true}
-            rowSelection={'single'}
-            enableCellChangeFlash={true}
-            immutableData={true}
-            frameworkComponents={{
-              actionRender: Sample,
-            }}
-            animateRows={true}
-            defaultColDef={{
-              sortable: true,
-              flex: 1,
-              minWidth: 100,
-              filter: true,
-              resizable: true,
-            }}
-          ></AgGridReact>
-        </div>
-      </div>
-
-      <div id="attendance-actions">
-        <Button
-          buttontype="select"
-          value="Select another attendance"
-          onClick={() => {
-            navigate('/t/lectures');
-          }}
-        />
-
-        <Button
-          buttontype="save"
-          value="Save updated attendance"
-          onClick={() => {
-            navigate('/t/lectures');
-          }}
-        />
-      </div>
+      <TableComponent columns={columns} data={data} />
     </div>
   );
 };

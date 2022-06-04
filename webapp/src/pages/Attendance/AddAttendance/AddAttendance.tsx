@@ -1,27 +1,22 @@
-import React, { FC, useContext, useEffect, useState, useReducer } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AddAttendance.scss';
 import { axios } from '../../../utils';
 import { SubjectContext } from '../../../context';
 import useSetPageTitle from '../../../hooks/useSetPageTitle';
-import AttendanceActionColumn from './AttendanceActionColumn';
-import { AgGridReact } from 'ag-grid-react';
 import { useSetHeader } from '../../../hooks';
-import { Button } from '../../../components/Button';
+import type {
+  AttendanceStatusList,
+  Status,
+  StudentAttendance,
+} from '../Attendance';
+import { Radio, RadioGroup } from '@mantine/core';
+import type { Column } from 'react-table';
+import { TableComponent } from '../../../components/Table';
 
 interface AddAttendanceProps {}
 
 export type AttendanceStatus = 'present' | 'absent' | 'excused';
-
-export interface AttendanceAction {
-  type: AttendanceStatus;
-  payload: string;
-}
-
-interface Attendance {
-  LRN: string;
-  status: AttendanceStatus;
-}
 
 const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
   useSetPageTitle('Add Attendance');
@@ -30,43 +25,81 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
     showSubjectDropdown: false,
   });
 
-  const [students, setStudents] = useState<any[]>();
+  const [students, setStudents] = useState<StudentAttendance[]>([]);
   const navigate = useNavigate();
   const selectedSubject = useContext(SubjectContext);
 
   let { lecture_id } = useParams();
   useSetPageTitle('Create New Attendance');
 
-  const [attendanceCols] = useState([
+  const [attendanceStatus] = useState<AttendanceStatusList[]>([
     {
-      field: 'user_id',
-      headerName: 'LRN',
+      status: 'present',
+      name: 'Present',
     },
     {
-      field: 'last_name',
-      headerName: 'Last Name',
+      status: 'absent',
+      name: 'Absent',
     },
     {
-      field: 'first_name',
-      headerName: 'First Name',
-    },
-    {
-      field: 'middle_name',
-      headerName: 'Middle Name',
-    },
-    {
-      headerName: 'Action',
-      cellRendererFramework: (params: any) => (
-        <>
-          <AttendanceActionColumn
-            index={params.rowIndex}
-            dispatch={updateAttendance}
-            LRN={params.data.user_id}
-          />
-        </>
-      ),
+      status: 'excused',
+      name: 'Excused',
     },
   ]);
+
+  const data = useMemo(() => students, [students]);
+
+  const columns = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        {
+          Header: 'STUDENT',
+          accessor: 'fullname',
+        },
+        {
+          Header: 'ATTENDANCE STATUS',
+          accessor: 'status',
+          Cell: row => {
+            return (
+              <RadioGroup
+                required
+                defaultValue={row.row.original.status}
+                color={'teal'}
+                onChange={(value: Status) => {
+                  setStudents(old => {
+                    return old?.map(st => {
+                      if (st.LRN === row.row.original.LRN) st.status = value;
+
+                      return st;
+                    });
+                  });
+                }}
+              >
+                {attendanceStatus.map(({ name, status }) => (
+                  <Radio value={status} label={name} />
+                ))}
+              </RadioGroup>
+            );
+          },
+        },
+      ] as Column<StudentAttendance>[],
+    [],
+  );
+
+  const saveAttendance = async () => {
+    await axios.post('subject/PreCal/attendance', {
+      attendance: students?.map(s => {
+        return {
+          LRN: s.LRN,
+          status: s.status,
+        };
+      }),
+      lecture_id: lecture_id,
+    });
+
+    navigate('/t/lectures');
+  };
 
   useEffect(() => {
     axios.get(`subject/${selectedSubject}/students`).then(({ data }) => {
@@ -75,77 +108,30 @@ const AddAttendance: FC<AddAttendanceProps> = ({}: AddAttendanceProps) => {
         data.data.map((st: any) => {
           return {
             ...st,
-            attendance: 'present',
+            LRN: st.user_id,
+            fullname: `${st.last_name}, ${st.middle_name} ${st.first_name[0]}.`,
+            attendance: 'absent',
           };
         }),
       );
+      console.log(data.data);
     });
   }, []);
 
-  const updateAttendance = (status: AttendanceStatus, LRN: string) => {
-    console.log(status);
-
-    setStudents(old => {
-      return old?.map(st => {
-        if (st.user_id === LRN) st.attendance = status;
-
-        return st;
-      });
-    });
-  };
-
   return (
     <div>
-      <div
-        className="ag-theme-balham"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={students}
-          pagination={true}
-          columnDefs={attendanceCols}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
-      </div>
-
-      <div className="scores-act">
-        <Button
-          buttontype="cancel"
-          value="Cancel"
-          onClick={() => {
-            navigate('/t/lectures');
-          }}
-        />
-
-        <Button
-          buttontype="save"
-          value="Save new attendance"
-          onClick={async () => {
-            await axios.post('subject/PreCal/attendance', {
-              attendance: students?.map(s => {
-                return {
-                  LRN: s.user_id,
-                  status: s.attendance,
-                };
-              }),
-              lecture_id: lecture_id,
-            });
-
-            navigate('/t/lectures');
-          }}
-        />
-      </div>
+      <TableComponent
+        columns={columns}
+        data={data}
+        actions={[
+          {
+            name: 'Save Attendance',
+            action: async () => {
+              await saveAttendance();
+            },
+          },
+        ]}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import AuthenticationService from '../services/authentication.service';
 import UserService from '../services/user.service';
 import TeacherService from '../services/teacher.service';
 import GradesService from '../services/grades.service';
+import ReportsService from '../services/reports.service';
 
 // repositories
 import StudentRepository from '../repository/student.repository';
@@ -21,6 +22,9 @@ import AssessmentScoresRepository from '../repository/scores.repository';
 import UserRepository from '../repository/user.repository';
 import LectureRepository from '../repository/lecture.repository';
 import AssessmentRepository from '../repository/assessment.repository';
+import TrainingDataRepository from '../repository/training_data.repository';
+import QuestionRepository from '../repository/question.repository';
+import LearningCompetencyRepository from '../repository/learning_competency.repository';
 
 //interfaces
 import IStudentRepository from '../repository/IStudentRepository';
@@ -67,8 +71,16 @@ const bindings = new AsyncContainerModule(async (bind: interfaces.Bind, _) => {
   bind<UserService>(TYPES.UserService).to(UserService);
 
   bind<GradesService>(TYPES.GradesService).to(GradesService);
+  bind<ReportsService>(TYPES.ReportsService).to(ReportsService);
 
   bind<LectureRepository>(TYPES.LectureRepository).to(LectureRepository);
+  bind<TrainingDataRepository>(TYPES.TrainingDataRepository).to(
+    TrainingDataRepository
+  );
+  bind<QuestionRepository>(TYPES.QuestionsRepository).to(QuestionRepository);
+  bind<LearningCompetencyRepository>(TYPES.LearningCompetencyRepository).to(
+    LearningCompetencyRepository
+  );
 
   bind<MustBeAuthenticated>(TYPES.AuthMiddleware).to(MustBeAuthenticated);
   bind<StudentAccessONLY>(TYPES.StudentAccessONLY).to(StudentAccessONLY);

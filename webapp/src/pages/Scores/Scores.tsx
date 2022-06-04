@@ -1,14 +1,20 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import './Scores.scss';
 import { axios } from '../../utils';
 import { SubjectContext } from '../../../src/context';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useSetPageTitle, useSetHeader } from '../../hooks';
-import { Button } from '../../components/Button';
+// import { Button } from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
+import type { Column } from 'react-table';
+import { TableComponent } from '../../components/Table';
+import { NumberInput, Button, Modal } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { getNotificationProps } from '../../components/Notifications';
+import { DeviceFloppy } from 'tabler-icons-react';
 
 interface ScoresProps {}
 
@@ -22,10 +28,29 @@ interface Scores {
   grading_period: 1 | 2 | 3 | 4;
 }
 
-interface UpdatedScore {
+interface AssessmentScore {
   score_id: number;
+  LRN: string;
+  fullname: string;
   score: number;
+  grading_period: 1 | 2 | 3 | 4;
 }
+
+interface CurrentStudentScore {
+  name: string;
+  score: number;
+  score_id: number;
+}
+
+interface InputError {
+  error: string;
+  disableButton: boolean;
+}
+
+const noError: InputError = {
+  error: '',
+  disableButton: false,
+};
 
 const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
   useSetPageTitle('Scores');
@@ -34,59 +59,58 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
     headerStringValue: 'View/Update scores',
   });
 
-  const [classScores, setScores] = useState<Scores[]>([]);
-  const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true);
+  const [scores, setStudentScores] = useState<Scores[]>([]);
+  const [opened, setOpened] = useState(false);
+  const [maxScore, setMaxScore] = useState<number>(0);
+  const [error, setError] = useState<InputError>(noError);
 
-  const [scoreColumns] = useState([
-    {
-      field: 'LRN',
-      headerName: 'LRN',
-    },
-    {
-      field: 'last_name',
-      headerName: 'Last Name',
-    },
-    {
-      field: 'first_name',
-      headerName: 'First Name',
-    },
-    {
-      field: 'middle_name',
-      headerName: 'Middle Name',
-    },
-    {
-      field: 'score_id',
-      headerName: 'Score ID',
-      hide: true,
-    },
-    {
-      field: 'score',
-      headerName: 'Score',
-      editable: true,
-      onCellValueChanged: (grid: any) => {
-        setDisableSaveButton(false);
+  const [currentScore, setCurrentScore] = useState<CurrentStudentScore>({
+    name: '',
+    score: 0,
+    score_id: 0,
+  });
 
-        const row = grid.node.data;
+  const scoreColumns2 = useMemo(
+    () =>
+      [
+        { Header: 'LRN', accessor: 'LRN' },
+        {
+          Header: 'STUDENT',
+          accessor: 'fullname',
+        },
+        {
+          Header: 'SCORE',
+          accessor: 'score',
+          Cell: row => <p style={{ fontWeight: 'bold' }}>{row.value}</p>,
+        },
+        {
+          Header: 'ACTION',
+          accessor: 'score_id',
+          Cell: row => (
+            <button
+              id="update-button"
+              onClick={() => {
+                setCurrentScore({
+                  name: row.row.original.fullname.split(' ')[1],
+                  score: row.row.original.score,
+                  score_id: row.value,
+                });
+                setOpened(true);
+              }}
+            >
+              Update
+            </button>
+          ),
+        },
+      ] as Column<AssessmentScore>[],
+    [],
+  );
 
-        setScores(oldScores => {
-          return oldScores.map(studentScore => {
-            if (studentScore.LRN === row.LRN)
-              studentScore.score = parseInt(row.score, 10);
-
-            return studentScore;
-          });
-        });
-      },
-    },
-    {
-      field: 'score_id',
-      headerName: 'Score_id',
-      hide: true,
-    },
-  ]);
+  const data = useMemo(() => scores, [scores]);
 
   const selectedSubject = useContext(SubjectContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { id } = useParams();
 
@@ -95,62 +119,92 @@ const Scores: FC<ScoresProps> = ({}: ScoresProps) => {
       `subject/${selectedSubject}/scores/${assessment_id}`,
     );
 
-    setScores(res.data.data);
+    setStudentScores(
+      res.data.data.map((s: any) => {
+        return {
+          score_id: s.score_id,
+          LRN: s.LRN,
+          fullname: `${s.last_name}, ${s.first_name} ${s.middle_name[0]}. `,
+          score: s.score,
+        };
+      }),
+    );
   };
 
   useEffect(() => {
     if (id != undefined) fetchAssessmentScores(id);
   }, [selectedSubject]);
 
+  useEffect(() => {
+    if (id != undefined) fetchAssessmentScores(id);
+
+    setMaxScore((location.state as any).items);
+  }, []);
+
   return (
     <div className="scores">
-      <div
-        className="ag-theme-balham-dark"
-        id="student-table"
-        style={{
-          height: '550px',
-        }}
-      >
-        <AgGridReact
-          rowData={classScores}
-          pagination={true}
-          columnDefs={scoreColumns}
-          rowSelection={'single'}
-          enableCellChangeFlash={true}
-          animateRows={true}
-          defaultColDef={{
-            sortable: true,
-            flex: 1,
-            minWidth: 100,
-            filter: true,
-            resizable: true,
-          }}
-        ></AgGridReact>
-      </div>
+      <TableComponent columns={scoreColumns2} data={data} />
 
-      <div className="scores-actions">
-        <Button
-          value="Cancel"
-          buttontype="cancel"
-          onClick={() => {
-            navigate('/t/assessments');
-          }}
-        />
-        <Button
-          value="Save Updated Scores"
-          buttontype="save"
-          disabled={disableSaveButton}
-          onClick={async () => {
-            await axios.patch(`subject/${selectedSubject}/assessments/scores`, {
-              scores: classScores.map(({ score, score_id }) => {
-                return { score, score_id };
-              }),
+      <Modal
+        opened={opened}
+        classNames={{
+          body: 'update-modal',
+        }}
+        closeOnEscape={false}
+        onClose={() => setOpened(false)}
+        title={`Update ${currentScore.name}'s score`}
+      >
+        <form
+          onSubmit={async e => {
+            e.preventDefault();
+
+            await axios.patch(`subject/${selectedSubject}/assessments/score`, {
+              score: {
+                score: currentScore.score,
+                score_id: currentScore.score_id,
+              },
             });
 
-            navigate('/t/assessments');
+            // Update the table with new scores
+            if (id != undefined) fetchAssessmentScores(id);
+
+            setOpened(false);
+            showNotification(getNotificationProps('Score updated', 'success'));
           }}
-        />
-      </div>
+        >
+          <NumberInput
+            id="score-input"
+            value={currentScore?.score}
+            size="md"
+            min={0}
+            error={error.error}
+            max={maxScore}
+            onChange={e => {
+              if (e! > maxScore)
+                setError({
+                  error: `Max score of ${maxScore} exceeded.`,
+                  disableButton: true,
+                });
+              else {
+                setError(noError);
+
+                setCurrentScore({ ...currentScore, score: e ? e : 0 });
+              }
+            }}
+            hideControls
+          />
+
+          <Button
+            id="submit-btn"
+            type="submit"
+            leftIcon={<DeviceFloppy size={20} />}
+            color={'teal'}
+            disabled={error.disableButton}
+          >
+            Update
+          </Button>
+        </form>
+      </Modal>
     </div>
   );
 };

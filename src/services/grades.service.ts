@@ -17,7 +17,7 @@ interface StudentGrade {
   finalGrade: number;
 }
 
-type ComponentType = 'PT' | 'QA' | 'WW';
+export type ComponentType = 'PT' | 'QA' | 'WW';
 
 @injectable()
 class GradesService {
@@ -44,7 +44,7 @@ class GradesService {
     }
   }
 
-  private async computeForComponentWeightedScore(
+  public async computeForComponentWeightedScore(
     subject_id: string,
     component: ComponentType,
     grading_period: number,
@@ -157,6 +157,8 @@ class GradesService {
      * Load all students enrolled on the give subject_id
      */
     const students = await this.subjectRepo.getEnrolledStudents(subject_id);
+
+    console.log('Student Length: ', students.length);
 
     /**
      * Iterate on the students list and compute for the grades per grading period

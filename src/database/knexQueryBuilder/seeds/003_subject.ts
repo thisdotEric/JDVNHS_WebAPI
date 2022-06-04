@@ -9,6 +9,7 @@ export async function seed(knex: Knex): Promise<void> {
     { subject_id: 'Fil10', subject_name: 'Filipino 10' },
     { subject_id: 'Eng10', subject_name: 'English 10' },
     { subject_id: 'Math10', subject_name: 'Mathematics 10' },
+    { subject_id: 'Math7', subject_name: 'Mathematics 7' },
     { subject_id: 'Sci10', subject_name: 'Science 10' },
     { subject_id: 'AP10', subject_name: 'Aralin Panlipunan 10' },
     { subject_id: 'ESP10', subject_name: 'Edukasyon sa Pagpapakatao 10' },
@@ -41,9 +42,11 @@ export async function seed(knex: Knex): Promise<void> {
   const enrolledStudentsInESP10: any[] = [];
   const enrolledStudentsInEPP10: any[] = [];
   const enrolledStudentsInMAPEH10: any[] = [];
+  const enrolledStudentsInMath7: any[] = [];
 
   for (let index = start; index <= end; index++) {
-    LRN = `1234567891${index}`;
+    // LRN = `1234567891${index}`;
+    LRN = `5011416007${index}`;
 
     enrolledStudentsInFil10.push({ LRN, subject_id: 'Fil10' });
     enrolledStudentsInMath10.push({ LRN, subject_id: 'Math10' });
@@ -53,6 +56,7 @@ export async function seed(knex: Knex): Promise<void> {
     enrolledStudentsInESP10.push({ LRN, subject_id: 'ESP10' });
     enrolledStudentsInEPP10.push({ LRN, subject_id: 'EPP10' });
     enrolledStudentsInMAPEH10.push({ LRN, subject_id: 'MAPEH10' });
+    enrolledStudentsInMath7.push({ LRN, subject_id: 'Math7' });
   }
 
   await Promise.all([
@@ -64,9 +68,11 @@ export async function seed(knex: Knex): Promise<void> {
     knex(DbConstants.STUDENT_SUBJECTS).insert(enrolledStudentsInESP10),
     knex(DbConstants.STUDENT_SUBJECTS).insert(enrolledStudentsInEPP10),
     knex(DbConstants.STUDENT_SUBJECTS).insert(enrolledStudentsInMAPEH10),
+    knex(DbConstants.STUDENT_SUBJECTS).insert(enrolledStudentsInMath7),
     /* Add subject teachers and subjects they handled */
     knex(DbConstants.TEACHER_SUBJECTS).insert([
       { teacher_id: '1111111', subject_id: 'Math10' },
+      { teacher_id: '1111111', subject_id: 'Math7' },
       { teacher_id: '1111111', subject_id: 'Fil10' },
       { teacher_id: '1111111', subject_id: 'Sci10' },
       { teacher_id: '1111112', subject_id: 'Eng10' },

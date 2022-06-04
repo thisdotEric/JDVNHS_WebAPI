@@ -27,7 +27,11 @@ export default {
     // "bundle": true,
   },
   packageOptions: {
-    knownEntrypoints: ['ag-grid-community'],
+    knownEntrypoints: [
+      'ag-grid-community',
+      'react-dom/server',
+      'mathjax-full/js/core/MathItem',
+    ],
   },
   devOptions: {
     /* ... */

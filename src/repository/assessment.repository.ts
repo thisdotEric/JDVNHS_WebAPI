@@ -8,6 +8,9 @@ export interface Assessment {
   subject_id: string;
   items: number;
   component: 'WW' | 'PT' | 'QA';
+  grading_period: 1 | 2 | 3 | 4;
+  assessment_type: 'summative' | 'formative';
+  lecture_id: number;
 }
 
 @injectable()
@@ -32,7 +35,7 @@ class AssessmentRepository {
   async getAllAssessmentInfo(subject_id: string) {
     const assessmentInfo = await this.db
       .getDbInstance()(ASSESSMENT)
-      .where({ subject_id })
+      .where({ subject_id, grading_period: 1 })
       .orderBy('date', 'desc');
 
     return assessmentInfo;
@@ -48,6 +51,32 @@ class AssessmentRepository {
 
   async removeAssessment(assessment_id: number) {
     await this.db.getDbInstance()(ASSESSMENT).where({ assessment_id }).delete();
+  }
+
+  async getAssessmentIdByLectureId(lecture_id: number) {
+    // Disregard QA
+    const assessment_ids = await this.db
+      .getDbInstance()
+      .raw(
+        `select a."assessment_id" from assessments a join lectures l on a."lecture_id" = l."lecture_id" where l.lecture_id = '${lecture_id}' and a.component != 'QA'`
+      );
+
+    return assessment_ids.rows.map((a: any) => a.assessment_id);
+  }
+
+  async getAssessmentTotalItemPerLectureIds(
+    lecture_ids: number[]
+  ): Promise<number> {
+    const ids = lecture_ids.map(id => id).join(',');
+
+    // Disregard QA
+    const assessmentTotalItem = await this.db
+      .getDbInstance()
+      .raw(
+        `select sum(a."items") from assessments a join lectures l on a."lecture_id" = l."lecture_id" where l.lecture_id in (${ids}) and a.component != 'QA'`
+      );
+
+    return parseInt(assessmentTotalItem.rows[0].sum);
   }
 }
 

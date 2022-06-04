@@ -1,0 +1,7 @@
+passedPreTest,pt_wScore,ww_wScore,qa_wScore,conduct_intervention
+true,10,12,1,true
+false,25,20,15,false
+false,1,5,2,true
+true,12,18,10,true
+true,28,26,2,false
+true,10,5,2,true

@@ -4,7 +4,11 @@ import KnexQueryBuilder from '../database/knexQueryBuilder/knexDatabase';
 import { DbConstants } from '../constant/db.constants';
 import { IStudent } from './student.repository';
 import { SubjectNotFoundException } from '../exceptions';
-import { COMPONENTS } from '../constant/tables';
+import {
+  COMPONENTS,
+  LEARNING_COMPETENCY,
+  LEARNING_MATERIAL,
+} from '../constant/tables';
 
 export type EnrolledStudents = Pick<
   IStudent,
@@ -16,6 +20,12 @@ export interface SubjectComponentWeights {
   performance_task: number;
   quarterly_assessment: number;
   written_work: number;
+}
+
+export interface LearningMaterial {
+  code: string;
+  learning_material: string;
+  link?: string;
 }
 
 @injectable()
@@ -129,6 +139,35 @@ class SubjectRepository {
     if (!componentWeights) return null;
 
     return componentWeights;
+  }
+
+  async getLearningCompetencyDetails(code: string) {
+    const learning_competency = await this.db
+      .getDbInstance()(LEARNING_COMPETENCY)
+      .where({
+        code,
+      })
+      .limit(1);
+
+    return learning_competency[0].learning_competency;
+  }
+
+  async getLearningMaterials(code: string) {
+    const learning_materials = await this.db
+      .getDbInstance()(LEARNING_MATERIAL)
+      .where({
+        code,
+      });
+
+    return learning_materials;
+  }
+
+  async addLearningMaterial(learningMaterial: LearningMaterial) {
+    await this.db.getDbInstance()(LEARNING_MATERIAL).insert(learningMaterial);
+  }
+
+  async deleteLearningMaterials(id: number) {
+    await this.db.getDbInstance()(LEARNING_MATERIAL).where({ id }).delete();
   }
 }
 
